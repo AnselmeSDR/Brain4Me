@@ -7,10 +7,12 @@
     "dev": "pnpm --filter @app/desktop dev",
     "build": "pnpm -r build",
     "test": "pnpm -r test",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "clean": "rimraf node_modules apps/**/node_modules apps/**/dist* pnpm-lock.yaml && pnpm install && pnpm rebuild electron esbuild"
   },
   "devDependencies": {
     "@types/react": "^19.1.13",
-    "@types/react-dom": "^19.1.9"
+    "@types/react-dom": "^19.1.9",
+    "rimraf": "^6.0.1"
   }
 }

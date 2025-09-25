@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "better-sqlite3": "^12.4.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "drizzle-orm": "^0.44.5",
     "electron": "^31",
     "lucide-react": "^0.544.0",
     "react": "^18",

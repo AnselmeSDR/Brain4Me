@@ -1,11 +1,16 @@
 import type { Manifest } from "./plugin-types";
+import hello from "@/plugins/hello/manifest";
 
-// Internal registry for MVP; later, scan userData/plugins
-const manifests: Manifest[] = [];
+// Registre interne pour le MVP ; plus tard, on scannera un dossier /plugins
+const manifests: Manifest[] = [
+  // Plugins internes (démo)
+  hello,
+];
 
-// register internal demo plugins
 export function register(manifest: Manifest) {
-  manifests.push(manifest);
+  if (!manifests.find((p) => p.id === manifest.id)) {
+    manifests.push(manifest);
+  }
 }
 export function list(): Manifest[] { return manifests; }
-export function get(id: string) { return manifests.find(p => p.id === id); }
+export function get(id: string) { return manifests.find((p) => p.id === id); }

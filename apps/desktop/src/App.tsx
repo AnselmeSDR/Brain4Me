@@ -1,6 +1,7 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import PluginHost from "@/routes/PluginHost";
+import SettingsPage from "@/routes/Settings";
 
 export default function App() {
     return (
@@ -14,6 +15,7 @@ export default function App() {
                                </div>
                            } />
                     <Route path="/plugin/:id" element={<PluginHost />} />
+                    <Route path="/settings" element={<SettingsPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>
