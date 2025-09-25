@@ -1,0 +1,154 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" version="28.2.5">
+  <diagram id="core-plugins" name="Architecture">
+    <mxGraphModel dx="948" dy="1906" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1080" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="core" value="Core" style="swimlane;rounded=1;html=1;childLayout=stackLayout;horizontal=1;resizeLast=0;" parent="1" vertex="1">
+          <mxGeometry x="460" y="-30" width="1000" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="sidebar" value="Sidebar (dynamic)" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" parent="core" vertex="1">
+          <mxGeometry y="23" width="260" height="287" as="geometry" />
+        </mxCell>
+        <mxCell id="registry" value="Plugin Registry" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" parent="core" vertex="1">
+          <mxGeometry x="260" y="23" width="260" height="287" as="geometry" />
+        </mxCell>
+        <mxCell id="settings" value="Settings Manager" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" parent="core" vertex="1">
+          <mxGeometry x="520" y="23" width="240" height="287" as="geometry" />
+        </mxCell>
+        <mxCell id="apis" value="Core APIs (IPC bridge, services)" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" parent="core" vertex="1">
+          <mxGeometry x="760" y="23" width="240" height="287" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="populate" style="endArrow=block;html=1;rounded=1;" parent="core" source="registry" target="sidebar" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="electron" value="Electron" style="swimlane;rounded=1;html=1;childLayout=stackLayout;horizontal=1;resizeLast=0;" parent="1" vertex="1">
+          <mxGeometry x="120" y="-290" width="520" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="renderer ↔ preload" style="endArrow=block;startArrow=oval;html=1;rounded=1;" parent="electron" source="renderer" target="preload" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="IPC" style="endArrow=block;html=1;rounded=1;" parent="electron" source="preload" target="main" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="main" value="Main Process (Node.js)" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" parent="electron" vertex="1">
+          <mxGeometry y="23" width="160" height="177" as="geometry" />
+        </mxCell>
+        <mxCell id="preload" value="Preload (contextBridge)" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" parent="electron" vertex="1">
+          <mxGeometry x="160" y="23" width="190" height="177" as="geometry" />
+        </mxCell>
+        <mxCell id="renderer" value="Renderer (React + TS + Tailwind + shadcn/ui)" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" parent="electron" vertex="1">
+          <mxGeometry x="350" y="23" width="170" height="177" as="geometry" />
+        </mxCell>
+        <mxCell id="plugins" value="Plugins" style="swimlane;rounded=1;html=1;childLayout=stackLayout;horizontal=1;resizeLast=0;" parent="1" vertex="1">
+          <mxGeometry x="50" y="170" width="330" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="pluginA" value="Plugin A" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;fillColor=default;" parent="plugins" vertex="1">
+          <mxGeometry y="23" width="290" height="197" as="geometry" />
+        </mxCell>
+        <mxCell id="db" value="SQLite (better-sqlite3) + Drizzle ORM" style="shape=cylinder;whiteSpace=wrap;html=1;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="180" y="-460" width="360" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="SQL" style="endArrow=block;html=1;rounded=1;" parent="1" source="main" target="db" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="UI" style="endArrow=block;html=1;rounded=1;" parent="1" source="renderer" target="sidebar" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="UI" style="endArrow=block;html=1;rounded=1;" parent="1" source="renderer" target="settings" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="manifest / entry()" style="dashed=1;endArrow=block;html=1;rounded=1;" parent="1" source="pluginA" target="registry" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="calls" style="dashed=1;endArrow=block;html=1;rounded=1;" parent="1" source="pluginA" target="apis" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" value="props/config" style="dashed=1;endArrow=block;html=1;rounded=1;" parent="1" source="pluginA" target="renderer" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-32" value="Core (Renderer)" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="580" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-33" value="PluginHost" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="850" y="580" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-34" value="FileSystem (/plugins)" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="580" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-35" value="SQLite/Drizzle" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="850" y="700" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-36" value="init()" style="endArrow=block;html=1;rounded=1;" edge="1" parent="1" source="ByCqQOenG97rDDknlfxG-32" target="ByCqQOenG97rDDknlfxG-33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-37" value="scan" style="endArrow=block;html=1;rounded=1;" edge="1" parent="1" source="ByCqQOenG97rDDknlfxG-33" target="ByCqQOenG97rDDknlfxG-34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-38" value="manifests" style="endArrow=block;html=1;rounded=1;" edge="1" parent="1" source="ByCqQOenG97rDDknlfxG-34" target="ByCqQOenG97rDDknlfxG-33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-39" value="load settings" style="endArrow=block;html=1;rounded=1;" edge="1" parent="1" source="ByCqQOenG97rDDknlfxG-33" target="ByCqQOenG97rDDknlfxG-35">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-40" value="register" style="endArrow=block;html=1;rounded=1;" edge="1" parent="1" source="ByCqQOenG97rDDknlfxG-35" target="ByCqQOenG97rDDknlfxG-32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-41" value="User" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="840" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-42" value="Sidebar" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="780" y="840" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-43" value="PluginHost" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="980" y="840" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-44" value="Plugin B" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="840" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-45" value="click Plugin B" style="endArrow=block;html=1;rounded=1;" edge="1" parent="1" source="ByCqQOenG97rDDknlfxG-41" target="ByCqQOenG97rDDknlfxG-42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-46" value="open(plugin-b)" style="endArrow=block;html=1;rounded=1;" edge="1" parent="1" source="ByCqQOenG97rDDknlfxG-42" target="ByCqQOenG97rDDknlfxG-43">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-47" value="entry()" style="endArrow=block;html=1;rounded=1;" edge="1" parent="1" source="ByCqQOenG97rDDknlfxG-43" target="ByCqQOenG97rDDknlfxG-44">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-48" value="React Component" style="endArrow=block;html=1;rounded=1;" edge="1" parent="1" source="ByCqQOenG97rDDknlfxG-44" target="ByCqQOenG97rDDknlfxG-42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-49" value="Settings UI (Core)" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="630" y="970" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-50" value="PluginHost" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="970" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-51" value="Main (Electron)" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="970" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-52" value="SQLite/Drizzle" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="1070" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-53" value="Plugin UI" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="1090" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-54" value="schema-&gt;form" style="endArrow=block;html=1;rounded=1;" edge="1" parent="1" source="ByCqQOenG97rDDknlfxG-49" target="ByCqQOenG97rDDknlfxG-50">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-55" value="save config" style="endArrow=block;html=1;rounded=1;" edge="1" parent="1" source="ByCqQOenG97rDDknlfxG-50" target="ByCqQOenG97rDDknlfxG-51">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-56" value="upsert" style="endArrow=block;html=1;rounded=1;" edge="1" parent="1" source="ByCqQOenG97rDDknlfxG-51" target="ByCqQOenG97rDDknlfxG-52">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-57" value="ok" style="endArrow=block;html=1;rounded=1;" edge="1" parent="1" source="ByCqQOenG97rDDknlfxG-52" target="ByCqQOenG97rDDknlfxG-50">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ByCqQOenG97rDDknlfxG-58" value="notify" style="endArrow=block;html=1;rounded=1;" edge="1" parent="1" source="ByCqQOenG97rDDknlfxG-50" target="ByCqQOenG97rDDknlfxG-53">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
