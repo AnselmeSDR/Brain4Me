@@ -1,8 +1,21 @@
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Layout from "@/components/layout/Layout";
+import PluginHost from "@/routes/PluginHost";
+
 export default function App() {
-  return (
-    <div className="space-y-4 p-6">
-      <h1 className="text-2xl font-semibold tracking-tight">Brain4Me</h1>
-      <p className="text-sm text-muted-foreground">Vite + Electron est prêt. 🎉</p>
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route element={<Layout />}>
+                    <Route index
+                           element={
+                               <div className="p-6 text-sm text-muted-foreground">
+                                   Bienvenue 👋 Sélectionne un plugin à gauche.
+                               </div>
+                           } />
+                    <Route path="/plugin/:id" element={<PluginHost />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    );
 }

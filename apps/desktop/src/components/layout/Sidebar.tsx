@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { list } from "./plugin-registry";
+import { list } from "@/core/plugin-registry";
 
 export default function Sidebar() {
     const [plugins, setPlugins] = useState(() => list());
     useEffect(() => { setPlugins(list()); }, []);
     return (
-        <aside className="border-r border-border bg-muted/10 p-4">
+        <aside className="h-full border-r border-border bg-muted/10 p-4">
             <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 Plugins
             </h3>
