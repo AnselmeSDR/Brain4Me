@@ -7,8 +7,13 @@ export default defineConfig({
   plugins: [
     react(),
     electron({
-      main: { entry: "electron/main.ts" },
-      preload: { input: { preload: "electron/preload.ts" } }
+      main: {
+        entry: "electron/main.ts",
+        onstart({ startup }) {
+          startup();
+        },
+      },
+      preload: { input: { preload: "electron/preload.ts" } },
     }),
   ],
   resolve: {
