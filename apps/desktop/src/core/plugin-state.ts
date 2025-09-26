@@ -1,47 +1,33 @@
-// apps/desktop/src/core/plugin-state.ts
-import { list as baseList } from "./plugin-registry";
-export type PluginRecord = ReturnType<typeof baseList>[number] & { enabled: boolean };
+import { get, list as manifestList } from "./plugin-registry";
 
-let cache: Record<string, boolean> | null = null;
-let timer: any = null;
-
-function setCache(map: Record<string, boolean>) {
-  cache = map;
-  if (timer) clearTimeout(timer);
-  timer = setTimeout(() => (cache = null), 2000);
-}
+export type PluginRecord = ReturnType<typeof manifestList>[number] & { enabled: boolean };
 
 export async function listAll(): Promise<PluginRecord[]> {
-  const all = baseList();
-  const ids = all.map(p => p.id);
+  const manifests = manifestList();
   try {
-    let map: Record<string, boolean>;
-    if (cache && ids.every(id => id in cache)) {
-      map = cache;
-    } else {
-      map = await window.plugins.getEnabledMap(ids);
-      setCache(map);
+    const remote = await window.plugins.list();
+    if (!remote || remote.length === 0) {
+      throw new Error("remote plugin list empty");
     }
-    return all.map(p => ({ ...p, enabled: map[p.id] ?? true }));
-  } catch (e) {
-    console.warn("[plugin-state] fallback enabled=true", e);
-    return all.map(p => ({ ...p, enabled: true }));
+    return remote.map((item) => {
+      const manifest = get(item.id);
+      if (manifest) {
+        return { ...manifest, enabled: item.enabled };
+      }
+      return {
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        entry: async () => ({ default: () => null }),
+        enabled: item.enabled,
+      } as PluginRecord;
+    });
+  } catch (err) {
+    console.warn("[plugin-state] falling back to manifest list", err);
+    return manifests.map((manifest) => ({ ...manifest, enabled: true }));
   }
 }
 
-export async function listEnabled() {
-  const all = await listAll();
-  return all.filter(p => p.enabled);
-}
-
-export function onEnabledChanged(cb: (id: string, v: boolean) => void) {
-  return window.plugins.onEnabledChanged(({ id, value }) => {
-    cache = null; // invalide le cache
-    cb(id, value);
-  });
-}
-
 export async function setEnabled(id: string, value: boolean) {
-    await window.plugins.setEnabled(id, value);
-    cache = null; // invalide le cache
+  await window.plugins.setEnabled(id, value);
 }

@@ -1,17 +1,26 @@
 import { useEffect, useState } from "react";
 
-// @ts-ignore (exposed by preload)
-const { bridge } = window as any;
+type HelloSettings = {
+    name?: string;
+    enabled?: boolean;
+};
 
 export default function HelloPlugin() {
-    const [cfg, setCfg] = useState<any>({});
     const [name, setName] = useState("");
+    const [savedName, setSavedName] = useState<string | null>(null);
 
     useEffect(() => {
-        bridge.settings.get("hello").then((c: any) => {
-            setCfg(c);
-            setName(c.name ?? "");
+        let alive = true;
+        window.pluginSettings.get("hello").then((data: HelloSettings) => {
+            if (!alive) return;
+            if (data?.name) {
+                setName(data.name);
+                setSavedName(data.name);
+            }
         });
+        return () => {
+            alive = false;
+        };
     }, []);
 
     return (
@@ -21,22 +30,24 @@ export default function HelloPlugin() {
                 <span className="text-sm font-medium text-foreground">Ton nom</span>
                 <input
                     value={name}
-                    onChange={e => setName(e.target.value)}
+                    onChange={e => {
+                        setName(e.target.value);
+                    }}
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 />
             </label>
             <button
                 type="button"
                 onClick={async () => {
-                    await bridge.settings.set("hello", { ...cfg, name });
-                    bridge.ui.toast(`Sauvé: ${name}`);
+                    setSavedName(name);
+                    await window.pluginSettings.set("hello", { name });
                 }}
                 className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
                 Sauvegarder
             </button>
-            {name && (
-                <p className="text-sm font-medium text-foreground">Salut, {name} 👋</p>
+            {savedName && (
+                <p className="text-sm font-medium text-foreground">Salut, {savedName} 👋</p>
             )}
         </div>
     );

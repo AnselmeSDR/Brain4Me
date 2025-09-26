@@ -1,111 +1,90 @@
-var __defProp = Object.defineProperty;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _A, _B, _C, _D, _E, _F, _G, _H, _I, _J, _K, _L, _M, _N, _O, _P, _Q, _R, _S, _T, _U, _V, _W, _X, _Y, _Z, __, _$, _aa, _ba, _ca, _da, _ea, _fa, _ga, _ha, _ia, _ja, _ka, _la, _ma, _na, _oa, _pa, _qa, _ra, _sa, _ta, _ua, _va, _wa, _xa, _ya, _za, _Aa, _Ba, _Ca, _Da, _Ea, _Fa, _Ga, _Ha, _Ia, _Ja, _Ka, _La, _Ma, _Na, _Oa, _Pa, _Qa, _Ra, _Sa, _Ta, _Ua, _Va, _Wa, _Xa, _Ya, _Za, __a, _$a, _ab, _bb, _cb, _db2, _eb, _fb, _gb, _hb, _ib, _jb, _kb, _lb, _mb, _nb, _ob, _pb, _qb, _rb, _sb, _tb, _ub, _vb, _wb, _xb, _yb, _zb, _Ab, _Bb, _Cb, _Db, _Eb, _Fb, _Gb, _Hb, _Ib, _Jb, _Kb, _Lb, _Mb, _Nb, _Ob, _Pb, _Qb, _Rb, _Sb, _Tb, _Ub, _Vb, _Wb, _Xb, _Yb, _Zb, __b, _$b, _ac, _bc, _cc;
-import path$1 from "node:path";
-import { fileURLToPath } from "node:url";
-import { app, BrowserWindow, ipcMain } from "electron";
-import require$$0 from "fs";
-import require$$1 from "path";
-import require$$2 from "util";
-const entityKind = Symbol.for("drizzle:entityKind");
-function is(value, type) {
-  if (!value || typeof value !== "object") {
-    return false;
-  }
-  if (value instanceof type) {
-    return true;
-  }
-  if (!Object.prototype.hasOwnProperty.call(type, entityKind)) {
+var jn = Object.defineProperty;
+var _n = (i, e, t) => e in i ? jn(i, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : i[e] = t;
+var n = (i, e, t) => _n(i, typeof e != "symbol" ? e + "" : e, t);
+import we from "node:path";
+import { fileURLToPath as Pn } from "node:url";
+import { app as Se, BrowserWindow as Qr, ipcMain as Oe } from "electron";
+import dt from "node:fs";
+import oe from "better-sqlite3";
+const f = Symbol.for("drizzle:entityKind");
+function d(i, e) {
+  if (!i || typeof i != "object")
+    return !1;
+  if (i instanceof e)
+    return !0;
+  if (!Object.prototype.hasOwnProperty.call(e, f))
     throw new Error(
-      `Class "${type.name ?? "<unknown>"}" doesn't look like a Drizzle entity. If this is incorrect and the class is provided by Drizzle, please report this as a bug.`
+      `Class "${e.name ?? "<unknown>"}" doesn't look like a Drizzle entity. If this is incorrect and the class is provided by Drizzle, please report this as a bug.`
     );
-  }
-  let cls = Object.getPrototypeOf(value).constructor;
-  if (cls) {
-    while (cls) {
-      if (entityKind in cls && cls[entityKind] === type[entityKind]) {
-        return true;
-      }
-      cls = Object.getPrototypeOf(cls);
+  let t = Object.getPrototypeOf(i).constructor;
+  if (t)
+    for (; t; ) {
+      if (f in t && t[f] === e[f])
+        return !0;
+      t = Object.getPrototypeOf(t);
     }
-  }
-  return false;
+  return !1;
 }
-_a = entityKind;
-class Column {
-  constructor(table2, config) {
-    __publicField(this, "name");
-    __publicField(this, "keyAsName");
-    __publicField(this, "primary");
-    __publicField(this, "notNull");
-    __publicField(this, "default");
-    __publicField(this, "defaultFn");
-    __publicField(this, "onUpdateFn");
-    __publicField(this, "hasDefault");
-    __publicField(this, "isUnique");
-    __publicField(this, "uniqueName");
-    __publicField(this, "uniqueType");
-    __publicField(this, "dataType");
-    __publicField(this, "columnType");
-    __publicField(this, "enumValues");
-    __publicField(this, "generated");
-    __publicField(this, "generatedIdentity");
-    __publicField(this, "config");
-    this.table = table2;
-    this.config = config;
-    this.name = config.name;
-    this.keyAsName = config.keyAsName;
-    this.notNull = config.notNull;
-    this.default = config.default;
-    this.defaultFn = config.defaultFn;
-    this.onUpdateFn = config.onUpdateFn;
-    this.hasDefault = config.hasDefault;
-    this.primary = config.primaryKey;
-    this.isUnique = config.isUnique;
-    this.uniqueName = config.uniqueName;
-    this.uniqueType = config.uniqueType;
-    this.dataType = config.dataType;
-    this.columnType = config.columnType;
-    this.generated = config.generated;
-    this.generatedIdentity = config.generatedIdentity;
+var St;
+St = f;
+class L {
+  constructor(e, t) {
+    n(this, "name");
+    n(this, "keyAsName");
+    n(this, "primary");
+    n(this, "notNull");
+    n(this, "default");
+    n(this, "defaultFn");
+    n(this, "onUpdateFn");
+    n(this, "hasDefault");
+    n(this, "isUnique");
+    n(this, "uniqueName");
+    n(this, "uniqueType");
+    n(this, "dataType");
+    n(this, "columnType");
+    n(this, "enumValues");
+    n(this, "generated");
+    n(this, "generatedIdentity");
+    n(this, "config");
+    this.table = e, this.config = t, this.name = t.name, this.keyAsName = t.keyAsName, this.notNull = t.notNull, this.default = t.default, this.defaultFn = t.defaultFn, this.onUpdateFn = t.onUpdateFn, this.hasDefault = t.hasDefault, this.primary = t.primaryKey, this.isUnique = t.isUnique, this.uniqueName = t.uniqueName, this.uniqueType = t.uniqueType, this.dataType = t.dataType, this.columnType = t.columnType, this.generated = t.generated, this.generatedIdentity = t.generatedIdentity;
   }
-  mapFromDriverValue(value) {
-    return value;
+  mapFromDriverValue(e) {
+    return e;
   }
-  mapToDriverValue(value) {
-    return value;
+  mapToDriverValue(e) {
+    return e;
   }
   // ** @internal */
   shouldDisableInsert() {
     return this.config.generated !== void 0 && this.config.generated.type !== "byDefault";
   }
 }
-__publicField(Column, _a, "Column");
-_b = entityKind;
-class ColumnBuilder {
-  constructor(name, dataType, columnType) {
-    __publicField(this, "config");
+n(L, St, "Column");
+var Nt;
+Nt = f;
+class Tr {
+  constructor(e, t, s) {
+    n(this, "config");
     /**
      * Alias for {@link $defaultFn}.
      */
-    __publicField(this, "$default", this.$defaultFn);
+    n(this, "$default", this.$defaultFn);
     /**
      * Alias for {@link $onUpdateFn}.
      */
-    __publicField(this, "$onUpdate", this.$onUpdateFn);
+    n(this, "$onUpdate", this.$onUpdateFn);
     this.config = {
-      name,
-      keyAsName: name === "",
-      notNull: false,
+      name: e,
+      keyAsName: e === "",
+      notNull: !1,
       default: void 0,
-      hasDefault: false,
-      primaryKey: false,
-      isUnique: false,
+      hasDefault: !1,
+      primaryKey: !1,
+      isUnique: !1,
       uniqueName: void 0,
       uniqueType: void 0,
-      dataType,
-      columnType,
+      dataType: t,
+      columnType: s,
       generated: void 0
     };
   }
@@ -129,8 +108,7 @@ class ColumnBuilder {
    * Affects the `select` model of the table - columns *without* `not null` will be nullable on select.
    */
   notNull() {
-    this.config.notNull = true;
-    return this;
+    return this.config.notNull = !0, this;
   }
   /**
    * Adds a `default <value>` clause to the column definition.
@@ -139,10 +117,8 @@ class ColumnBuilder {
    *
    * If you need to set a dynamic default value, use {@link $defaultFn} instead.
    */
-  default(value) {
-    this.config.default = value;
-    this.config.hasDefault = true;
-    return this;
+  default(e) {
+    return this.config.default = e, this.config.hasDefault = !0, this;
   }
   /**
    * Adds a dynamic default value to the column.
@@ -150,10 +126,8 @@ class ColumnBuilder {
    *
    * **Note:** This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`.
    */
-  $defaultFn(fn) {
-    this.config.defaultFn = fn;
-    this.config.hasDefault = true;
-    return this;
+  $defaultFn(e) {
+    return this.config.defaultFn = e, this.config.hasDefault = !0, this;
   }
   /**
    * Adds a dynamic update value to the column.
@@ -162,10 +136,8 @@ class ColumnBuilder {
    *
    * **Note:** This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`.
    */
-  $onUpdateFn(fn) {
-    this.config.onUpdateFn = fn;
-    this.config.hasDefault = true;
-    return this;
+  $onUpdateFn(e) {
+    return this.config.onUpdateFn = e, this.config.hasDefault = !0, this;
   }
   /**
    * Adds a `primary key` clause to the column definition. This implicitly makes the column `not null`.
@@ -173,331 +145,250 @@ class ColumnBuilder {
    * In SQLite, `integer primary key` implicitly makes the column auto-incrementing.
    */
   primaryKey() {
-    this.config.primaryKey = true;
-    this.config.notNull = true;
-    return this;
+    return this.config.primaryKey = !0, this.config.notNull = !0, this;
   }
   /** @internal Sets the name of the column to the key within the table definition if a name was not given. */
-  setName(name) {
-    if (this.config.name !== "") return;
-    this.config.name = name;
+  setName(e) {
+    this.config.name === "" && (this.config.name = e);
   }
 }
-__publicField(ColumnBuilder, _b, "ColumnBuilder");
-const TableName = Symbol.for("drizzle:Name");
-const isPgEnumSym = Symbol.for("drizzle:isPgEnum");
-function isPgEnum(obj) {
-  return !!obj && typeof obj === "function" && isPgEnumSym in obj && obj[isPgEnumSym] === true;
+n(Tr, Nt, "ColumnBuilder");
+const Y = Symbol.for("drizzle:Name"), ft = Symbol.for("drizzle:isPgEnum");
+function Rn(i) {
+  return !!i && typeof i == "function" && ft in i && i[ft] === !0;
 }
-_c = entityKind;
-class Subquery {
-  constructor(sql2, fields, alias, isWith = false, usedTables = []) {
+var $t;
+$t = f;
+class R {
+  constructor(e, t, s, r = !1, o = []) {
     this._ = {
       brand: "Subquery",
-      sql: sql2,
-      selectedFields: fields,
-      alias,
-      isWith,
-      usedTables
+      sql: e,
+      selectedFields: t,
+      alias: s,
+      isWith: r,
+      usedTables: o
     };
   }
   // getSQL(): SQL<unknown> {
   // 	return new SQL([this]);
   // }
 }
-__publicField(Subquery, _c, "Subquery");
-class WithSubquery extends (_e = Subquery, _d = entityKind, _e) {
+n(R, $t, "Subquery");
+var Qt, Tt;
+class rt extends (Tt = R, Qt = f, Tt) {
 }
-__publicField(WithSubquery, _d, "WithSubquery");
-const tracer = {
-  startActiveSpan(name, fn) {
-    {
-      return fn();
-    }
+n(rt, Qt, "WithSubquery");
+const En = {
+  startActiveSpan(i, e) {
+    return e();
   }
-};
-const ViewBaseConfig = Symbol.for("drizzle:ViewBaseConfig");
-const Schema = Symbol.for("drizzle:Schema");
-const Columns = Symbol.for("drizzle:Columns");
-const ExtraConfigColumns = Symbol.for("drizzle:ExtraConfigColumns");
-const OriginalName = Symbol.for("drizzle:OriginalName");
-const BaseName = Symbol.for("drizzle:BaseName");
-const IsAlias = Symbol.for("drizzle:IsAlias");
-const ExtraConfigBuilder = Symbol.for("drizzle:ExtraConfigBuilder");
-const IsDrizzleTable = Symbol.for("drizzle:IsDrizzleTable");
-_o = entityKind, _n = TableName, _m = OriginalName, _l = Schema, _k = Columns, _j = ExtraConfigColumns, _i = BaseName, _h = IsAlias, _g = IsDrizzleTable, _f = ExtraConfigBuilder;
-class Table {
-  constructor(name, schema, baseName) {
+}, B = Symbol.for("drizzle:ViewBaseConfig"), be = Symbol.for("drizzle:Schema"), Me = Symbol.for("drizzle:Columns"), mt = Symbol.for("drizzle:ExtraConfigColumns"), De = Symbol.for("drizzle:OriginalName"), Fe = Symbol.for("drizzle:BaseName"), Ne = Symbol.for("drizzle:IsAlias"), pt = Symbol.for("drizzle:ExtraConfigBuilder"), Dn = Symbol.for("drizzle:IsDrizzleTable");
+var Ct, vt, Lt, xt, Bt, qt, Ot, At, It, jt;
+jt = f, It = Y, At = De, Ot = be, qt = Me, Bt = mt, xt = Fe, Lt = Ne, vt = Dn, Ct = pt;
+class p {
+  constructor(e, t, s) {
     /**
      * @internal
      * Can be changed if the table is aliased.
      */
-    __publicField(this, _n);
+    n(this, It);
     /**
      * @internal
      * Used to store the original name of the table, before any aliasing.
      */
-    __publicField(this, _m);
+    n(this, At);
     /** @internal */
-    __publicField(this, _l);
+    n(this, Ot);
     /** @internal */
-    __publicField(this, _k);
+    n(this, qt);
     /** @internal */
-    __publicField(this, _j);
+    n(this, Bt);
     /**
      *  @internal
      * Used to store the table name before the transformation via the `tableCreator` functions.
      */
-    __publicField(this, _i);
+    n(this, xt);
     /** @internal */
-    __publicField(this, _h, false);
+    n(this, Lt, !1);
     /** @internal */
-    __publicField(this, _g, true);
+    n(this, vt, !0);
     /** @internal */
-    __publicField(this, _f);
-    this[TableName] = this[OriginalName] = name;
-    this[Schema] = schema;
-    this[BaseName] = baseName;
+    n(this, Ct);
+    this[Y] = this[De] = e, this[be] = t, this[Fe] = s;
   }
 }
-__publicField(Table, _o, "Table");
-/** @internal */
-__publicField(Table, "Symbol", {
-  Name: TableName,
-  Schema,
-  OriginalName,
-  Columns,
-  ExtraConfigColumns,
-  BaseName,
-  IsAlias,
-  ExtraConfigBuilder
+n(p, jt, "Table"), /** @internal */
+n(p, "Symbol", {
+  Name: Y,
+  Schema: be,
+  OriginalName: De,
+  Columns: Me,
+  ExtraConfigColumns: mt,
+  BaseName: Fe,
+  IsAlias: Ne,
+  ExtraConfigBuilder: pt
 });
-function getTableName(table2) {
-  return table2[TableName];
+function ne(i) {
+  return i[Y];
 }
-function getTableUniqueName(table2) {
-  return `${table2[Schema] ?? "public"}.${table2[TableName]}`;
+function ue(i) {
+  return `${i[be] ?? "public"}.${i[Y]}`;
 }
-function isSQLWrapper(value) {
-  return value !== null && value !== void 0 && typeof value.getSQL === "function";
+function Cr(i) {
+  return i != null && typeof i.getSQL == "function";
 }
-function mergeQueries(queries) {
-  var _a2;
-  const result = { sql: "", params: [] };
-  for (const query of queries) {
-    result.sql += query.sql;
-    result.params.push(...query.params);
-    if ((_a2 = query.typings) == null ? void 0 : _a2.length) {
-      if (!result.typings) {
-        result.typings = [];
-      }
-      result.typings.push(...query.typings);
-    }
-  }
-  return result;
+function Fn(i) {
+  var t;
+  const e = { sql: "", params: [] };
+  for (const s of i)
+    e.sql += s.sql, e.params.push(...s.params), (t = s.typings) != null && t.length && (e.typings || (e.typings = []), e.typings.push(...s.typings));
+  return e;
 }
-_p = entityKind;
-class StringChunk {
-  constructor(value) {
-    __publicField(this, "value");
-    this.value = Array.isArray(value) ? value : [value];
+var _t;
+_t = f;
+class x {
+  constructor(e) {
+    n(this, "value");
+    this.value = Array.isArray(e) ? e : [e];
   }
   getSQL() {
-    return new SQL([this]);
+    return new g([this]);
   }
 }
-__publicField(StringChunk, _p, "StringChunk");
-_q = entityKind;
-const _SQL = class _SQL {
-  constructor(queryChunks) {
+n(x, _t, "StringChunk");
+var Pt;
+Pt = f;
+const X = class X {
+  constructor(e) {
     /** @internal */
-    __publicField(this, "decoder", noopDecoder);
-    __publicField(this, "shouldInlineParams", false);
+    n(this, "decoder", vr);
+    n(this, "shouldInlineParams", !1);
     /** @internal */
-    __publicField(this, "usedTables", []);
-    this.queryChunks = queryChunks;
-    for (const chunk of queryChunks) {
-      if (is(chunk, Table)) {
-        const schemaName = chunk[Table.Symbol.Schema];
+    n(this, "usedTables", []);
+    this.queryChunks = e;
+    for (const t of e)
+      if (d(t, p)) {
+        const s = t[p.Symbol.Schema];
         this.usedTables.push(
-          schemaName === void 0 ? chunk[Table.Symbol.Name] : schemaName + "." + chunk[Table.Symbol.Name]
+          s === void 0 ? t[p.Symbol.Name] : s + "." + t[p.Symbol.Name]
         );
       }
-    }
   }
-  append(query) {
-    this.queryChunks.push(...query.queryChunks);
-    return this;
+  append(e) {
+    return this.queryChunks.push(...e.queryChunks), this;
   }
-  toQuery(config) {
-    return tracer.startActiveSpan("drizzle.buildSQL", (span) => {
-      const query = this.buildQueryFromSourceParams(this.queryChunks, config);
-      span == null ? void 0 : span.setAttributes({
-        "drizzle.query.text": query.sql,
-        "drizzle.query.params": JSON.stringify(query.params)
-      });
-      return query;
+  toQuery(e) {
+    return En.startActiveSpan("drizzle.buildSQL", (t) => {
+      const s = this.buildQueryFromSourceParams(this.queryChunks, e);
+      return t == null || t.setAttributes({
+        "drizzle.query.text": s.sql,
+        "drizzle.query.params": JSON.stringify(s.params)
+      }), s;
     });
   }
-  buildQueryFromSourceParams(chunks, _config) {
-    const config = Object.assign({}, _config, {
-      inlineParams: _config.inlineParams || this.shouldInlineParams,
-      paramStartIndex: _config.paramStartIndex || { value: 0 }
-    });
-    const {
-      casing,
-      escapeName,
-      escapeParam,
-      prepareTyping,
-      inlineParams,
-      paramStartIndex
-    } = config;
-    return mergeQueries(chunks.map((chunk) => {
-      var _a2;
-      if (is(chunk, StringChunk)) {
-        return { sql: chunk.value.join(""), params: [] };
-      }
-      if (is(chunk, Name)) {
-        return { sql: escapeName(chunk.value), params: [] };
-      }
-      if (chunk === void 0) {
+  buildQueryFromSourceParams(e, t) {
+    const s = Object.assign({}, t, {
+      inlineParams: t.inlineParams || this.shouldInlineParams,
+      paramStartIndex: t.paramStartIndex || { value: 0 }
+    }), {
+      casing: r,
+      escapeName: o,
+      escapeParam: l,
+      prepareTyping: a,
+      inlineParams: c,
+      paramStartIndex: m
+    } = s;
+    return Fn(e.map((h) => {
+      var w;
+      if (d(h, x))
+        return { sql: h.value.join(""), params: [] };
+      if (d(h, $e))
+        return { sql: o(h.value), params: [] };
+      if (h === void 0)
         return { sql: "", params: [] };
+      if (Array.isArray(h)) {
+        const y = [new x("(")];
+        for (const [S, T] of h.entries())
+          y.push(T), S < h.length - 1 && y.push(new x(", "));
+        return y.push(new x(")")), this.buildQueryFromSourceParams(y, s);
       }
-      if (Array.isArray(chunk)) {
-        const result = [new StringChunk("(")];
-        for (const [i, p] of chunk.entries()) {
-          result.push(p);
-          if (i < chunk.length - 1) {
-            result.push(new StringChunk(", "));
-          }
-        }
-        result.push(new StringChunk(")"));
-        return this.buildQueryFromSourceParams(result, config);
-      }
-      if (is(chunk, _SQL)) {
-        return this.buildQueryFromSourceParams(chunk.queryChunks, {
-          ...config,
-          inlineParams: inlineParams || chunk.shouldInlineParams
+      if (d(h, X))
+        return this.buildQueryFromSourceParams(h.queryChunks, {
+          ...s,
+          inlineParams: c || h.shouldInlineParams
         });
-      }
-      if (is(chunk, Table)) {
-        const schemaName = chunk[Table.Symbol.Schema];
-        const tableName = chunk[Table.Symbol.Name];
+      if (d(h, p)) {
+        const y = h[p.Symbol.Schema], S = h[p.Symbol.Name];
         return {
-          sql: schemaName === void 0 || chunk[IsAlias] ? escapeName(tableName) : escapeName(schemaName) + "." + escapeName(tableName),
+          sql: y === void 0 || h[Ne] ? o(S) : o(y) + "." + o(S),
           params: []
         };
       }
-      if (is(chunk, Column)) {
-        const columnName = casing.getColumnCasing(chunk);
-        if (_config.invokeSource === "indexes") {
-          return { sql: escapeName(columnName), params: [] };
-        }
-        const schemaName = chunk.table[Table.Symbol.Schema];
+      if (d(h, L)) {
+        const y = r.getColumnCasing(h);
+        if (t.invokeSource === "indexes")
+          return { sql: o(y), params: [] };
+        const S = h.table[p.Symbol.Schema];
         return {
-          sql: chunk.table[IsAlias] || schemaName === void 0 ? escapeName(chunk.table[Table.Symbol.Name]) + "." + escapeName(columnName) : escapeName(schemaName) + "." + escapeName(chunk.table[Table.Symbol.Name]) + "." + escapeName(columnName),
+          sql: h.table[Ne] || S === void 0 ? o(h.table[p.Symbol.Name]) + "." + o(y) : o(S) + "." + o(h.table[p.Symbol.Name]) + "." + o(y),
           params: []
         };
       }
-      if (is(chunk, View)) {
-        const schemaName = chunk[ViewBaseConfig].schema;
-        const viewName = chunk[ViewBaseConfig].name;
+      if (d(h, se)) {
+        const y = h[B].schema, S = h[B].name;
         return {
-          sql: schemaName === void 0 || chunk[ViewBaseConfig].isAlias ? escapeName(viewName) : escapeName(schemaName) + "." + escapeName(viewName),
+          sql: y === void 0 || h[B].isAlias ? o(S) : o(y) + "." + o(S),
           params: []
         };
       }
-      if (is(chunk, Param)) {
-        if (is(chunk.value, Placeholder)) {
-          return { sql: escapeParam(paramStartIndex.value++, chunk), params: [chunk], typings: ["none"] };
-        }
-        const mappedValue = chunk.value === null ? null : chunk.encoder.mapToDriverValue(chunk.value);
-        if (is(mappedValue, _SQL)) {
-          return this.buildQueryFromSourceParams([mappedValue], config);
-        }
-        if (inlineParams) {
-          return { sql: this.mapInlineParam(mappedValue, config), params: [] };
-        }
-        let typings = ["none"];
-        if (prepareTyping) {
-          typings = [prepareTyping(chunk.encoder)];
-        }
-        return { sql: escapeParam(paramStartIndex.value++, mappedValue), params: [mappedValue], typings };
+      if (d(h, J)) {
+        if (d(h.value, k))
+          return { sql: l(m.value++, h), params: [h], typings: ["none"] };
+        const y = h.value === null ? null : h.encoder.mapToDriverValue(h.value);
+        if (d(y, X))
+          return this.buildQueryFromSourceParams([y], s);
+        if (c)
+          return { sql: this.mapInlineParam(y, s), params: [] };
+        let S = ["none"];
+        return a && (S = [a(h.encoder)]), { sql: l(m.value++, y), params: [y], typings: S };
       }
-      if (is(chunk, Placeholder)) {
-        return { sql: escapeParam(paramStartIndex.value++, chunk), params: [chunk], typings: ["none"] };
-      }
-      if (is(chunk, _SQL.Aliased) && chunk.fieldAlias !== void 0) {
-        return { sql: escapeName(chunk.fieldAlias), params: [] };
-      }
-      if (is(chunk, Subquery)) {
-        if (chunk._.isWith) {
-          return { sql: escapeName(chunk._.alias), params: [] };
-        }
-        return this.buildQueryFromSourceParams([
-          new StringChunk("("),
-          chunk._.sql,
-          new StringChunk(") "),
-          new Name(chunk._.alias)
-        ], config);
-      }
-      if (isPgEnum(chunk)) {
-        if (chunk.schema) {
-          return { sql: escapeName(chunk.schema) + "." + escapeName(chunk.enumName), params: [] };
-        }
-        return { sql: escapeName(chunk.enumName), params: [] };
-      }
-      if (isSQLWrapper(chunk)) {
-        if ((_a2 = chunk.shouldOmitSQLParens) == null ? void 0 : _a2.call(chunk)) {
-          return this.buildQueryFromSourceParams([chunk.getSQL()], config);
-        }
-        return this.buildQueryFromSourceParams([
-          new StringChunk("("),
-          chunk.getSQL(),
-          new StringChunk(")")
-        ], config);
-      }
-      if (inlineParams) {
-        return { sql: this.mapInlineParam(chunk, config), params: [] };
-      }
-      return { sql: escapeParam(paramStartIndex.value++, chunk), params: [chunk], typings: ["none"] };
+      return d(h, k) ? { sql: l(m.value++, h), params: [h], typings: ["none"] } : d(h, X.Aliased) && h.fieldAlias !== void 0 ? { sql: o(h.fieldAlias), params: [] } : d(h, R) ? h._.isWith ? { sql: o(h._.alias), params: [] } : this.buildQueryFromSourceParams([
+        new x("("),
+        h._.sql,
+        new x(") "),
+        new $e(h._.alias)
+      ], s) : Rn(h) ? h.schema ? { sql: o(h.schema) + "." + o(h.enumName), params: [] } : { sql: o(h.enumName), params: [] } : Cr(h) ? (w = h.shouldOmitSQLParens) != null && w.call(h) ? this.buildQueryFromSourceParams([h.getSQL()], s) : this.buildQueryFromSourceParams([
+        new x("("),
+        h.getSQL(),
+        new x(")")
+      ], s) : c ? { sql: this.mapInlineParam(h, s), params: [] } : { sql: l(m.value++, h), params: [h], typings: ["none"] };
     }));
   }
-  mapInlineParam(chunk, { escapeString }) {
-    if (chunk === null) {
+  mapInlineParam(e, { escapeString: t }) {
+    if (e === null)
       return "null";
+    if (typeof e == "number" || typeof e == "boolean")
+      return e.toString();
+    if (typeof e == "string")
+      return t(e);
+    if (typeof e == "object") {
+      const s = e.toString();
+      return t(s === "[object Object]" ? JSON.stringify(e) : s);
     }
-    if (typeof chunk === "number" || typeof chunk === "boolean") {
-      return chunk.toString();
-    }
-    if (typeof chunk === "string") {
-      return escapeString(chunk);
-    }
-    if (typeof chunk === "object") {
-      const mappedValueAsString = chunk.toString();
-      if (mappedValueAsString === "[object Object]") {
-        return escapeString(JSON.stringify(chunk));
-      }
-      return escapeString(mappedValueAsString);
-    }
-    throw new Error("Unexpected param value: " + chunk);
+    throw new Error("Unexpected param value: " + e);
   }
   getSQL() {
     return this;
   }
-  as(alias) {
-    if (alias === void 0) {
-      return this;
-    }
-    return new _SQL.Aliased(this, alias);
+  as(e) {
+    return e === void 0 ? this : new X.Aliased(this, e);
   }
-  mapWith(decoder) {
-    this.decoder = typeof decoder === "function" ? { mapFromDriverValue: decoder } : decoder;
-    return this;
+  mapWith(e) {
+    return this.decoder = typeof e == "function" ? { mapFromDriverValue: e } : e, this;
   }
   inlineParams() {
-    this.shouldInlineParams = true;
-    return this;
+    return this.shouldInlineParams = !0, this;
   }
   /**
    * This method is used to conditionally include a part of the query.
@@ -505,2032 +396,1057 @@ const _SQL = class _SQL {
    * @param condition - Condition to check
    * @returns itself if the condition is `true`, otherwise `undefined`
    */
-  if(condition) {
-    return condition ? this : void 0;
+  if(e) {
+    return e ? this : void 0;
   }
 };
-__publicField(_SQL, _q, "SQL");
-let SQL = _SQL;
-_r = entityKind;
-class Name {
-  constructor(value) {
-    __publicField(this, "brand");
-    this.value = value;
+n(X, Pt, "SQL");
+let g = X;
+var Rt;
+Rt = f;
+class $e {
+  constructor(e) {
+    n(this, "brand");
+    this.value = e;
   }
   getSQL() {
-    return new SQL([this]);
+    return new g([this]);
   }
 }
-__publicField(Name, _r, "Name");
-function isDriverValueEncoder(value) {
-  return typeof value === "object" && value !== null && "mapToDriverValue" in value && typeof value.mapToDriverValue === "function";
+n($e, Rt, "Name");
+function zn(i) {
+  return typeof i == "object" && i !== null && "mapToDriverValue" in i && typeof i.mapToDriverValue == "function";
 }
-const noopDecoder = {
-  mapFromDriverValue: (value) => value
-};
-const noopEncoder = {
-  mapToDriverValue: (value) => value
+const vr = {
+  mapFromDriverValue: (i) => i
+}, Lr = {
+  mapToDriverValue: (i) => i
 };
 ({
-  ...noopDecoder,
-  ...noopEncoder
+  ...vr,
+  ...Lr
 });
-_s = entityKind;
-class Param {
+var Et;
+Et = f;
+class J {
   /**
    * @param value - Parameter value
    * @param encoder - Encoder to convert the value to a driver parameter
    */
-  constructor(value, encoder = noopEncoder) {
-    __publicField(this, "brand");
-    this.value = value;
-    this.encoder = encoder;
+  constructor(e, t = Lr) {
+    n(this, "brand");
+    this.value = e, this.encoder = t;
   }
   getSQL() {
-    return new SQL([this]);
+    return new g([this]);
   }
 }
-__publicField(Param, _s, "Param");
-function sql(strings, ...params) {
-  const queryChunks = [];
-  if (params.length > 0 || strings.length > 0 && strings[0] !== "") {
-    queryChunks.push(new StringChunk(strings[0]));
-  }
-  for (const [paramIndex, param2] of params.entries()) {
-    queryChunks.push(param2, new StringChunk(strings[paramIndex + 1]));
-  }
-  return new SQL(queryChunks);
+n(J, Et, "Param");
+function u(i, ...e) {
+  const t = [];
+  (e.length > 0 || i.length > 0 && i[0] !== "") && t.push(new x(i[0]));
+  for (const [s, r] of e.entries())
+    t.push(r, new x(i[s + 1]));
+  return new g(t);
 }
-((sql2) => {
-  function empty() {
-    return new SQL([]);
+((i) => {
+  function e() {
+    return new g([]);
   }
-  sql2.empty = empty;
-  function fromList(list) {
-    return new SQL(list);
+  i.empty = e;
+  function t(c) {
+    return new g(c);
   }
-  sql2.fromList = fromList;
-  function raw(str) {
-    return new SQL([new StringChunk(str)]);
+  i.fromList = t;
+  function s(c) {
+    return new g([new x(c)]);
   }
-  sql2.raw = raw;
-  function join(chunks, separator) {
-    const result = [];
-    for (const [i, chunk] of chunks.entries()) {
-      if (i > 0 && separator !== void 0) {
-        result.push(separator);
-      }
-      result.push(chunk);
-    }
-    return new SQL(result);
+  i.raw = s;
+  function r(c, m) {
+    const h = [];
+    for (const [w, y] of c.entries())
+      w > 0 && m !== void 0 && h.push(m), h.push(y);
+    return new g(h);
   }
-  sql2.join = join;
-  function identifier(value) {
-    return new Name(value);
+  i.join = r;
+  function o(c) {
+    return new $e(c);
   }
-  sql2.identifier = identifier;
-  function placeholder2(name2) {
-    return new Placeholder(name2);
+  i.identifier = o;
+  function l(c) {
+    return new k(c);
   }
-  sql2.placeholder = placeholder2;
-  function param2(value, encoder) {
-    return new Param(value, encoder);
+  i.placeholder = l;
+  function a(c, m) {
+    return new J(c, m);
   }
-  sql2.param = param2;
-})(sql || (sql = {}));
-((SQL2) => {
-  var _a2;
-  _a2 = entityKind;
-  const _Aliased = class _Aliased {
-    constructor(sql2, fieldAlias) {
+  i.param = a;
+})(u || (u = {}));
+((i) => {
+  var t;
+  t = f;
+  const s = class s {
+    constructor(o, l) {
       /** @internal */
-      __publicField(this, "isSelectionField", false);
-      this.sql = sql2;
-      this.fieldAlias = fieldAlias;
+      n(this, "isSelectionField", !1);
+      this.sql = o, this.fieldAlias = l;
     }
     getSQL() {
       return this.sql;
     }
     /** @internal */
     clone() {
-      return new _Aliased(this.sql, this.fieldAlias);
+      return new s(this.sql, this.fieldAlias);
     }
   };
-  __publicField(_Aliased, _a2, "SQL.Aliased");
-  let Aliased = _Aliased;
-  SQL2.Aliased = Aliased;
-})(SQL || (SQL = {}));
-_t = entityKind;
-class Placeholder {
-  constructor(name2) {
-    this.name = name2;
+  n(s, t, "SQL.Aliased");
+  let e = s;
+  i.Aliased = e;
+})(g || (g = {}));
+var Dt;
+Dt = f;
+class k {
+  constructor(e) {
+    this.name = e;
   }
   getSQL() {
-    return new SQL([this]);
+    return new g([this]);
   }
 }
-__publicField(Placeholder, _t, "Placeholder");
-function fillPlaceholders(params, values) {
-  return params.map((p) => {
-    if (is(p, Placeholder)) {
-      if (!(p.name in values)) {
-        throw new Error(`No value for placeholder "${p.name}" was provided`);
-      }
-      return values[p.name];
+n(k, Dt, "Placeholder");
+function ge(i, e) {
+  return i.map((t) => {
+    if (d(t, k)) {
+      if (!(t.name in e))
+        throw new Error(`No value for placeholder "${t.name}" was provided`);
+      return e[t.name];
     }
-    if (is(p, Param) && is(p.value, Placeholder)) {
-      if (!(p.value.name in values)) {
-        throw new Error(`No value for placeholder "${p.value.name}" was provided`);
-      }
-      return p.encoder.mapToDriverValue(values[p.value.name]);
+    if (d(t, J) && d(t.value, k)) {
+      if (!(t.value.name in e))
+        throw new Error(`No value for placeholder "${t.value.name}" was provided`);
+      return t.encoder.mapToDriverValue(e[t.value.name]);
     }
-    return p;
+    return t;
   });
 }
-const IsDrizzleView = Symbol.for("drizzle:IsDrizzleView");
-_w = entityKind, _v = ViewBaseConfig, _u = IsDrizzleView;
-class View {
-  constructor({ name: name2, schema, selectedFields, query }) {
+const Mn = Symbol.for("drizzle:IsDrizzleView");
+var Ft, zt, Mt;
+Mt = f, zt = B, Ft = Mn;
+class se {
+  constructor({ name: e, schema: t, selectedFields: s, query: r }) {
     /** @internal */
-    __publicField(this, _v);
+    n(this, zt);
     /** @internal */
-    __publicField(this, _u, true);
-    this[ViewBaseConfig] = {
-      name: name2,
-      originalName: name2,
-      schema,
-      selectedFields,
-      query,
-      isExisting: !query,
-      isAlias: false
+    n(this, Ft, !0);
+    this[B] = {
+      name: e,
+      originalName: e,
+      schema: t,
+      selectedFields: s,
+      query: r,
+      isExisting: !r,
+      isAlias: !1
     };
   }
   getSQL() {
-    return new SQL([this]);
+    return new g([this]);
   }
 }
-__publicField(View, _w, "View");
-Column.prototype.getSQL = function() {
-  return new SQL([this]);
+n(se, Mt, "View");
+L.prototype.getSQL = function() {
+  return new g([this]);
 };
-Table.prototype.getSQL = function() {
-  return new SQL([this]);
+p.prototype.getSQL = function() {
+  return new g([this]);
 };
-Subquery.prototype.getSQL = function() {
-  return new SQL([this]);
+R.prototype.getSQL = function() {
+  return new g([this]);
 };
-_x = entityKind;
-class ColumnAliasProxyHandler {
-  constructor(table2) {
-    this.table = table2;
+var Vt;
+Vt = f;
+class ce {
+  constructor(e) {
+    this.table = e;
   }
-  get(columnObj, prop) {
-    if (prop === "table") {
-      return this.table;
-    }
-    return columnObj[prop];
+  get(e, t) {
+    return t === "table" ? this.table : e[t];
   }
 }
-__publicField(ColumnAliasProxyHandler, _x, "ColumnAliasProxyHandler");
-_y = entityKind;
-class TableAliasProxyHandler {
-  constructor(alias, replaceOriginalName) {
-    this.alias = alias;
-    this.replaceOriginalName = replaceOriginalName;
+n(ce, Vt, "ColumnAliasProxyHandler");
+var Kt;
+Kt = f;
+class Ae {
+  constructor(e, t) {
+    this.alias = e, this.replaceOriginalName = t;
   }
-  get(target, prop) {
-    if (prop === Table.Symbol.IsAlias) {
-      return true;
-    }
-    if (prop === Table.Symbol.Name) {
+  get(e, t) {
+    if (t === p.Symbol.IsAlias)
+      return !0;
+    if (t === p.Symbol.Name)
       return this.alias;
-    }
-    if (this.replaceOriginalName && prop === Table.Symbol.OriginalName) {
+    if (this.replaceOriginalName && t === p.Symbol.OriginalName)
       return this.alias;
-    }
-    if (prop === ViewBaseConfig) {
+    if (t === B)
       return {
-        ...target[ViewBaseConfig],
+        ...e[B],
         name: this.alias,
-        isAlias: true
+        isAlias: !0
       };
-    }
-    if (prop === Table.Symbol.Columns) {
-      const columns = target[Table.Symbol.Columns];
-      if (!columns) {
-        return columns;
-      }
-      const proxiedColumns = {};
-      Object.keys(columns).map((key) => {
-        proxiedColumns[key] = new Proxy(
-          columns[key],
-          new ColumnAliasProxyHandler(new Proxy(target, this))
+    if (t === p.Symbol.Columns) {
+      const r = e[p.Symbol.Columns];
+      if (!r)
+        return r;
+      const o = {};
+      return Object.keys(r).map((l) => {
+        o[l] = new Proxy(
+          r[l],
+          new ce(new Proxy(e, this))
         );
-      });
-      return proxiedColumns;
+      }), o;
     }
-    const value = target[prop];
-    if (is(value, Column)) {
-      return new Proxy(value, new ColumnAliasProxyHandler(new Proxy(target, this)));
-    }
-    return value;
+    const s = e[t];
+    return d(s, L) ? new Proxy(s, new ce(new Proxy(e, this))) : s;
   }
 }
-__publicField(TableAliasProxyHandler, _y, "TableAliasProxyHandler");
-function aliasedTable(table2, tableAlias) {
-  return new Proxy(table2, new TableAliasProxyHandler(tableAlias, false));
+n(Ae, Kt, "TableAliasProxyHandler");
+function ze(i, e) {
+  return new Proxy(i, new Ae(e, !1));
 }
-function aliasedTableColumn(column, tableAlias) {
+function K(i, e) {
   return new Proxy(
-    column,
-    new ColumnAliasProxyHandler(new Proxy(column.table, new TableAliasProxyHandler(tableAlias, false)))
+    i,
+    new ce(new Proxy(i.table, new Ae(e, !1)))
   );
 }
-function mapColumnsInAliasedSQLToAlias(query, alias) {
-  return new SQL.Aliased(mapColumnsInSQLToAlias(query.sql, alias), query.fieldAlias);
+function xr(i, e) {
+  return new g.Aliased(Qe(i.sql, e), i.fieldAlias);
 }
-function mapColumnsInSQLToAlias(query, alias) {
-  return sql.join(query.queryChunks.map((c) => {
-    if (is(c, Column)) {
-      return aliasedTableColumn(c, alias);
-    }
-    if (is(c, SQL)) {
-      return mapColumnsInSQLToAlias(c, alias);
-    }
-    if (is(c, SQL.Aliased)) {
-      return mapColumnsInAliasedSQLToAlias(c, alias);
-    }
-    return c;
-  }));
+function Qe(i, e) {
+  return u.join(i.queryChunks.map((t) => d(t, L) ? K(t, e) : d(t, g) ? Qe(t, e) : d(t, g.Aliased) ? xr(t, e) : t));
 }
-class DrizzleError extends (_A = Error, _z = entityKind, _A) {
-  constructor({ message, cause }) {
-    super(message);
-    this.name = "DrizzleError";
-    this.cause = cause;
+var Ut, Jt;
+class Ie extends (Jt = Error, Ut = f, Jt) {
+  constructor({ message: e, cause: t }) {
+    super(e), this.name = "DrizzleError", this.cause = t;
   }
 }
-__publicField(DrizzleError, _z, "DrizzleError");
-class DrizzleQueryError extends Error {
-  constructor(query, params, cause) {
-    super(`Failed query: ${query}
-params: ${params}`);
-    this.query = query;
-    this.params = params;
-    this.cause = cause;
-    Error.captureStackTrace(this, DrizzleQueryError);
-    if (cause) this.cause = cause;
+n(Ie, Ut, "DrizzleError");
+class G extends Error {
+  constructor(e, t, s) {
+    super(`Failed query: ${e}
+params: ${t}`), this.query = e, this.params = t, this.cause = s, Error.captureStackTrace(this, G), s && (this.cause = s);
   }
 }
-class TransactionRollbackError extends (_C = DrizzleError, _B = entityKind, _C) {
+var Wt, Gt;
+class Br extends (Gt = Ie, Wt = f, Gt) {
   constructor() {
     super({ message: "Rollback" });
   }
 }
-__publicField(TransactionRollbackError, _B, "TransactionRollbackError");
-_D = entityKind;
-class ConsoleLogWriter {
-  write(message) {
-    console.log(message);
+n(Br, Wt, "TransactionRollbackError");
+var Yt;
+Yt = f;
+class qr {
+  write(e) {
+    console.log(e);
   }
 }
-__publicField(ConsoleLogWriter, _D, "ConsoleLogWriter");
-_E = entityKind;
-class DefaultLogger {
-  constructor(config) {
-    __publicField(this, "writer");
-    this.writer = (config == null ? void 0 : config.writer) ?? new ConsoleLogWriter();
+n(qr, Yt, "ConsoleLogWriter");
+var Zt;
+Zt = f;
+class Or {
+  constructor(e) {
+    n(this, "writer");
+    this.writer = (e == null ? void 0 : e.writer) ?? new qr();
   }
-  logQuery(query, params) {
-    const stringifiedParams = params.map((p) => {
+  logQuery(e, t) {
+    const s = t.map((o) => {
       try {
-        return JSON.stringify(p);
+        return JSON.stringify(o);
       } catch {
-        return String(p);
+        return String(o);
       }
-    });
-    const paramsStr = stringifiedParams.length ? ` -- params: [${stringifiedParams.join(", ")}]` : "";
-    this.writer.write(`Query: ${query}${paramsStr}`);
+    }), r = s.length ? ` -- params: [${s.join(", ")}]` : "";
+    this.writer.write(`Query: ${e}${r}`);
   }
 }
-__publicField(DefaultLogger, _E, "DefaultLogger");
-_F = entityKind;
-class NoopLogger {
+n(Or, Zt, "DefaultLogger");
+var Xt;
+Xt = f;
+class Ar {
   logQuery() {
   }
 }
-__publicField(NoopLogger, _F, "NoopLogger");
-_H = entityKind, _G = Symbol.toStringTag;
-class QueryPromise {
+n(Ar, Xt, "NoopLogger");
+var Ht, kt;
+kt = f, Ht = Symbol.toStringTag;
+class Z {
   constructor() {
-    __publicField(this, _G, "QueryPromise");
+    n(this, Ht, "QueryPromise");
   }
-  catch(onRejected) {
-    return this.then(void 0, onRejected);
+  catch(e) {
+    return this.then(void 0, e);
   }
-  finally(onFinally) {
+  finally(e) {
     return this.then(
-      (value) => {
-        onFinally == null ? void 0 : onFinally();
-        return value;
-      },
-      (reason) => {
-        onFinally == null ? void 0 : onFinally();
-        throw reason;
+      (t) => (e == null || e(), t),
+      (t) => {
+        throw e == null || e(), t;
       }
     );
   }
-  then(onFulfilled, onRejected) {
-    return this.execute().then(onFulfilled, onRejected);
+  then(e, t) {
+    return this.execute().then(e, t);
   }
 }
-__publicField(QueryPromise, _H, "QueryPromise");
-function mapResultRow(columns, row, joinsNotNullableMap) {
-  const nullifyMap = {};
-  const result = columns.reduce(
-    (result2, { path: path2, field }, columnIndex) => {
-      let decoder;
-      if (is(field, Column)) {
-        decoder = field;
-      } else if (is(field, SQL)) {
-        decoder = field.decoder;
-      } else {
-        decoder = field.sql.decoder;
-      }
-      let node = result2;
-      for (const [pathChunkIndex, pathChunk] of path2.entries()) {
-        if (pathChunkIndex < path2.length - 1) {
-          if (!(pathChunk in node)) {
-            node[pathChunk] = {};
-          }
-          node = node[pathChunk];
-        } else {
-          const rawValue = row[columnIndex];
-          const value = node[pathChunk] = rawValue === null ? null : decoder.mapFromDriverValue(rawValue);
-          if (joinsNotNullableMap && is(field, Column) && path2.length === 2) {
-            const objectName = path2[0];
-            if (!(objectName in nullifyMap)) {
-              nullifyMap[objectName] = value === null ? getTableName(field.table) : false;
-            } else if (typeof nullifyMap[objectName] === "string" && nullifyMap[objectName] !== getTableName(field.table)) {
-              nullifyMap[objectName] = false;
-            }
+n(Z, kt, "QueryPromise");
+function gt(i, e, t) {
+  const s = {}, r = i.reduce(
+    (o, { path: l, field: a }, c) => {
+      let m;
+      d(a, L) ? m = a : d(a, g) ? m = a.decoder : m = a.sql.decoder;
+      let h = o;
+      for (const [w, y] of l.entries())
+        if (w < l.length - 1)
+          y in h || (h[y] = {}), h = h[y];
+        else {
+          const S = e[c], T = h[y] = S === null ? null : m.mapFromDriverValue(S);
+          if (t && d(a, L) && l.length === 2) {
+            const N = l[0];
+            N in s ? typeof s[N] == "string" && s[N] !== ne(a.table) && (s[N] = !1) : s[N] = T === null ? ne(a.table) : !1;
           }
         }
-      }
-      return result2;
+      return o;
     },
     {}
   );
-  if (joinsNotNullableMap && Object.keys(nullifyMap).length > 0) {
-    for (const [objectName, tableName] of Object.entries(nullifyMap)) {
-      if (typeof tableName === "string" && !joinsNotNullableMap[tableName]) {
-        result[objectName] = null;
-      }
-    }
-  }
-  return result;
+  if (t && Object.keys(s).length > 0)
+    for (const [o, l] of Object.entries(s))
+      typeof l == "string" && !t[l] && (r[o] = null);
+  return r;
 }
-function orderSelectedFields(fields, pathPrefix) {
-  return Object.entries(fields).reduce((result, [name, field]) => {
-    if (typeof name !== "string") {
-      return result;
-    }
-    const newPath = pathPrefix ? [...pathPrefix, name] : [name];
-    if (is(field, Column) || is(field, SQL) || is(field, SQL.Aliased)) {
-      result.push({ path: newPath, field });
-    } else if (is(field, Table)) {
-      result.push(...orderSelectedFields(field[Table.Symbol.Columns], newPath));
-    } else {
-      result.push(...orderSelectedFields(field, newPath));
-    }
-    return result;
+function ee(i, e) {
+  return Object.entries(i).reduce((t, [s, r]) => {
+    if (typeof s != "string")
+      return t;
+    const o = e ? [...e, s] : [s];
+    return d(r, L) || d(r, g) || d(r, g.Aliased) ? t.push({ path: o, field: r }) : d(r, p) ? t.push(...ee(r[p.Symbol.Columns], o)) : t.push(...ee(r, o)), t;
   }, []);
 }
-function haveSameKeys(left, right) {
-  const leftKeys = Object.keys(left);
-  const rightKeys = Object.keys(right);
-  if (leftKeys.length !== rightKeys.length) {
-    return false;
-  }
-  for (const [index, key] of leftKeys.entries()) {
-    if (key !== rightKeys[index]) {
-      return false;
-    }
-  }
-  return true;
+function nt(i, e) {
+  const t = Object.keys(i), s = Object.keys(e);
+  if (t.length !== s.length)
+    return !1;
+  for (const [r, o] of t.entries())
+    if (o !== s[r])
+      return !1;
+  return !0;
 }
-function mapUpdateSet(table2, values) {
-  const entries = Object.entries(values).filter(([, value]) => value !== void 0).map(([key, value]) => {
-    if (is(value, SQL) || is(value, Column)) {
-      return [key, value];
-    } else {
-      return [key, new Param(value, table2[Table.Symbol.Columns][key])];
-    }
-  });
-  if (entries.length === 0) {
+function Ir(i, e) {
+  const t = Object.entries(e).filter(([, s]) => s !== void 0).map(([s, r]) => d(r, g) || d(r, L) ? [s, r] : [s, new J(r, i[p.Symbol.Columns][s])]);
+  if (t.length === 0)
     throw new Error("No values to set");
-  }
-  return Object.fromEntries(entries);
+  return Object.fromEntries(t);
 }
-function applyMixins(baseClass, extendedClasses) {
-  for (const extendedClass of extendedClasses) {
-    for (const name of Object.getOwnPropertyNames(extendedClass.prototype)) {
-      if (name === "constructor") continue;
-      Object.defineProperty(
-        baseClass.prototype,
-        name,
-        Object.getOwnPropertyDescriptor(extendedClass.prototype, name) || /* @__PURE__ */ Object.create(null)
+function Vn(i, e) {
+  for (const t of e)
+    for (const s of Object.getOwnPropertyNames(t.prototype))
+      s !== "constructor" && Object.defineProperty(
+        i.prototype,
+        s,
+        Object.getOwnPropertyDescriptor(t.prototype, s) || /* @__PURE__ */ Object.create(null)
       );
-    }
-  }
 }
-function getTableColumns(table2) {
-  return table2[Table.Symbol.Columns];
+function Kn(i) {
+  return i[p.Symbol.Columns];
 }
-function getTableLikeName(table2) {
-  return is(table2, Subquery) ? table2._.alias : is(table2, View) ? table2[ViewBaseConfig].name : is(table2, SQL) ? void 0 : table2[Table.Symbol.IsAlias] ? table2[Table.Symbol.Name] : table2[Table.Symbol.BaseName];
+function Ve(i) {
+  return d(i, R) ? i._.alias : d(i, se) ? i[B].name : d(i, g) ? void 0 : i[p.Symbol.IsAlias] ? i[p.Symbol.Name] : i[p.Symbol.BaseName];
 }
-function getColumnNameAndConfig(a, b) {
+function he(i, e) {
   return {
-    name: typeof a === "string" && a.length > 0 ? a : "",
-    config: typeof a === "object" ? a : b
+    name: typeof i == "string" && i.length > 0 ? i : "",
+    config: typeof i == "object" ? i : e
   };
 }
-function isConfig(data) {
-  if (typeof data !== "object" || data === null) return false;
-  if (data.constructor.name !== "Object") return false;
-  if ("logger" in data) {
-    const type = typeof data["logger"];
-    if (type !== "boolean" && (type !== "object" || typeof data["logger"]["logQuery"] !== "function") && type !== "undefined") return false;
-    return true;
+function Un(i) {
+  if (typeof i != "object" || i === null || i.constructor.name !== "Object") return !1;
+  if ("logger" in i) {
+    const e = typeof i.logger;
+    return !(e !== "boolean" && (e !== "object" || typeof i.logger.logQuery != "function") && e !== "undefined");
   }
-  if ("schema" in data) {
-    const type = typeof data["schema"];
-    if (type !== "object" && type !== "undefined") return false;
-    return true;
+  if ("schema" in i) {
+    const e = typeof i.schema;
+    return !(e !== "object" && e !== "undefined");
   }
-  if ("casing" in data) {
-    const type = typeof data["casing"];
-    if (type !== "string" && type !== "undefined") return false;
-    return true;
+  if ("casing" in i) {
+    const e = typeof i.casing;
+    return !(e !== "string" && e !== "undefined");
   }
-  if ("mode" in data) {
-    if (data["mode"] !== "default" || data["mode"] !== "planetscale" || data["mode"] !== void 0) return false;
-    return true;
+  if ("mode" in i)
+    return !(i.mode !== "default" || i.mode !== "planetscale" || i.mode !== void 0);
+  if ("connection" in i) {
+    const e = typeof i.connection;
+    return !(e !== "string" && e !== "object" && e !== "undefined");
   }
-  if ("connection" in data) {
-    const type = typeof data["connection"];
-    if (type !== "string" && type !== "object" && type !== "undefined") return false;
-    return true;
+  if ("client" in i) {
+    const e = typeof i.client;
+    return !(e !== "object" && e !== "function" && e !== "undefined");
   }
-  if ("client" in data) {
-    const type = typeof data["client"];
-    if (type !== "object" && type !== "function" && type !== "undefined") return false;
-    return true;
-  }
-  if (Object.keys(data).length === 0) return true;
-  return false;
+  return Object.keys(i).length === 0;
 }
-const textDecoder = typeof TextDecoder === "undefined" ? null : new TextDecoder();
-const InlineForeignKeys$1 = Symbol.for("drizzle:PgInlineForeignKeys");
-const EnableRLS = Symbol.for("drizzle:EnableRLS");
-class PgTable extends (_N = Table, _M = entityKind, _L = InlineForeignKeys$1, _K = EnableRLS, _J = Table.Symbol.ExtraConfigBuilder, _I = Table.Symbol.ExtraConfigColumns, _N) {
+const jr = typeof TextDecoder > "u" ? null : new TextDecoder(), yt = Symbol.for("drizzle:PgInlineForeignKeys"), bt = Symbol.for("drizzle:EnableRLS");
+var es, ts, ss, is, rs, ns;
+class Ke extends (ns = p, rs = f, is = yt, ss = bt, ts = p.Symbol.ExtraConfigBuilder, es = p.Symbol.ExtraConfigColumns, ns) {
   constructor() {
     super(...arguments);
     /**@internal */
-    __publicField(this, _L, []);
+    n(this, is, []);
     /** @internal */
-    __publicField(this, _K, false);
+    n(this, ss, !1);
     /** @internal */
-    __publicField(this, _J);
+    n(this, ts);
     /** @internal */
-    __publicField(this, _I, {});
+    n(this, es, {});
   }
 }
-__publicField(PgTable, _M, "PgTable");
-/** @internal */
-__publicField(PgTable, "Symbol", Object.assign({}, Table.Symbol, {
-  InlineForeignKeys: InlineForeignKeys$1,
-  EnableRLS
+n(Ke, rs, "PgTable"), /** @internal */
+n(Ke, "Symbol", Object.assign({}, p.Symbol, {
+  InlineForeignKeys: yt,
+  EnableRLS: bt
 }));
-_O = entityKind;
-class PrimaryKeyBuilder {
-  constructor(columns, name) {
+var os;
+os = f;
+class _r {
+  constructor(e, t) {
     /** @internal */
-    __publicField(this, "columns");
+    n(this, "columns");
     /** @internal */
-    __publicField(this, "name");
-    this.columns = columns;
-    this.name = name;
+    n(this, "name");
+    this.columns = e, this.name = t;
   }
   /** @internal */
-  build(table2) {
-    return new PrimaryKey(table2, this.columns, this.name);
+  build(e) {
+    return new Pr(e, this.columns, this.name);
   }
 }
-__publicField(PrimaryKeyBuilder, _O, "PgPrimaryKeyBuilder");
-_P = entityKind;
-class PrimaryKey {
-  constructor(table2, columns, name) {
-    __publicField(this, "columns");
-    __publicField(this, "name");
-    this.table = table2;
-    this.columns = columns;
-    this.name = name;
+n(_r, os, "PgPrimaryKeyBuilder");
+var as;
+as = f;
+class Pr {
+  constructor(e, t, s) {
+    n(this, "columns");
+    n(this, "name");
+    this.table = e, this.columns = t, this.name = s;
   }
   getName() {
-    return this.name ?? `${this.table[PgTable.Symbol.Name]}_${this.columns.map((column) => column.name).join("_")}_pk`;
+    return this.name ?? `${this.table[Ke.Symbol.Name]}_${this.columns.map((e) => e.name).join("_")}_pk`;
   }
 }
-__publicField(PrimaryKey, _P, "PgPrimaryKey");
-function bindIfParam(value, column) {
-  if (isDriverValueEncoder(column) && !isSQLWrapper(value) && !is(value, Param) && !is(value, Placeholder) && !is(value, Column) && !is(value, Table) && !is(value, View)) {
-    return new Param(value, column);
-  }
-  return value;
+n(Pr, as, "PgPrimaryKey");
+function j(i, e) {
+  return zn(e) && !Cr(i) && !d(i, J) && !d(i, k) && !d(i, L) && !d(i, p) && !d(i, se) ? new J(i, e) : i;
 }
-const eq = (left, right) => {
-  return sql`${left} = ${bindIfParam(right, left)}`;
-};
-const ne = (left, right) => {
-  return sql`${left} <> ${bindIfParam(right, left)}`;
-};
-function and(...unfilteredConditions) {
-  const conditions = unfilteredConditions.filter(
-    (c) => c !== void 0
+const de = (i, e) => u`${i} = ${j(e, i)}`, Jn = (i, e) => u`${i} <> ${j(e, i)}`;
+function Ue(...i) {
+  const e = i.filter(
+    (t) => t !== void 0
   );
-  if (conditions.length === 0) {
-    return void 0;
-  }
-  if (conditions.length === 1) {
-    return new SQL(conditions);
-  }
-  return new SQL([
-    new StringChunk("("),
-    sql.join(conditions, new StringChunk(" and ")),
-    new StringChunk(")")
-  ]);
+  if (e.length !== 0)
+    return e.length === 1 ? new g(e) : new g([
+      new x("("),
+      u.join(e, new x(" and ")),
+      new x(")")
+    ]);
 }
-function or(...unfilteredConditions) {
-  const conditions = unfilteredConditions.filter(
-    (c) => c !== void 0
+function Wn(...i) {
+  const e = i.filter(
+    (t) => t !== void 0
   );
-  if (conditions.length === 0) {
-    return void 0;
-  }
-  if (conditions.length === 1) {
-    return new SQL(conditions);
-  }
-  return new SQL([
-    new StringChunk("("),
-    sql.join(conditions, new StringChunk(" or ")),
-    new StringChunk(")")
-  ]);
+  if (e.length !== 0)
+    return e.length === 1 ? new g(e) : new g([
+      new x("("),
+      u.join(e, new x(" or ")),
+      new x(")")
+    ]);
 }
-function not(condition) {
-  return sql`not ${condition}`;
+function Gn(i) {
+  return u`not ${i}`;
 }
-const gt = (left, right) => {
-  return sql`${left} > ${bindIfParam(right, left)}`;
-};
-const gte = (left, right) => {
-  return sql`${left} >= ${bindIfParam(right, left)}`;
-};
-const lt = (left, right) => {
-  return sql`${left} < ${bindIfParam(right, left)}`;
-};
-const lte = (left, right) => {
-  return sql`${left} <= ${bindIfParam(right, left)}`;
-};
-function inArray(column, values) {
-  if (Array.isArray(values)) {
-    if (values.length === 0) {
-      return sql`false`;
-    }
-    return sql`${column} in ${values.map((v) => bindIfParam(v, column))}`;
-  }
-  return sql`${column} in ${bindIfParam(values, column)}`;
+const Yn = (i, e) => u`${i} > ${j(e, i)}`, Zn = (i, e) => u`${i} >= ${j(e, i)}`, Xn = (i, e) => u`${i} < ${j(e, i)}`, Hn = (i, e) => u`${i} <= ${j(e, i)}`;
+function Rr(i, e) {
+  return Array.isArray(e) ? e.length === 0 ? u`false` : u`${i} in ${e.map((t) => j(t, i))}` : u`${i} in ${j(e, i)}`;
 }
-function notInArray(column, values) {
-  if (Array.isArray(values)) {
-    if (values.length === 0) {
-      return sql`true`;
-    }
-    return sql`${column} not in ${values.map((v) => bindIfParam(v, column))}`;
-  }
-  return sql`${column} not in ${bindIfParam(values, column)}`;
+function kn(i, e) {
+  return Array.isArray(e) ? e.length === 0 ? u`true` : u`${i} not in ${e.map((t) => j(t, i))}` : u`${i} not in ${j(e, i)}`;
 }
-function isNull(value) {
-  return sql`${value} is null`;
+function eo(i) {
+  return u`${i} is null`;
 }
-function isNotNull(value) {
-  return sql`${value} is not null`;
+function to(i) {
+  return u`${i} is not null`;
 }
-function exists(subquery) {
-  return sql`exists ${subquery}`;
+function so(i) {
+  return u`exists ${i}`;
 }
-function notExists(subquery) {
-  return sql`not exists ${subquery}`;
+function io(i) {
+  return u`not exists ${i}`;
 }
-function between(column, min, max) {
-  return sql`${column} between ${bindIfParam(min, column)} and ${bindIfParam(
-    max,
-    column
+function ro(i, e, t) {
+  return u`${i} between ${j(e, i)} and ${j(
+    t,
+    i
   )}`;
 }
-function notBetween(column, min, max) {
-  return sql`${column} not between ${bindIfParam(
-    min,
-    column
-  )} and ${bindIfParam(max, column)}`;
+function no(i, e, t) {
+  return u`${i} not between ${j(
+    e,
+    i
+  )} and ${j(t, i)}`;
 }
-function like(column, value) {
-  return sql`${column} like ${value}`;
+function oo(i, e) {
+  return u`${i} like ${e}`;
 }
-function notLike(column, value) {
-  return sql`${column} not like ${value}`;
+function ao(i, e) {
+  return u`${i} not like ${e}`;
 }
-function ilike(column, value) {
-  return sql`${column} ilike ${value}`;
+function lo(i, e) {
+  return u`${i} ilike ${e}`;
 }
-function notIlike(column, value) {
-  return sql`${column} not ilike ${value}`;
+function uo(i, e) {
+  return u`${i} not ilike ${e}`;
 }
-function asc(column) {
-  return sql`${column} asc`;
+function co(i) {
+  return u`${i} asc`;
 }
-function desc(column) {
-  return sql`${column} desc`;
+function ho(i) {
+  return u`${i} desc`;
 }
-_Q = entityKind;
-class Relation {
-  constructor(sourceTable, referencedTable, relationName) {
-    __publicField(this, "referencedTableName");
-    __publicField(this, "fieldName");
-    this.sourceTable = sourceTable;
-    this.referencedTable = referencedTable;
-    this.relationName = relationName;
-    this.referencedTableName = referencedTable[Table.Symbol.Name];
+var ls;
+ls = f;
+class ot {
+  constructor(e, t, s) {
+    n(this, "referencedTableName");
+    n(this, "fieldName");
+    this.sourceTable = e, this.referencedTable = t, this.relationName = s, this.referencedTableName = t[p.Symbol.Name];
   }
 }
-__publicField(Relation, _Q, "Relation");
-_R = entityKind;
-class Relations {
-  constructor(table2, config) {
-    this.table = table2;
-    this.config = config;
+n(ot, ls, "Relation");
+var us;
+us = f;
+class Er {
+  constructor(e, t) {
+    this.table = e, this.config = t;
   }
 }
-__publicField(Relations, _R, "Relations");
-const _One = class _One extends (_T = Relation, _S = entityKind, _T) {
-  constructor(sourceTable, referencedTable, config, isNullable) {
-    super(sourceTable, referencedTable, config == null ? void 0 : config.relationName);
-    this.config = config;
-    this.isNullable = isNullable;
+n(Er, us, "Relations");
+var cs, hs;
+const Le = class Le extends (hs = ot, cs = f, hs) {
+  constructor(e, t, s, r) {
+    super(e, t, s == null ? void 0 : s.relationName), this.config = s, this.isNullable = r;
   }
-  withFieldName(fieldName) {
-    const relation = new _One(
+  withFieldName(e) {
+    const t = new Le(
       this.sourceTable,
       this.referencedTable,
       this.config,
       this.isNullable
     );
-    relation.fieldName = fieldName;
-    return relation;
+    return t.fieldName = e, t;
   }
 };
-__publicField(_One, _S, "One");
-let One = _One;
-const _Many = class _Many extends (_V = Relation, _U = entityKind, _V) {
-  constructor(sourceTable, referencedTable, config) {
-    super(sourceTable, referencedTable, config == null ? void 0 : config.relationName);
-    this.config = config;
+n(Le, cs, "One");
+let te = Le;
+var ds, fs;
+const xe = class xe extends (fs = ot, ds = f, fs) {
+  constructor(e, t, s) {
+    super(e, t, s == null ? void 0 : s.relationName), this.config = s;
   }
-  withFieldName(fieldName) {
-    const relation = new _Many(
+  withFieldName(e) {
+    const t = new xe(
       this.sourceTable,
       this.referencedTable,
       this.config
     );
-    relation.fieldName = fieldName;
-    return relation;
+    return t.fieldName = e, t;
   }
 };
-__publicField(_Many, _U, "Many");
-let Many = _Many;
-function getOperators() {
+n(xe, ds, "Many");
+let Te = xe;
+function fo() {
   return {
-    and,
-    between,
-    eq,
-    exists,
-    gt,
-    gte,
-    ilike,
-    inArray,
-    isNull,
-    isNotNull,
-    like,
-    lt,
-    lte,
-    ne,
-    not,
-    notBetween,
-    notExists,
-    notLike,
-    notIlike,
-    notInArray,
-    or,
-    sql
+    and: Ue,
+    between: ro,
+    eq: de,
+    exists: so,
+    gt: Yn,
+    gte: Zn,
+    ilike: lo,
+    inArray: Rr,
+    isNull: eo,
+    isNotNull: to,
+    like: oo,
+    lt: Xn,
+    lte: Hn,
+    ne: Jn,
+    not: Gn,
+    notBetween: no,
+    notExists: io,
+    notLike: ao,
+    notIlike: uo,
+    notInArray: kn,
+    or: Wn,
+    sql: u
   };
 }
-function getOrderByOperators() {
+function mo() {
   return {
-    sql,
-    asc,
-    desc
+    sql: u,
+    asc: co,
+    desc: ho
   };
 }
-function extractTablesRelationalConfig(schema, configHelpers) {
-  var _a2;
-  if (Object.keys(schema).length === 1 && "default" in schema && !is(schema["default"], Table)) {
-    schema = schema["default"];
-  }
-  const tableNamesMap = {};
-  const relationsBuffer = {};
-  const tablesConfig = {};
-  for (const [key, value] of Object.entries(schema)) {
-    if (is(value, Table)) {
-      const dbName = getTableUniqueName(value);
-      const bufferedRelations = relationsBuffer[dbName];
-      tableNamesMap[dbName] = key;
-      tablesConfig[key] = {
-        tsName: key,
-        dbName: value[Table.Symbol.Name],
-        schema: value[Table.Symbol.Schema],
-        columns: value[Table.Symbol.Columns],
-        relations: (bufferedRelations == null ? void 0 : bufferedRelations.relations) ?? {},
-        primaryKey: (bufferedRelations == null ? void 0 : bufferedRelations.primaryKey) ?? []
+function po(i, e) {
+  var o;
+  Object.keys(i).length === 1 && "default" in i && !d(i.default, p) && (i = i.default);
+  const t = {}, s = {}, r = {};
+  for (const [l, a] of Object.entries(i))
+    if (d(a, p)) {
+      const c = ue(a), m = s[c];
+      t[c] = l, r[l] = {
+        tsName: l,
+        dbName: a[p.Symbol.Name],
+        schema: a[p.Symbol.Schema],
+        columns: a[p.Symbol.Columns],
+        relations: (m == null ? void 0 : m.relations) ?? {},
+        primaryKey: (m == null ? void 0 : m.primaryKey) ?? []
       };
-      for (const column of Object.values(
-        value[Table.Symbol.Columns]
-      )) {
-        if (column.primary) {
-          tablesConfig[key].primaryKey.push(column);
-        }
-      }
-      const extraConfig = (_a2 = value[Table.Symbol.ExtraConfigBuilder]) == null ? void 0 : _a2.call(value, value[Table.Symbol.ExtraConfigColumns]);
-      if (extraConfig) {
-        for (const configEntry of Object.values(extraConfig)) {
-          if (is(configEntry, PrimaryKeyBuilder)) {
-            tablesConfig[key].primaryKey.push(...configEntry.columns);
-          }
-        }
-      }
-    } else if (is(value, Relations)) {
-      const dbName = getTableUniqueName(value.table);
-      const tableName = tableNamesMap[dbName];
-      const relations2 = value.config(
-        configHelpers(value.table)
+      for (const w of Object.values(
+        a[p.Symbol.Columns]
+      ))
+        w.primary && r[l].primaryKey.push(w);
+      const h = (o = a[p.Symbol.ExtraConfigBuilder]) == null ? void 0 : o.call(a, a[p.Symbol.ExtraConfigColumns]);
+      if (h)
+        for (const w of Object.values(h))
+          d(w, _r) && r[l].primaryKey.push(...w.columns);
+    } else if (d(a, Er)) {
+      const c = ue(a.table), m = t[c], h = a.config(
+        e(a.table)
       );
-      let primaryKey;
-      for (const [relationName, relation] of Object.entries(relations2)) {
-        if (tableName) {
-          const tableConfig = tablesConfig[tableName];
-          tableConfig.relations[relationName] = relation;
-        } else {
-          if (!(dbName in relationsBuffer)) {
-            relationsBuffer[dbName] = {
-              relations: {},
-              primaryKey
-            };
-          }
-          relationsBuffer[dbName].relations[relationName] = relation;
-        }
-      }
+      let w;
+      for (const [y, S] of Object.entries(h))
+        if (m) {
+          const T = r[m];
+          T.relations[y] = S;
+        } else
+          c in s || (s[c] = {
+            relations: {},
+            primaryKey: w
+          }), s[c].relations[y] = S;
     }
-  }
-  return { tables: tablesConfig, tableNamesMap };
+  return { tables: r, tableNamesMap: t };
 }
-function createOne(sourceTable) {
-  return function one(table2, config) {
-    return new One(
-      sourceTable,
-      table2,
-      config,
-      (config == null ? void 0 : config.fields.reduce((res, f) => res && f.notNull, true)) ?? false
+function go(i) {
+  return function(t, s) {
+    return new te(
+      i,
+      t,
+      s,
+      (s == null ? void 0 : s.fields.reduce((r, o) => r && o.notNull, !0)) ?? !1
     );
   };
 }
-function createMany(sourceTable) {
-  return function many(referencedTable, config) {
-    return new Many(sourceTable, referencedTable, config);
+function yo(i) {
+  return function(t, s) {
+    return new Te(i, t, s);
   };
 }
-function normalizeRelation(schema, tableNamesMap, relation) {
-  if (is(relation, One) && relation.config) {
+function bo(i, e, t) {
+  if (d(t, te) && t.config)
     return {
-      fields: relation.config.fields,
-      references: relation.config.references
+      fields: t.config.fields,
+      references: t.config.references
     };
-  }
-  const referencedTableTsName = tableNamesMap[getTableUniqueName(relation.referencedTable)];
-  if (!referencedTableTsName) {
+  const s = e[ue(t.referencedTable)];
+  if (!s)
     throw new Error(
-      `Table "${relation.referencedTable[Table.Symbol.Name]}" not found in schema`
+      `Table "${t.referencedTable[p.Symbol.Name]}" not found in schema`
     );
-  }
-  const referencedTableConfig = schema[referencedTableTsName];
-  if (!referencedTableConfig) {
-    throw new Error(`Table "${referencedTableTsName}" not found in schema`);
-  }
-  const sourceTable = relation.sourceTable;
-  const sourceTableTsName = tableNamesMap[getTableUniqueName(sourceTable)];
-  if (!sourceTableTsName) {
+  const r = i[s];
+  if (!r)
+    throw new Error(`Table "${s}" not found in schema`);
+  const o = t.sourceTable, l = e[ue(o)];
+  if (!l)
     throw new Error(
-      `Table "${sourceTable[Table.Symbol.Name]}" not found in schema`
+      `Table "${o[p.Symbol.Name]}" not found in schema`
     );
-  }
-  const reverseRelations = [];
-  for (const referencedTableRelation of Object.values(
-    referencedTableConfig.relations
-  )) {
-    if (relation.relationName && relation !== referencedTableRelation && referencedTableRelation.relationName === relation.relationName || !relation.relationName && referencedTableRelation.referencedTable === relation.sourceTable) {
-      reverseRelations.push(referencedTableRelation);
-    }
-  }
-  if (reverseRelations.length > 1) {
-    throw relation.relationName ? new Error(
-      `There are multiple relations with name "${relation.relationName}" in table "${referencedTableTsName}"`
+  const a = [];
+  for (const c of Object.values(
+    r.relations
+  ))
+    (t.relationName && t !== c && c.relationName === t.relationName || !t.relationName && c.referencedTable === t.sourceTable) && a.push(c);
+  if (a.length > 1)
+    throw t.relationName ? new Error(
+      `There are multiple relations with name "${t.relationName}" in table "${s}"`
     ) : new Error(
-      `There are multiple relations between "${referencedTableTsName}" and "${relation.sourceTable[Table.Symbol.Name]}". Please specify relation name`
+      `There are multiple relations between "${s}" and "${t.sourceTable[p.Symbol.Name]}". Please specify relation name`
     );
-  }
-  if (reverseRelations[0] && is(reverseRelations[0], One) && reverseRelations[0].config) {
+  if (a[0] && d(a[0], te) && a[0].config)
     return {
-      fields: reverseRelations[0].config.references,
-      references: reverseRelations[0].config.fields
+      fields: a[0].config.references,
+      references: a[0].config.fields
     };
-  }
   throw new Error(
-    `There is not enough information to infer relation "${sourceTableTsName}.${relation.fieldName}"`
+    `There is not enough information to infer relation "${l}.${t.fieldName}"`
   );
 }
-function createTableRelationsHelpers(sourceTable) {
+function wo(i) {
   return {
-    one: createOne(sourceTable),
-    many: createMany(sourceTable)
+    one: go(i),
+    many: yo(i)
   };
 }
-function mapRelationalRow(tablesConfig, tableConfig, row, buildQueryResultSelection, mapColumnValue = (value) => value) {
-  const result = {};
+function Je(i, e, t, s, r = (o) => o) {
+  const o = {};
   for (const [
-    selectionItemIndex,
-    selectionItem
-  ] of buildQueryResultSelection.entries()) {
-    if (selectionItem.isJson) {
-      const relation = tableConfig.relations[selectionItem.tsKey];
-      const rawSubRows = row[selectionItemIndex];
-      const subRows = typeof rawSubRows === "string" ? JSON.parse(rawSubRows) : rawSubRows;
-      result[selectionItem.tsKey] = is(relation, One) ? subRows && mapRelationalRow(
-        tablesConfig,
-        tablesConfig[selectionItem.relationTableTsKey],
-        subRows,
-        selectionItem.selection,
-        mapColumnValue
-      ) : subRows.map(
-        (subRow) => mapRelationalRow(
-          tablesConfig,
-          tablesConfig[selectionItem.relationTableTsKey],
-          subRow,
-          selectionItem.selection,
-          mapColumnValue
+    l,
+    a
+  ] of s.entries())
+    if (a.isJson) {
+      const c = e.relations[a.tsKey], m = t[l], h = typeof m == "string" ? JSON.parse(m) : m;
+      o[a.tsKey] = d(c, te) ? h && Je(
+        i,
+        i[a.relationTableTsKey],
+        h,
+        a.selection,
+        r
+      ) : h.map(
+        (w) => Je(
+          i,
+          i[a.relationTableTsKey],
+          w,
+          a.selection,
+          r
         )
       );
     } else {
-      const value = mapColumnValue(row[selectionItemIndex]);
-      const field = selectionItem.field;
-      let decoder;
-      if (is(field, Column)) {
-        decoder = field;
-      } else if (is(field, SQL)) {
-        decoder = field.decoder;
-      } else {
-        decoder = field.sql.decoder;
-      }
-      result[selectionItem.tsKey] = value === null ? null : decoder.mapFromDriverValue(value);
+      const c = r(t[l]), m = a.field;
+      let h;
+      d(m, L) ? h = m : d(m, g) ? h = m.decoder : h = m.sql.decoder, o[a.tsKey] = c === null ? null : h.mapFromDriverValue(c);
     }
-  }
-  return result;
+  return o;
 }
-function getDefaultExportFromCjs(x) {
-  return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
-}
-var lib = { exports: {} };
-function commonjsRequire(path2) {
-  throw new Error('Could not dynamically require "' + path2 + '". Please configure the dynamicRequireTargets or/and ignoreDynamicRequires option of @rollup/plugin-commonjs appropriately for this require call to work.');
-}
-var util$1 = {};
-util$1.getBooleanOption = (options, key) => {
-  let value = false;
-  if (key in options && typeof (value = options[key]) !== "boolean") {
-    throw new TypeError(`Expected the "${key}" option to be a boolean`);
+var ms;
+ms = f;
+const Be = class Be {
+  constructor(e) {
+    n(this, "config");
+    this.config = { ...e };
   }
-  return value;
-};
-util$1.cppdb = Symbol();
-util$1.inspect = Symbol.for("nodejs.util.inspect.custom");
-const descriptor = { value: "SqliteError", writable: true, enumerable: false, configurable: true };
-function SqliteError$1(message, code) {
-  if (new.target !== SqliteError$1) {
-    return new SqliteError$1(message, code);
-  }
-  if (typeof code !== "string") {
-    throw new TypeError("Expected second argument to be a string");
-  }
-  Error.call(this, message);
-  descriptor.value = "" + message;
-  Object.defineProperty(this, "message", descriptor);
-  Error.captureStackTrace(this, SqliteError$1);
-  this.code = code;
-}
-Object.setPrototypeOf(SqliteError$1, Error);
-Object.setPrototypeOf(SqliteError$1.prototype, Error.prototype);
-Object.defineProperty(SqliteError$1.prototype, "name", descriptor);
-var sqliteError = SqliteError$1;
-var bindings = { exports: {} };
-var fileUriToPath_1;
-var hasRequiredFileUriToPath;
-function requireFileUriToPath() {
-  if (hasRequiredFileUriToPath) return fileUriToPath_1;
-  hasRequiredFileUriToPath = 1;
-  var sep = require$$1.sep || "/";
-  fileUriToPath_1 = fileUriToPath;
-  function fileUriToPath(uri) {
-    if ("string" != typeof uri || uri.length <= 7 || "file://" != uri.substring(0, 7)) {
-      throw new TypeError("must pass in a file:// URI to convert to a file path");
-    }
-    var rest = decodeURI(uri.substring(7));
-    var firstSlash = rest.indexOf("/");
-    var host = rest.substring(0, firstSlash);
-    var path2 = rest.substring(firstSlash + 1);
-    if ("localhost" == host) host = "";
-    if (host) {
-      host = sep + sep + host;
-    }
-    path2 = path2.replace(/^(.+)\|/, "$1:");
-    if (sep == "\\") {
-      path2 = path2.replace(/\//g, "\\");
-    }
-    if (/^.+\:/.test(path2)) ;
-    else {
-      path2 = sep + path2;
-    }
-    return host + path2;
-  }
-  return fileUriToPath_1;
-}
-var hasRequiredBindings;
-function requireBindings() {
-  if (hasRequiredBindings) return bindings.exports;
-  hasRequiredBindings = 1;
-  (function(module, exports) {
-    var fs2 = require$$0, path2 = require$$1, fileURLToPath2 = requireFileUriToPath(), join = path2.join, dirname = path2.dirname, exists2 = fs2.accessSync && function(path22) {
-      try {
-        fs2.accessSync(path22);
-      } catch (e) {
-        return false;
-      }
-      return true;
-    } || fs2.existsSync || path2.existsSync, defaults = {
-      arrow: process.env.NODE_BINDINGS_ARROW || " → ",
-      compiled: process.env.NODE_BINDINGS_COMPILED_DIR || "compiled",
-      platform: process.platform,
-      arch: process.arch,
-      nodePreGyp: "node-v" + process.versions.modules + "-" + process.platform + "-" + process.arch,
-      version: process.versions.node,
-      bindings: "bindings.node",
-      try: [
-        // node-gyp's linked version in the "build" dir
-        ["module_root", "build", "bindings"],
-        // node-waf and gyp_addon (a.k.a node-gyp)
-        ["module_root", "build", "Debug", "bindings"],
-        ["module_root", "build", "Release", "bindings"],
-        // Debug files, for development (legacy behavior, remove for node v0.9)
-        ["module_root", "out", "Debug", "bindings"],
-        ["module_root", "Debug", "bindings"],
-        // Release files, but manually compiled (legacy behavior, remove for node v0.9)
-        ["module_root", "out", "Release", "bindings"],
-        ["module_root", "Release", "bindings"],
-        // Legacy from node-waf, node <= 0.4.x
-        ["module_root", "build", "default", "bindings"],
-        // Production "Release" buildtype binary (meh...)
-        ["module_root", "compiled", "version", "platform", "arch", "bindings"],
-        // node-qbs builds
-        ["module_root", "addon-build", "release", "install-root", "bindings"],
-        ["module_root", "addon-build", "debug", "install-root", "bindings"],
-        ["module_root", "addon-build", "default", "install-root", "bindings"],
-        // node-pre-gyp path ./lib/binding/{node_abi}-{platform}-{arch}
-        ["module_root", "lib", "binding", "nodePreGyp", "bindings"]
-      ]
-    };
-    function bindings2(opts) {
-      if (typeof opts == "string") {
-        opts = { bindings: opts };
-      } else if (!opts) {
-        opts = {};
-      }
-      Object.keys(defaults).map(function(i2) {
-        if (!(i2 in opts)) opts[i2] = defaults[i2];
-      });
-      if (!opts.module_root) {
-        opts.module_root = exports.getRoot(exports.getFileName());
-      }
-      if (path2.extname(opts.bindings) != ".node") {
-        opts.bindings += ".node";
-      }
-      var requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : commonjsRequire;
-      var tries = [], i = 0, l = opts.try.length, n, b, err;
-      for (; i < l; i++) {
-        n = join.apply(
-          null,
-          opts.try[i].map(function(p) {
-            return opts[p] || p;
-          })
-        );
-        tries.push(n);
-        try {
-          b = opts.path ? requireFunc.resolve(n) : requireFunc(n);
-          if (!opts.path) {
-            b.path = n;
-          }
-          return b;
-        } catch (e) {
-          if (e.code !== "MODULE_NOT_FOUND" && e.code !== "QUALIFIED_PATH_RESOLUTION_FAILED" && !/not find/i.test(e.message)) {
-            throw e;
-          }
-        }
-      }
-      err = new Error(
-        "Could not locate the bindings file. Tried:\n" + tries.map(function(a) {
-          return opts.arrow + a;
-        }).join("\n")
-      );
-      err.tries = tries;
-      throw err;
-    }
-    module.exports = exports = bindings2;
-    exports.getFileName = function getFileName(calling_file) {
-      var origPST = Error.prepareStackTrace, origSTL = Error.stackTraceLimit, dummy = {}, fileName;
-      Error.stackTraceLimit = 10;
-      Error.prepareStackTrace = function(e, st) {
-        for (var i = 0, l = st.length; i < l; i++) {
-          fileName = st[i].getFileName();
-          if (fileName !== __filename) {
-            if (calling_file) {
-              if (fileName !== calling_file) {
-                return;
-              }
-            } else {
-              return;
-            }
-          }
-        }
-      };
-      Error.captureStackTrace(dummy);
-      dummy.stack;
-      Error.prepareStackTrace = origPST;
-      Error.stackTraceLimit = origSTL;
-      var fileSchema = "file://";
-      if (fileName.indexOf(fileSchema) === 0) {
-        fileName = fileURLToPath2(fileName);
-      }
-      return fileName;
-    };
-    exports.getRoot = function getRoot(file) {
-      var dir = dirname(file), prev;
-      while (true) {
-        if (dir === ".") {
-          dir = process.cwd();
-        }
-        if (exists2(join(dir, "package.json")) || exists2(join(dir, "node_modules"))) {
-          return dir;
-        }
-        if (prev === dir) {
-          throw new Error(
-            'Could not find module root given file: "' + file + '". Do you have a `package.json` file? '
-          );
-        }
-        prev = dir;
-        dir = join(dir, "..");
-      }
-    };
-  })(bindings, bindings.exports);
-  return bindings.exports;
-}
-var wrappers$1 = {};
-var hasRequiredWrappers;
-function requireWrappers() {
-  if (hasRequiredWrappers) return wrappers$1;
-  hasRequiredWrappers = 1;
-  const { cppdb } = util$1;
-  wrappers$1.prepare = function prepare(sql2) {
-    return this[cppdb].prepare(sql2, this, false);
-  };
-  wrappers$1.exec = function exec(sql2) {
-    this[cppdb].exec(sql2);
-    return this;
-  };
-  wrappers$1.close = function close() {
-    this[cppdb].close();
-    return this;
-  };
-  wrappers$1.loadExtension = function loadExtension(...args) {
-    this[cppdb].loadExtension(...args);
-    return this;
-  };
-  wrappers$1.defaultSafeIntegers = function defaultSafeIntegers(...args) {
-    this[cppdb].defaultSafeIntegers(...args);
-    return this;
-  };
-  wrappers$1.unsafeMode = function unsafeMode(...args) {
-    this[cppdb].unsafeMode(...args);
-    return this;
-  };
-  wrappers$1.getters = {
-    name: {
-      get: function name() {
-        return this[cppdb].name;
-      },
-      enumerable: true
-    },
-    open: {
-      get: function open() {
-        return this[cppdb].open;
-      },
-      enumerable: true
-    },
-    inTransaction: {
-      get: function inTransaction() {
-        return this[cppdb].inTransaction;
-      },
-      enumerable: true
-    },
-    readonly: {
-      get: function readonly() {
-        return this[cppdb].readonly;
-      },
-      enumerable: true
-    },
-    memory: {
-      get: function memory() {
-        return this[cppdb].memory;
-      },
-      enumerable: true
-    }
-  };
-  return wrappers$1;
-}
-var transaction;
-var hasRequiredTransaction;
-function requireTransaction() {
-  if (hasRequiredTransaction) return transaction;
-  hasRequiredTransaction = 1;
-  const { cppdb } = util$1;
-  const controllers = /* @__PURE__ */ new WeakMap();
-  transaction = function transaction2(fn) {
-    if (typeof fn !== "function") throw new TypeError("Expected first argument to be a function");
-    const db = this[cppdb];
-    const controller = getController(db, this);
-    const { apply } = Function.prototype;
-    const properties = {
-      default: { value: wrapTransaction(apply, fn, db, controller.default) },
-      deferred: { value: wrapTransaction(apply, fn, db, controller.deferred) },
-      immediate: { value: wrapTransaction(apply, fn, db, controller.immediate) },
-      exclusive: { value: wrapTransaction(apply, fn, db, controller.exclusive) },
-      database: { value: this, enumerable: true }
-    };
-    Object.defineProperties(properties.default.value, properties);
-    Object.defineProperties(properties.deferred.value, properties);
-    Object.defineProperties(properties.immediate.value, properties);
-    Object.defineProperties(properties.exclusive.value, properties);
-    return properties.default.value;
-  };
-  const getController = (db, self) => {
-    let controller = controllers.get(db);
-    if (!controller) {
-      const shared = {
-        commit: db.prepare("COMMIT", self, false),
-        rollback: db.prepare("ROLLBACK", self, false),
-        savepoint: db.prepare("SAVEPOINT `	_bs3.	`", self, false),
-        release: db.prepare("RELEASE `	_bs3.	`", self, false),
-        rollbackTo: db.prepare("ROLLBACK TO `	_bs3.	`", self, false)
-      };
-      controllers.set(db, controller = {
-        default: Object.assign({ begin: db.prepare("BEGIN", self, false) }, shared),
-        deferred: Object.assign({ begin: db.prepare("BEGIN DEFERRED", self, false) }, shared),
-        immediate: Object.assign({ begin: db.prepare("BEGIN IMMEDIATE", self, false) }, shared),
-        exclusive: Object.assign({ begin: db.prepare("BEGIN EXCLUSIVE", self, false) }, shared)
-      });
-    }
-    return controller;
-  };
-  const wrapTransaction = (apply, fn, db, { begin, commit, rollback, savepoint, release, rollbackTo }) => function sqliteTransaction() {
-    let before, after, undo;
-    if (db.inTransaction) {
-      before = savepoint;
-      after = release;
-      undo = rollbackTo;
-    } else {
-      before = begin;
-      after = commit;
-      undo = rollback;
-    }
-    before.run();
-    try {
-      const result = apply.call(fn, this, arguments);
-      if (result && typeof result.then === "function") {
-        throw new TypeError("Transaction function cannot return a promise");
-      }
-      after.run();
-      return result;
-    } catch (ex) {
-      if (db.inTransaction) {
-        undo.run();
-        if (undo !== rollback) after.run();
-      }
-      throw ex;
-    }
-  };
-  return transaction;
-}
-var pragma;
-var hasRequiredPragma;
-function requirePragma() {
-  if (hasRequiredPragma) return pragma;
-  hasRequiredPragma = 1;
-  const { getBooleanOption, cppdb } = util$1;
-  pragma = function pragma2(source, options) {
-    if (options == null) options = {};
-    if (typeof source !== "string") throw new TypeError("Expected first argument to be a string");
-    if (typeof options !== "object") throw new TypeError("Expected second argument to be an options object");
-    const simple = getBooleanOption(options, "simple");
-    const stmt = this[cppdb].prepare(`PRAGMA ${source}`, this, true);
-    return simple ? stmt.pluck().get() : stmt.all();
-  };
-  return pragma;
-}
-var backup;
-var hasRequiredBackup;
-function requireBackup() {
-  if (hasRequiredBackup) return backup;
-  hasRequiredBackup = 1;
-  const fs2 = require$$0;
-  const path2 = require$$1;
-  const { promisify } = require$$2;
-  const { cppdb } = util$1;
-  const fsAccess = promisify(fs2.access);
-  backup = async function backup2(filename, options) {
-    if (options == null) options = {};
-    if (typeof filename !== "string") throw new TypeError("Expected first argument to be a string");
-    if (typeof options !== "object") throw new TypeError("Expected second argument to be an options object");
-    filename = filename.trim();
-    const attachedName = "attached" in options ? options.attached : "main";
-    const handler = "progress" in options ? options.progress : null;
-    if (!filename) throw new TypeError("Backup filename cannot be an empty string");
-    if (filename === ":memory:") throw new TypeError('Invalid backup filename ":memory:"');
-    if (typeof attachedName !== "string") throw new TypeError('Expected the "attached" option to be a string');
-    if (!attachedName) throw new TypeError('The "attached" option cannot be an empty string');
-    if (handler != null && typeof handler !== "function") throw new TypeError('Expected the "progress" option to be a function');
-    await fsAccess(path2.dirname(filename)).catch(() => {
-      throw new TypeError("Cannot save backup because the directory does not exist");
-    });
-    const isNewFile = await fsAccess(filename).then(() => false, () => true);
-    return runBackup(this[cppdb].backup(this, attachedName, filename, isNewFile), handler || null);
-  };
-  const runBackup = (backup2, handler) => {
-    let rate = 0;
-    let useDefault = true;
-    return new Promise((resolve, reject) => {
-      setImmediate(function step() {
-        try {
-          const progress = backup2.transfer(rate);
-          if (!progress.remainingPages) {
-            backup2.close();
-            resolve(progress);
-            return;
-          }
-          if (useDefault) {
-            useDefault = false;
-            rate = 100;
-          }
-          if (handler) {
-            const ret = handler(progress);
-            if (ret !== void 0) {
-              if (typeof ret === "number" && ret === ret) rate = Math.max(0, Math.min(2147483647, Math.round(ret)));
-              else throw new TypeError("Expected progress callback to return a number or undefined");
-            }
-          }
-          setImmediate(step);
-        } catch (err) {
-          backup2.close();
-          reject(err);
-        }
-      });
-    });
-  };
-  return backup;
-}
-var serialize;
-var hasRequiredSerialize;
-function requireSerialize() {
-  if (hasRequiredSerialize) return serialize;
-  hasRequiredSerialize = 1;
-  const { cppdb } = util$1;
-  serialize = function serialize2(options) {
-    if (options == null) options = {};
-    if (typeof options !== "object") throw new TypeError("Expected first argument to be an options object");
-    const attachedName = "attached" in options ? options.attached : "main";
-    if (typeof attachedName !== "string") throw new TypeError('Expected the "attached" option to be a string');
-    if (!attachedName) throw new TypeError('The "attached" option cannot be an empty string');
-    return this[cppdb].serialize(attachedName);
-  };
-  return serialize;
-}
-var _function;
-var hasRequired_function;
-function require_function() {
-  if (hasRequired_function) return _function;
-  hasRequired_function = 1;
-  const { getBooleanOption, cppdb } = util$1;
-  _function = function defineFunction(name, options, fn) {
-    if (options == null) options = {};
-    if (typeof options === "function") {
-      fn = options;
-      options = {};
-    }
-    if (typeof name !== "string") throw new TypeError("Expected first argument to be a string");
-    if (typeof fn !== "function") throw new TypeError("Expected last argument to be a function");
-    if (typeof options !== "object") throw new TypeError("Expected second argument to be an options object");
-    if (!name) throw new TypeError("User-defined function name cannot be an empty string");
-    const safeIntegers = "safeIntegers" in options ? +getBooleanOption(options, "safeIntegers") : 2;
-    const deterministic = getBooleanOption(options, "deterministic");
-    const directOnly = getBooleanOption(options, "directOnly");
-    const varargs = getBooleanOption(options, "varargs");
-    let argCount = -1;
-    if (!varargs) {
-      argCount = fn.length;
-      if (!Number.isInteger(argCount) || argCount < 0) throw new TypeError("Expected function.length to be a positive integer");
-      if (argCount > 100) throw new RangeError("User-defined functions cannot have more than 100 arguments");
-    }
-    this[cppdb].function(fn, name, argCount, safeIntegers, deterministic, directOnly);
-    return this;
-  };
-  return _function;
-}
-var aggregate;
-var hasRequiredAggregate;
-function requireAggregate() {
-  if (hasRequiredAggregate) return aggregate;
-  hasRequiredAggregate = 1;
-  const { getBooleanOption, cppdb } = util$1;
-  aggregate = function defineAggregate(name, options) {
-    if (typeof name !== "string") throw new TypeError("Expected first argument to be a string");
-    if (typeof options !== "object" || options === null) throw new TypeError("Expected second argument to be an options object");
-    if (!name) throw new TypeError("User-defined function name cannot be an empty string");
-    const start = "start" in options ? options.start : null;
-    const step = getFunctionOption(options, "step", true);
-    const inverse = getFunctionOption(options, "inverse", false);
-    const result = getFunctionOption(options, "result", false);
-    const safeIntegers = "safeIntegers" in options ? +getBooleanOption(options, "safeIntegers") : 2;
-    const deterministic = getBooleanOption(options, "deterministic");
-    const directOnly = getBooleanOption(options, "directOnly");
-    const varargs = getBooleanOption(options, "varargs");
-    let argCount = -1;
-    if (!varargs) {
-      argCount = Math.max(getLength(step), inverse ? getLength(inverse) : 0);
-      if (argCount > 0) argCount -= 1;
-      if (argCount > 100) throw new RangeError("User-defined functions cannot have more than 100 arguments");
-    }
-    this[cppdb].aggregate(start, step, inverse, result, name, argCount, safeIntegers, deterministic, directOnly);
-    return this;
-  };
-  const getFunctionOption = (options, key, required) => {
-    const value = key in options ? options[key] : null;
-    if (typeof value === "function") return value;
-    if (value != null) throw new TypeError(`Expected the "${key}" option to be a function`);
-    if (required) throw new TypeError(`Missing required option "${key}"`);
-    return null;
-  };
-  const getLength = ({ length }) => {
-    if (Number.isInteger(length) && length >= 0) return length;
-    throw new TypeError("Expected function.length to be a positive integer");
-  };
-  return aggregate;
-}
-var table;
-var hasRequiredTable;
-function requireTable() {
-  if (hasRequiredTable) return table;
-  hasRequiredTable = 1;
-  const { cppdb } = util$1;
-  table = function defineTable(name, factory) {
-    if (typeof name !== "string") throw new TypeError("Expected first argument to be a string");
-    if (!name) throw new TypeError("Virtual table module name cannot be an empty string");
-    let eponymous = false;
-    if (typeof factory === "object" && factory !== null) {
-      eponymous = true;
-      factory = defer(parseTableDefinition(factory, "used", name));
-    } else {
-      if (typeof factory !== "function") throw new TypeError("Expected second argument to be a function or a table definition object");
-      factory = wrapFactory(factory);
-    }
-    this[cppdb].table(factory, name, eponymous);
-    return this;
-  };
-  function wrapFactory(factory) {
-    return function virtualTableFactory(moduleName, databaseName, tableName, ...args) {
-      const thisObject = {
-        module: moduleName,
-        database: databaseName,
-        table: tableName
-      };
-      const def = apply.call(factory, thisObject, args);
-      if (typeof def !== "object" || def === null) {
-        throw new TypeError(`Virtual table module "${moduleName}" did not return a table definition object`);
-      }
-      return parseTableDefinition(def, "returned", moduleName);
-    };
-  }
-  function parseTableDefinition(def, verb, moduleName) {
-    if (!hasOwnProperty.call(def, "rows")) {
-      throw new TypeError(`Virtual table module "${moduleName}" ${verb} a table definition without a "rows" property`);
-    }
-    if (!hasOwnProperty.call(def, "columns")) {
-      throw new TypeError(`Virtual table module "${moduleName}" ${verb} a table definition without a "columns" property`);
-    }
-    const rows = def.rows;
-    if (typeof rows !== "function" || Object.getPrototypeOf(rows) !== GeneratorFunctionPrototype) {
-      throw new TypeError(`Virtual table module "${moduleName}" ${verb} a table definition with an invalid "rows" property (should be a generator function)`);
-    }
-    let columns = def.columns;
-    if (!Array.isArray(columns) || !(columns = [...columns]).every((x) => typeof x === "string")) {
-      throw new TypeError(`Virtual table module "${moduleName}" ${verb} a table definition with an invalid "columns" property (should be an array of strings)`);
-    }
-    if (columns.length !== new Set(columns).size) {
-      throw new TypeError(`Virtual table module "${moduleName}" ${verb} a table definition with duplicate column names`);
-    }
-    if (!columns.length) {
-      throw new RangeError(`Virtual table module "${moduleName}" ${verb} a table definition with zero columns`);
-    }
-    let parameters;
-    if (hasOwnProperty.call(def, "parameters")) {
-      parameters = def.parameters;
-      if (!Array.isArray(parameters) || !(parameters = [...parameters]).every((x) => typeof x === "string")) {
-        throw new TypeError(`Virtual table module "${moduleName}" ${verb} a table definition with an invalid "parameters" property (should be an array of strings)`);
-      }
-    } else {
-      parameters = inferParameters(rows);
-    }
-    if (parameters.length !== new Set(parameters).size) {
-      throw new TypeError(`Virtual table module "${moduleName}" ${verb} a table definition with duplicate parameter names`);
-    }
-    if (parameters.length > 32) {
-      throw new RangeError(`Virtual table module "${moduleName}" ${verb} a table definition with more than the maximum number of 32 parameters`);
-    }
-    for (const parameter of parameters) {
-      if (columns.includes(parameter)) {
-        throw new TypeError(`Virtual table module "${moduleName}" ${verb} a table definition with column "${parameter}" which was ambiguously defined as both a column and parameter`);
-      }
-    }
-    let safeIntegers = 2;
-    if (hasOwnProperty.call(def, "safeIntegers")) {
-      const bool = def.safeIntegers;
-      if (typeof bool !== "boolean") {
-        throw new TypeError(`Virtual table module "${moduleName}" ${verb} a table definition with an invalid "safeIntegers" property (should be a boolean)`);
-      }
-      safeIntegers = +bool;
-    }
-    let directOnly = false;
-    if (hasOwnProperty.call(def, "directOnly")) {
-      directOnly = def.directOnly;
-      if (typeof directOnly !== "boolean") {
-        throw new TypeError(`Virtual table module "${moduleName}" ${verb} a table definition with an invalid "directOnly" property (should be a boolean)`);
-      }
-    }
-    const columnDefinitions = [
-      ...parameters.map(identifier).map((str) => `${str} HIDDEN`),
-      ...columns.map(identifier)
-    ];
-    return [
-      `CREATE TABLE x(${columnDefinitions.join(", ")});`,
-      wrapGenerator(rows, new Map(columns.map((x, i) => [x, parameters.length + i])), moduleName),
-      parameters,
-      safeIntegers,
-      directOnly
-    ];
-  }
-  function wrapGenerator(generator, columnMap, moduleName) {
-    return function* virtualTable(...args) {
-      const output = args.map((x) => Buffer.isBuffer(x) ? Buffer.from(x) : x);
-      for (let i = 0; i < columnMap.size; ++i) {
-        output.push(null);
-      }
-      for (const row of generator(...args)) {
-        if (Array.isArray(row)) {
-          extractRowArray(row, output, columnMap.size, moduleName);
-          yield output;
-        } else if (typeof row === "object" && row !== null) {
-          extractRowObject(row, output, columnMap, moduleName);
-          yield output;
-        } else {
-          throw new TypeError(`Virtual table module "${moduleName}" yielded something that isn't a valid row object`);
-        }
-      }
-    };
-  }
-  function extractRowArray(row, output, columnCount, moduleName) {
-    if (row.length !== columnCount) {
-      throw new TypeError(`Virtual table module "${moduleName}" yielded a row with an incorrect number of columns`);
-    }
-    const offset = output.length - columnCount;
-    for (let i = 0; i < columnCount; ++i) {
-      output[i + offset] = row[i];
-    }
-  }
-  function extractRowObject(row, output, columnMap, moduleName) {
-    let count = 0;
-    for (const key of Object.keys(row)) {
-      const index = columnMap.get(key);
-      if (index === void 0) {
-        throw new TypeError(`Virtual table module "${moduleName}" yielded a row with an undeclared column "${key}"`);
-      }
-      output[index] = row[key];
-      count += 1;
-    }
-    if (count !== columnMap.size) {
-      throw new TypeError(`Virtual table module "${moduleName}" yielded a row with missing columns`);
-    }
-  }
-  function inferParameters({ length }) {
-    if (!Number.isInteger(length) || length < 0) {
-      throw new TypeError("Expected function.length to be a positive integer");
-    }
-    const params = [];
-    for (let i = 0; i < length; ++i) {
-      params.push(`$${i + 1}`);
-    }
-    return params;
-  }
-  const { hasOwnProperty } = Object.prototype;
-  const { apply } = Function.prototype;
-  const GeneratorFunctionPrototype = Object.getPrototypeOf(function* () {
-  });
-  const identifier = (str) => `"${str.replace(/"/g, '""')}"`;
-  const defer = (x) => () => x;
-  return table;
-}
-var inspect;
-var hasRequiredInspect;
-function requireInspect() {
-  if (hasRequiredInspect) return inspect;
-  hasRequiredInspect = 1;
-  const DatabaseInspection = function Database2() {
-  };
-  inspect = function inspect2(depth, opts) {
-    return Object.assign(new DatabaseInspection(), this);
-  };
-  return inspect;
-}
-const fs = require$$0;
-const path = require$$1;
-const util = util$1;
-const SqliteError = sqliteError;
-let DEFAULT_ADDON;
-function Database$1(filenameGiven, options) {
-  if (new.target == null) {
-    return new Database$1(filenameGiven, options);
-  }
-  let buffer;
-  if (Buffer.isBuffer(filenameGiven)) {
-    buffer = filenameGiven;
-    filenameGiven = ":memory:";
-  }
-  if (filenameGiven == null) filenameGiven = "";
-  if (options == null) options = {};
-  if (typeof filenameGiven !== "string") throw new TypeError("Expected first argument to be a string");
-  if (typeof options !== "object") throw new TypeError("Expected second argument to be an options object");
-  if ("readOnly" in options) throw new TypeError('Misspelled option "readOnly" should be "readonly"');
-  if ("memory" in options) throw new TypeError('Option "memory" was removed in v7.0.0 (use ":memory:" filename instead)');
-  const filename = filenameGiven.trim();
-  const anonymous = filename === "" || filename === ":memory:";
-  const readonly = util.getBooleanOption(options, "readonly");
-  const fileMustExist = util.getBooleanOption(options, "fileMustExist");
-  const timeout = "timeout" in options ? options.timeout : 5e3;
-  const verbose = "verbose" in options ? options.verbose : null;
-  const nativeBinding = "nativeBinding" in options ? options.nativeBinding : null;
-  if (readonly && anonymous && !buffer) throw new TypeError("In-memory/temporary databases cannot be readonly");
-  if (!Number.isInteger(timeout) || timeout < 0) throw new TypeError('Expected the "timeout" option to be a positive integer');
-  if (timeout > 2147483647) throw new RangeError('Option "timeout" cannot be greater than 2147483647');
-  if (verbose != null && typeof verbose !== "function") throw new TypeError('Expected the "verbose" option to be a function');
-  if (nativeBinding != null && typeof nativeBinding !== "string" && typeof nativeBinding !== "object") throw new TypeError('Expected the "nativeBinding" option to be a string or addon object');
-  let addon;
-  if (nativeBinding == null) {
-    addon = DEFAULT_ADDON || (DEFAULT_ADDON = requireBindings()("better_sqlite3.node"));
-  } else if (typeof nativeBinding === "string") {
-    const requireFunc = typeof __non_webpack_require__ === "function" ? __non_webpack_require__ : commonjsRequire;
-    addon = requireFunc(path.resolve(nativeBinding).replace(/(\.node)?$/, ".node"));
-  } else {
-    addon = nativeBinding;
-  }
-  if (!addon.isInitialized) {
-    addon.setErrorConstructor(SqliteError);
-    addon.isInitialized = true;
-  }
-  if (!anonymous && !filename.startsWith("file:") && !fs.existsSync(path.dirname(filename))) {
-    throw new TypeError("Cannot open database because the directory does not exist");
-  }
-  Object.defineProperties(this, {
-    [util.cppdb]: { value: new addon.Database(filename, filenameGiven, anonymous, readonly, fileMustExist, timeout, verbose || null, buffer || null) },
-    ...wrappers.getters
-  });
-}
-const wrappers = requireWrappers();
-Database$1.prototype.prepare = wrappers.prepare;
-Database$1.prototype.transaction = requireTransaction();
-Database$1.prototype.pragma = requirePragma();
-Database$1.prototype.backup = requireBackup();
-Database$1.prototype.serialize = requireSerialize();
-Database$1.prototype.function = require_function();
-Database$1.prototype.aggregate = requireAggregate();
-Database$1.prototype.table = requireTable();
-Database$1.prototype.loadExtension = wrappers.loadExtension;
-Database$1.prototype.exec = wrappers.exec;
-Database$1.prototype.close = wrappers.close;
-Database$1.prototype.defaultSafeIntegers = wrappers.defaultSafeIntegers;
-Database$1.prototype.unsafeMode = wrappers.unsafeMode;
-Database$1.prototype[util.inspect] = requireInspect();
-var database = Database$1;
-lib.exports = database;
-lib.exports.SqliteError = sqliteError;
-var libExports = lib.exports;
-const Database = /* @__PURE__ */ getDefaultExportFromCjs(libExports);
-_W = entityKind;
-const _SelectionProxyHandler = class _SelectionProxyHandler {
-  constructor(config) {
-    __publicField(this, "config");
-    this.config = { ...config };
-  }
-  get(subquery, prop) {
-    if (prop === "_") {
+  get(e, t) {
+    if (t === "_")
       return {
-        ...subquery["_"],
+        ...e._,
         selectedFields: new Proxy(
-          subquery._.selectedFields,
+          e._.selectedFields,
           this
         )
       };
-    }
-    if (prop === ViewBaseConfig) {
+    if (t === B)
       return {
-        ...subquery[ViewBaseConfig],
+        ...e[B],
         selectedFields: new Proxy(
-          subquery[ViewBaseConfig].selectedFields,
+          e[B].selectedFields,
           this
         )
       };
+    if (typeof t == "symbol")
+      return e[t];
+    const r = (d(e, R) ? e._.selectedFields : d(e, se) ? e[B].selectedFields : e)[t];
+    if (d(r, g.Aliased)) {
+      if (this.config.sqlAliasedBehavior === "sql" && !r.isSelectionField)
+        return r.sql;
+      const o = r.clone();
+      return o.isSelectionField = !0, o;
     }
-    if (typeof prop === "symbol") {
-      return subquery[prop];
-    }
-    const columns = is(subquery, Subquery) ? subquery._.selectedFields : is(subquery, View) ? subquery[ViewBaseConfig].selectedFields : subquery;
-    const value = columns[prop];
-    if (is(value, SQL.Aliased)) {
-      if (this.config.sqlAliasedBehavior === "sql" && !value.isSelectionField) {
-        return value.sql;
-      }
-      const newValue = value.clone();
-      newValue.isSelectionField = true;
-      return newValue;
-    }
-    if (is(value, SQL)) {
-      if (this.config.sqlBehavior === "sql") {
-        return value;
-      }
+    if (d(r, g)) {
+      if (this.config.sqlBehavior === "sql")
+        return r;
       throw new Error(
-        `You tried to reference "${prop}" field from a subquery, which is a raw SQL field, but it doesn't have an alias declared. Please add an alias to the field using ".as('alias')" method.`
+        `You tried to reference "${t}" field from a subquery, which is a raw SQL field, but it doesn't have an alias declared. Please add an alias to the field using ".as('alias')" method.`
       );
     }
-    if (is(value, Column)) {
-      if (this.config.alias) {
-        return new Proxy(
-          value,
-          new ColumnAliasProxyHandler(
-            new Proxy(
-              value.table,
-              new TableAliasProxyHandler(this.config.alias, this.config.replaceOriginalName ?? false)
-            )
-          )
-        );
-      }
-      return value;
-    }
-    if (typeof value !== "object" || value === null) {
-      return value;
-    }
-    return new Proxy(value, new _SelectionProxyHandler(this.config));
+    return d(r, L) ? this.config.alias ? new Proxy(
+      r,
+      new ce(
+        new Proxy(
+          r.table,
+          new Ae(this.config.alias, this.config.replaceOriginalName ?? !1)
+        )
+      )
+    ) : r : typeof r != "object" || r === null ? r : new Proxy(r, new Be(this.config));
   }
 };
-__publicField(_SelectionProxyHandler, _W, "SelectionProxyHandler");
-let SelectionProxyHandler = _SelectionProxyHandler;
-_X = entityKind;
-class ForeignKeyBuilder {
-  constructor(config, actions) {
+n(Be, ms, "SelectionProxyHandler");
+let O = Be;
+var ps;
+ps = f;
+class Dr {
+  constructor(e, t) {
     /** @internal */
-    __publicField(this, "reference");
+    n(this, "reference");
     /** @internal */
-    __publicField(this, "_onUpdate");
+    n(this, "_onUpdate");
     /** @internal */
-    __publicField(this, "_onDelete");
+    n(this, "_onDelete");
     this.reference = () => {
-      const { name, columns, foreignColumns } = config();
-      return { name, columns, foreignTable: foreignColumns[0].table, foreignColumns };
-    };
-    if (actions) {
-      this._onUpdate = actions.onUpdate;
-      this._onDelete = actions.onDelete;
-    }
+      const { name: s, columns: r, foreignColumns: o } = e();
+      return { name: s, columns: r, foreignTable: o[0].table, foreignColumns: o };
+    }, t && (this._onUpdate = t.onUpdate, this._onDelete = t.onDelete);
   }
-  onUpdate(action) {
-    this._onUpdate = action;
-    return this;
+  onUpdate(e) {
+    return this._onUpdate = e, this;
   }
-  onDelete(action) {
-    this._onDelete = action;
-    return this;
+  onDelete(e) {
+    return this._onDelete = e, this;
   }
   /** @internal */
-  build(table2) {
-    return new ForeignKey(table2, this);
+  build(e) {
+    return new Fr(e, this);
   }
 }
-__publicField(ForeignKeyBuilder, _X, "SQLiteForeignKeyBuilder");
-_Y = entityKind;
-class ForeignKey {
-  constructor(table2, builder) {
-    __publicField(this, "reference");
-    __publicField(this, "onUpdate");
-    __publicField(this, "onDelete");
-    this.table = table2;
-    this.reference = builder.reference;
-    this.onUpdate = builder._onUpdate;
-    this.onDelete = builder._onDelete;
+n(Dr, ps, "SQLiteForeignKeyBuilder");
+var gs;
+gs = f;
+class Fr {
+  constructor(e, t) {
+    n(this, "reference");
+    n(this, "onUpdate");
+    n(this, "onDelete");
+    this.table = e, this.reference = t.reference, this.onUpdate = t._onUpdate, this.onDelete = t._onDelete;
   }
   getName() {
-    const { name, columns, foreignColumns } = this.reference();
-    const columnNames = columns.map((column) => column.name);
-    const foreignColumnNames = foreignColumns.map((column) => column.name);
-    const chunks = [
-      this.table[TableName],
-      ...columnNames,
-      foreignColumns[0].table[TableName],
-      ...foreignColumnNames
+    const { name: e, columns: t, foreignColumns: s } = this.reference(), r = t.map((a) => a.name), o = s.map((a) => a.name), l = [
+      this.table[Y],
+      ...r,
+      s[0].table[Y],
+      ...o
     ];
-    return name ?? `${chunks.join("_")}_fk`;
+    return e ?? `${l.join("_")}_fk`;
   }
 }
-__publicField(ForeignKey, _Y, "SQLiteForeignKey");
-function uniqueKeyName(table2, columns) {
-  return `${table2[TableName]}_${columns.join("_")}_unique`;
+n(Fr, gs, "SQLiteForeignKey");
+function So(i, e) {
+  return `${i[Y]}_${e.join("_")}_unique`;
 }
-class SQLiteColumnBuilder extends (__ = ColumnBuilder, _Z = entityKind, __) {
+var ys, bs;
+class F extends (bs = Tr, ys = f, bs) {
   constructor() {
     super(...arguments);
-    __publicField(this, "foreignKeyConfigs", []);
+    n(this, "foreignKeyConfigs", []);
   }
-  references(ref, actions = {}) {
-    this.foreignKeyConfigs.push({ ref, actions });
-    return this;
+  references(t, s = {}) {
+    return this.foreignKeyConfigs.push({ ref: t, actions: s }), this;
   }
-  unique(name) {
-    this.config.isUnique = true;
-    this.config.uniqueName = name;
-    return this;
+  unique(t) {
+    return this.config.isUnique = !0, this.config.uniqueName = t, this;
   }
-  generatedAlwaysAs(as, config) {
-    this.config.generated = {
-      as,
+  generatedAlwaysAs(t, s) {
+    return this.config.generated = {
+      as: t,
       type: "always",
-      mode: (config == null ? void 0 : config.mode) ?? "virtual"
-    };
-    return this;
+      mode: (s == null ? void 0 : s.mode) ?? "virtual"
+    }, this;
   }
   /** @internal */
-  buildForeignKeys(column, table2) {
-    return this.foreignKeyConfigs.map(({ ref, actions }) => {
-      return ((ref2, actions2) => {
-        const builder = new ForeignKeyBuilder(() => {
-          const foreignColumn = ref2();
-          return { columns: [column], foreignColumns: [foreignColumn] };
-        });
-        if (actions2.onUpdate) {
-          builder.onUpdate(actions2.onUpdate);
-        }
-        if (actions2.onDelete) {
-          builder.onDelete(actions2.onDelete);
-        }
-        return builder.build(table2);
-      })(ref, actions);
-    });
+  buildForeignKeys(t, s) {
+    return this.foreignKeyConfigs.map(({ ref: r, actions: o }) => ((l, a) => {
+      const c = new Dr(() => {
+        const m = l();
+        return { columns: [t], foreignColumns: [m] };
+      });
+      return a.onUpdate && c.onUpdate(a.onUpdate), a.onDelete && c.onDelete(a.onDelete), c.build(s);
+    })(r, o));
   }
 }
-__publicField(SQLiteColumnBuilder, _Z, "SQLiteColumnBuilder");
-class SQLiteColumn extends (_aa = Column, _$ = entityKind, _aa) {
-  constructor(table2, config) {
-    if (!config.uniqueName) {
-      config.uniqueName = uniqueKeyName(table2, [config.name]);
-    }
-    super(table2, config);
-    this.table = table2;
+n(F, ys, "SQLiteColumnBuilder");
+var ws, Ss;
+class A extends (Ss = L, ws = f, Ss) {
+  constructor(e, t) {
+    t.uniqueName || (t.uniqueName = So(e, [t.name])), super(e, t), this.table = e;
   }
 }
-__publicField(SQLiteColumn, _$, "SQLiteColumn");
-class SQLiteBigIntBuilder extends (_ca = SQLiteColumnBuilder, _ba = entityKind, _ca) {
-  constructor(name) {
-    super(name, "bigint", "SQLiteBigInt");
+n(A, ws, "SQLiteColumn");
+var Ns, $s;
+class zr extends ($s = F, Ns = f, $s) {
+  constructor(e) {
+    super(e, "bigint", "SQLiteBigInt");
   }
   /** @internal */
-  build(table2) {
-    return new SQLiteBigInt(table2, this.config);
+  build(e) {
+    return new Mr(e, this.config);
   }
 }
-__publicField(SQLiteBigIntBuilder, _ba, "SQLiteBigIntBuilder");
-class SQLiteBigInt extends (_ea = SQLiteColumn, _da = entityKind, _ea) {
+n(zr, Ns, "SQLiteBigIntBuilder");
+var Qs, Ts;
+class Mr extends (Ts = A, Qs = f, Ts) {
   getSQLType() {
     return "blob";
   }
-  mapFromDriverValue(value) {
-    if (typeof Buffer !== "undefined" && Buffer.from) {
-      const buf = Buffer.isBuffer(value) ? value : value instanceof ArrayBuffer ? Buffer.from(value) : value.buffer ? Buffer.from(value.buffer, value.byteOffset, value.byteLength) : Buffer.from(value);
-      return BigInt(buf.toString("utf8"));
+  mapFromDriverValue(e) {
+    if (typeof Buffer < "u" && Buffer.from) {
+      const t = Buffer.isBuffer(e) ? e : e instanceof ArrayBuffer ? Buffer.from(e) : e.buffer ? Buffer.from(e.buffer, e.byteOffset, e.byteLength) : Buffer.from(e);
+      return BigInt(t.toString("utf8"));
     }
-    return BigInt(textDecoder.decode(value));
+    return BigInt(jr.decode(e));
   }
-  mapToDriverValue(value) {
-    return Buffer.from(value.toString());
+  mapToDriverValue(e) {
+    return Buffer.from(e.toString());
   }
 }
-__publicField(SQLiteBigInt, _da, "SQLiteBigInt");
-class SQLiteBlobJsonBuilder extends (_ga = SQLiteColumnBuilder, _fa = entityKind, _ga) {
-  constructor(name) {
-    super(name, "json", "SQLiteBlobJson");
+n(Mr, Qs, "SQLiteBigInt");
+var Cs, vs;
+class Vr extends (vs = F, Cs = f, vs) {
+  constructor(e) {
+    super(e, "json", "SQLiteBlobJson");
   }
   /** @internal */
-  build(table2) {
-    return new SQLiteBlobJson(
-      table2,
+  build(e) {
+    return new Kr(
+      e,
       this.config
     );
   }
 }
-__publicField(SQLiteBlobJsonBuilder, _fa, "SQLiteBlobJsonBuilder");
-class SQLiteBlobJson extends (_ia = SQLiteColumn, _ha = entityKind, _ia) {
+n(Vr, Cs, "SQLiteBlobJsonBuilder");
+var Ls, xs;
+class Kr extends (xs = A, Ls = f, xs) {
   getSQLType() {
     return "blob";
   }
-  mapFromDriverValue(value) {
-    if (typeof Buffer !== "undefined" && Buffer.from) {
-      const buf = Buffer.isBuffer(value) ? value : value instanceof ArrayBuffer ? Buffer.from(value) : value.buffer ? Buffer.from(value.buffer, value.byteOffset, value.byteLength) : Buffer.from(value);
-      return JSON.parse(buf.toString("utf8"));
+  mapFromDriverValue(e) {
+    if (typeof Buffer < "u" && Buffer.from) {
+      const t = Buffer.isBuffer(e) ? e : e instanceof ArrayBuffer ? Buffer.from(e) : e.buffer ? Buffer.from(e.buffer, e.byteOffset, e.byteLength) : Buffer.from(e);
+      return JSON.parse(t.toString("utf8"));
     }
-    return JSON.parse(textDecoder.decode(value));
+    return JSON.parse(jr.decode(e));
   }
-  mapToDriverValue(value) {
-    return Buffer.from(JSON.stringify(value));
+  mapToDriverValue(e) {
+    return Buffer.from(JSON.stringify(e));
   }
 }
-__publicField(SQLiteBlobJson, _ha, "SQLiteBlobJson");
-class SQLiteBlobBufferBuilder extends (_ka = SQLiteColumnBuilder, _ja = entityKind, _ka) {
-  constructor(name) {
-    super(name, "buffer", "SQLiteBlobBuffer");
+n(Kr, Ls, "SQLiteBlobJson");
+var Bs, qs;
+class Ur extends (qs = F, Bs = f, qs) {
+  constructor(e) {
+    super(e, "buffer", "SQLiteBlobBuffer");
   }
   /** @internal */
-  build(table2) {
-    return new SQLiteBlobBuffer(table2, this.config);
+  build(e) {
+    return new Jr(e, this.config);
   }
 }
-__publicField(SQLiteBlobBufferBuilder, _ja, "SQLiteBlobBufferBuilder");
-class SQLiteBlobBuffer extends (_ma = SQLiteColumn, _la = entityKind, _ma) {
-  mapFromDriverValue(value) {
-    if (Buffer.isBuffer(value)) {
-      return value;
-    }
-    return Buffer.from(value);
+n(Ur, Bs, "SQLiteBlobBufferBuilder");
+var Os, As;
+class Jr extends (As = A, Os = f, As) {
+  mapFromDriverValue(e) {
+    return Buffer.isBuffer(e) ? e : Buffer.from(e);
   }
   getSQLType() {
     return "blob";
   }
 }
-__publicField(SQLiteBlobBuffer, _la, "SQLiteBlobBuffer");
-function blob(a, b) {
-  const { name, config } = getColumnNameAndConfig(a, b);
-  if ((config == null ? void 0 : config.mode) === "json") {
-    return new SQLiteBlobJsonBuilder(name);
-  }
-  if ((config == null ? void 0 : config.mode) === "bigint") {
-    return new SQLiteBigIntBuilder(name);
-  }
-  return new SQLiteBlobBufferBuilder(name);
+n(Jr, Os, "SQLiteBlobBuffer");
+function No(i, e) {
+  const { name: t, config: s } = he(i, e);
+  return (s == null ? void 0 : s.mode) === "json" ? new Vr(t) : (s == null ? void 0 : s.mode) === "bigint" ? new zr(t) : new Ur(t);
 }
-class SQLiteCustomColumnBuilder extends (_oa = SQLiteColumnBuilder, _na = entityKind, _oa) {
-  constructor(name, fieldConfig, customTypeParams) {
-    super(name, "custom", "SQLiteCustomColumn");
-    this.config.fieldConfig = fieldConfig;
-    this.config.customTypeParams = customTypeParams;
+var Is, js;
+class Wr extends (js = F, Is = f, js) {
+  constructor(e, t, s) {
+    super(e, "custom", "SQLiteCustomColumn"), this.config.fieldConfig = t, this.config.customTypeParams = s;
   }
   /** @internal */
-  build(table2) {
-    return new SQLiteCustomColumn(
-      table2,
+  build(e) {
+    return new Gr(
+      e,
       this.config
     );
   }
 }
-__publicField(SQLiteCustomColumnBuilder, _na, "SQLiteCustomColumnBuilder");
-class SQLiteCustomColumn extends (_qa = SQLiteColumn, _pa = entityKind, _qa) {
-  constructor(table2, config) {
-    super(table2, config);
-    __publicField(this, "sqlName");
-    __publicField(this, "mapTo");
-    __publicField(this, "mapFrom");
-    this.sqlName = config.customTypeParams.dataType(config.fieldConfig);
-    this.mapTo = config.customTypeParams.toDriver;
-    this.mapFrom = config.customTypeParams.fromDriver;
+n(Wr, Is, "SQLiteCustomColumnBuilder");
+var _s, Ps;
+class Gr extends (Ps = A, _s = f, Ps) {
+  constructor(t, s) {
+    super(t, s);
+    n(this, "sqlName");
+    n(this, "mapTo");
+    n(this, "mapFrom");
+    this.sqlName = s.customTypeParams.dataType(s.fieldConfig), this.mapTo = s.customTypeParams.toDriver, this.mapFrom = s.customTypeParams.fromDriver;
   }
   getSQLType() {
     return this.sqlName;
   }
-  mapFromDriverValue(value) {
-    return typeof this.mapFrom === "function" ? this.mapFrom(value) : value;
+  mapFromDriverValue(t) {
+    return typeof this.mapFrom == "function" ? this.mapFrom(t) : t;
   }
-  mapToDriverValue(value) {
-    return typeof this.mapTo === "function" ? this.mapTo(value) : value;
+  mapToDriverValue(t) {
+    return typeof this.mapTo == "function" ? this.mapTo(t) : t;
   }
 }
-__publicField(SQLiteCustomColumn, _pa, "SQLiteCustomColumn");
-function customType(customTypeParams) {
-  return (a, b) => {
-    const { name, config } = getColumnNameAndConfig(a, b);
-    return new SQLiteCustomColumnBuilder(
-      name,
-      config,
-      customTypeParams
+n(Gr, _s, "SQLiteCustomColumn");
+function $o(i) {
+  return (e, t) => {
+    const { name: s, config: r } = he(e, t);
+    return new Wr(
+      s,
+      r,
+      i
     );
   };
 }
-class SQLiteBaseIntegerBuilder extends (_sa = SQLiteColumnBuilder, _ra = entityKind, _sa) {
-  constructor(name, dataType, columnType) {
-    super(name, dataType, columnType);
-    this.config.autoIncrement = false;
+var Rs, Es;
+class je extends (Es = F, Rs = f, Es) {
+  constructor(e, t, s) {
+    super(e, t, s), this.config.autoIncrement = !1;
   }
-  primaryKey(config) {
-    if (config == null ? void 0 : config.autoIncrement) {
-      this.config.autoIncrement = true;
-    }
-    this.config.hasDefault = true;
-    return super.primaryKey();
+  primaryKey(e) {
+    return e != null && e.autoIncrement && (this.config.autoIncrement = !0), this.config.hasDefault = !0, super.primaryKey();
   }
 }
-__publicField(SQLiteBaseIntegerBuilder, _ra, "SQLiteBaseIntegerBuilder");
-class SQLiteBaseInteger extends (_ua = SQLiteColumn, _ta = entityKind, _ua) {
+n(je, Rs, "SQLiteBaseIntegerBuilder");
+var Ds, Fs;
+class _e extends (Fs = A, Ds = f, Fs) {
   constructor() {
     super(...arguments);
-    __publicField(this, "autoIncrement", this.config.autoIncrement);
+    n(this, "autoIncrement", this.config.autoIncrement);
   }
   getSQLType() {
     return "integer";
   }
 }
-__publicField(SQLiteBaseInteger, _ta, "SQLiteBaseInteger");
-class SQLiteIntegerBuilder extends (_wa = SQLiteBaseIntegerBuilder, _va = entityKind, _wa) {
-  constructor(name) {
-    super(name, "number", "SQLiteInteger");
+n(_e, Ds, "SQLiteBaseInteger");
+var zs, Ms;
+class Yr extends (Ms = je, zs = f, Ms) {
+  constructor(e) {
+    super(e, "number", "SQLiteInteger");
   }
-  build(table2) {
-    return new SQLiteInteger(
-      table2,
+  build(e) {
+    return new Zr(
+      e,
       this.config
     );
   }
 }
-__publicField(SQLiteIntegerBuilder, _va, "SQLiteIntegerBuilder");
-class SQLiteInteger extends (_ya = SQLiteBaseInteger, _xa = entityKind, _ya) {
+n(Yr, zs, "SQLiteIntegerBuilder");
+var Vs, Ks;
+class Zr extends (Ks = _e, Vs = f, Ks) {
 }
-__publicField(SQLiteInteger, _xa, "SQLiteInteger");
-class SQLiteTimestampBuilder extends (_Aa = SQLiteBaseIntegerBuilder, _za = entityKind, _Aa) {
-  constructor(name, mode) {
-    super(name, "date", "SQLiteTimestamp");
-    this.config.mode = mode;
+n(Zr, Vs, "SQLiteInteger");
+var Us, Js;
+class Xr extends (Js = je, Us = f, Js) {
+  constructor(e, t) {
+    super(e, "date", "SQLiteTimestamp"), this.config.mode = t;
   }
   /**
    * @deprecated Use `default()` with your own expression instead.
@@ -2538,308 +1454,275 @@ class SQLiteTimestampBuilder extends (_Aa = SQLiteBaseIntegerBuilder, _za = enti
    * Adds `DEFAULT (cast((julianday('now') - 2440587.5)*86400000 as integer))` to the column, which is the current epoch timestamp in milliseconds.
    */
   defaultNow() {
-    return this.default(sql`(cast((julianday('now') - 2440587.5)*86400000 as integer))`);
+    return this.default(u`(cast((julianday('now') - 2440587.5)*86400000 as integer))`);
   }
-  build(table2) {
-    return new SQLiteTimestamp(
-      table2,
+  build(e) {
+    return new Hr(
+      e,
       this.config
     );
   }
 }
-__publicField(SQLiteTimestampBuilder, _za, "SQLiteTimestampBuilder");
-class SQLiteTimestamp extends (_Ca = SQLiteBaseInteger, _Ba = entityKind, _Ca) {
+n(Xr, Us, "SQLiteTimestampBuilder");
+var Ws, Gs;
+class Hr extends (Gs = _e, Ws = f, Gs) {
   constructor() {
     super(...arguments);
-    __publicField(this, "mode", this.config.mode);
+    n(this, "mode", this.config.mode);
   }
-  mapFromDriverValue(value) {
-    if (this.config.mode === "timestamp") {
-      return new Date(value * 1e3);
-    }
-    return new Date(value);
+  mapFromDriverValue(t) {
+    return this.config.mode === "timestamp" ? new Date(t * 1e3) : new Date(t);
   }
-  mapToDriverValue(value) {
-    const unix = value.getTime();
-    if (this.config.mode === "timestamp") {
-      return Math.floor(unix / 1e3);
-    }
-    return unix;
+  mapToDriverValue(t) {
+    const s = t.getTime();
+    return this.config.mode === "timestamp" ? Math.floor(s / 1e3) : s;
   }
 }
-__publicField(SQLiteTimestamp, _Ba, "SQLiteTimestamp");
-class SQLiteBooleanBuilder extends (_Ea = SQLiteBaseIntegerBuilder, _Da = entityKind, _Ea) {
-  constructor(name, mode) {
-    super(name, "boolean", "SQLiteBoolean");
-    this.config.mode = mode;
+n(Hr, Ws, "SQLiteTimestamp");
+var Ys, Zs;
+class kr extends (Zs = je, Ys = f, Zs) {
+  constructor(e, t) {
+    super(e, "boolean", "SQLiteBoolean"), this.config.mode = t;
   }
-  build(table2) {
-    return new SQLiteBoolean(
-      table2,
+  build(e) {
+    return new en(
+      e,
       this.config
     );
   }
 }
-__publicField(SQLiteBooleanBuilder, _Da, "SQLiteBooleanBuilder");
-class SQLiteBoolean extends (_Ga = SQLiteBaseInteger, _Fa = entityKind, _Ga) {
+n(kr, Ys, "SQLiteBooleanBuilder");
+var Xs, Hs;
+class en extends (Hs = _e, Xs = f, Hs) {
   constructor() {
     super(...arguments);
-    __publicField(this, "mode", this.config.mode);
+    n(this, "mode", this.config.mode);
   }
-  mapFromDriverValue(value) {
-    return Number(value) === 1;
+  mapFromDriverValue(t) {
+    return Number(t) === 1;
   }
-  mapToDriverValue(value) {
-    return value ? 1 : 0;
+  mapToDriverValue(t) {
+    return t ? 1 : 0;
   }
 }
-__publicField(SQLiteBoolean, _Fa, "SQLiteBoolean");
-function integer(a, b) {
-  const { name, config } = getColumnNameAndConfig(a, b);
-  if ((config == null ? void 0 : config.mode) === "timestamp" || (config == null ? void 0 : config.mode) === "timestamp_ms") {
-    return new SQLiteTimestampBuilder(name, config.mode);
-  }
-  if ((config == null ? void 0 : config.mode) === "boolean") {
-    return new SQLiteBooleanBuilder(name, config.mode);
-  }
-  return new SQLiteIntegerBuilder(name);
+n(en, Xs, "SQLiteBoolean");
+function tn(i, e) {
+  const { name: t, config: s } = he(i, e);
+  return (s == null ? void 0 : s.mode) === "timestamp" || (s == null ? void 0 : s.mode) === "timestamp_ms" ? new Xr(t, s.mode) : (s == null ? void 0 : s.mode) === "boolean" ? new kr(t, s.mode) : new Yr(t);
 }
-class SQLiteNumericBuilder extends (_Ia = SQLiteColumnBuilder, _Ha = entityKind, _Ia) {
-  constructor(name) {
-    super(name, "string", "SQLiteNumeric");
+var ks, ei;
+class sn extends (ei = F, ks = f, ei) {
+  constructor(e) {
+    super(e, "string", "SQLiteNumeric");
   }
   /** @internal */
-  build(table2) {
-    return new SQLiteNumeric(
-      table2,
+  build(e) {
+    return new rn(
+      e,
       this.config
     );
   }
 }
-__publicField(SQLiteNumericBuilder, _Ha, "SQLiteNumericBuilder");
-class SQLiteNumeric extends (_Ka = SQLiteColumn, _Ja = entityKind, _Ka) {
-  mapFromDriverValue(value) {
-    if (typeof value === "string") return value;
-    return String(value);
+n(sn, ks, "SQLiteNumericBuilder");
+var ti, si;
+class rn extends (si = A, ti = f, si) {
+  mapFromDriverValue(e) {
+    return typeof e == "string" ? e : String(e);
   }
   getSQLType() {
     return "numeric";
   }
 }
-__publicField(SQLiteNumeric, _Ja, "SQLiteNumeric");
-class SQLiteNumericNumberBuilder extends (_Ma = SQLiteColumnBuilder, _La = entityKind, _Ma) {
-  constructor(name) {
-    super(name, "number", "SQLiteNumericNumber");
+n(rn, ti, "SQLiteNumeric");
+var ii, ri;
+class nn extends (ri = F, ii = f, ri) {
+  constructor(e) {
+    super(e, "number", "SQLiteNumericNumber");
   }
   /** @internal */
-  build(table2) {
-    return new SQLiteNumericNumber(
-      table2,
+  build(e) {
+    return new on(
+      e,
       this.config
     );
   }
 }
-__publicField(SQLiteNumericNumberBuilder, _La, "SQLiteNumericNumberBuilder");
-class SQLiteNumericNumber extends (_Oa = SQLiteColumn, _Na = entityKind, _Oa) {
+n(nn, ii, "SQLiteNumericNumberBuilder");
+var ni, oi;
+class on extends (oi = A, ni = f, oi) {
   constructor() {
     super(...arguments);
-    __publicField(this, "mapToDriverValue", String);
+    n(this, "mapToDriverValue", String);
   }
-  mapFromDriverValue(value) {
-    if (typeof value === "number") return value;
-    return Number(value);
+  mapFromDriverValue(t) {
+    return typeof t == "number" ? t : Number(t);
   }
   getSQLType() {
     return "numeric";
   }
 }
-__publicField(SQLiteNumericNumber, _Na, "SQLiteNumericNumber");
-class SQLiteNumericBigIntBuilder extends (_Qa = SQLiteColumnBuilder, _Pa = entityKind, _Qa) {
-  constructor(name) {
-    super(name, "bigint", "SQLiteNumericBigInt");
+n(on, ni, "SQLiteNumericNumber");
+var ai, li;
+class an extends (li = F, ai = f, li) {
+  constructor(e) {
+    super(e, "bigint", "SQLiteNumericBigInt");
   }
   /** @internal */
-  build(table2) {
-    return new SQLiteNumericBigInt(
-      table2,
+  build(e) {
+    return new ln(
+      e,
       this.config
     );
   }
 }
-__publicField(SQLiteNumericBigIntBuilder, _Pa, "SQLiteNumericBigIntBuilder");
-class SQLiteNumericBigInt extends (_Sa = SQLiteColumn, _Ra = entityKind, _Sa) {
+n(an, ai, "SQLiteNumericBigIntBuilder");
+var ui, ci;
+class ln extends (ci = A, ui = f, ci) {
   constructor() {
     super(...arguments);
-    __publicField(this, "mapFromDriverValue", BigInt);
-    __publicField(this, "mapToDriverValue", String);
+    n(this, "mapFromDriverValue", BigInt);
+    n(this, "mapToDriverValue", String);
   }
   getSQLType() {
     return "numeric";
   }
 }
-__publicField(SQLiteNumericBigInt, _Ra, "SQLiteNumericBigInt");
-function numeric(a, b) {
-  const { name, config } = getColumnNameAndConfig(a, b);
-  const mode = config == null ? void 0 : config.mode;
-  return mode === "number" ? new SQLiteNumericNumberBuilder(name) : mode === "bigint" ? new SQLiteNumericBigIntBuilder(name) : new SQLiteNumericBuilder(name);
+n(ln, ui, "SQLiteNumericBigInt");
+function Qo(i, e) {
+  const { name: t, config: s } = he(i, e), r = s == null ? void 0 : s.mode;
+  return r === "number" ? new nn(t) : r === "bigint" ? new an(t) : new sn(t);
 }
-class SQLiteRealBuilder extends (_Ua = SQLiteColumnBuilder, _Ta = entityKind, _Ua) {
-  constructor(name) {
-    super(name, "number", "SQLiteReal");
+var hi, di;
+class un extends (di = F, hi = f, di) {
+  constructor(e) {
+    super(e, "number", "SQLiteReal");
   }
   /** @internal */
-  build(table2) {
-    return new SQLiteReal(table2, this.config);
+  build(e) {
+    return new cn(e, this.config);
   }
 }
-__publicField(SQLiteRealBuilder, _Ta, "SQLiteRealBuilder");
-class SQLiteReal extends (_Wa = SQLiteColumn, _Va = entityKind, _Wa) {
+n(un, hi, "SQLiteRealBuilder");
+var fi, mi;
+class cn extends (mi = A, fi = f, mi) {
   getSQLType() {
     return "real";
   }
 }
-__publicField(SQLiteReal, _Va, "SQLiteReal");
-function real(name) {
-  return new SQLiteRealBuilder(name ?? "");
+n(cn, fi, "SQLiteReal");
+function To(i) {
+  return new un(i ?? "");
 }
-class SQLiteTextBuilder extends (_Ya = SQLiteColumnBuilder, _Xa = entityKind, _Ya) {
-  constructor(name, config) {
-    super(name, "string", "SQLiteText");
-    this.config.enumValues = config.enum;
-    this.config.length = config.length;
+var pi, gi;
+class hn extends (gi = F, pi = f, gi) {
+  constructor(e, t) {
+    super(e, "string", "SQLiteText"), this.config.enumValues = t.enum, this.config.length = t.length;
   }
   /** @internal */
-  build(table2) {
-    return new SQLiteText(
-      table2,
+  build(e) {
+    return new dn(
+      e,
       this.config
     );
   }
 }
-__publicField(SQLiteTextBuilder, _Xa, "SQLiteTextBuilder");
-class SQLiteText extends (__a = SQLiteColumn, _Za = entityKind, __a) {
-  constructor(table2, config) {
-    super(table2, config);
-    __publicField(this, "enumValues", this.config.enumValues);
-    __publicField(this, "length", this.config.length);
+n(hn, pi, "SQLiteTextBuilder");
+var yi, bi;
+class dn extends (bi = A, yi = f, bi) {
+  constructor(t, s) {
+    super(t, s);
+    n(this, "enumValues", this.config.enumValues);
+    n(this, "length", this.config.length);
   }
   getSQLType() {
     return `text${this.config.length ? `(${this.config.length})` : ""}`;
   }
 }
-__publicField(SQLiteText, _Za, "SQLiteText");
-class SQLiteTextJsonBuilder extends (_ab = SQLiteColumnBuilder, _$a = entityKind, _ab) {
-  constructor(name) {
-    super(name, "json", "SQLiteTextJson");
+n(dn, yi, "SQLiteText");
+var wi, Si;
+class fn extends (Si = F, wi = f, Si) {
+  constructor(e) {
+    super(e, "json", "SQLiteTextJson");
   }
   /** @internal */
-  build(table2) {
-    return new SQLiteTextJson(
-      table2,
+  build(e) {
+    return new mn(
+      e,
       this.config
     );
   }
 }
-__publicField(SQLiteTextJsonBuilder, _$a, "SQLiteTextJsonBuilder");
-class SQLiteTextJson extends (_cb = SQLiteColumn, _bb = entityKind, _cb) {
+n(fn, wi, "SQLiteTextJsonBuilder");
+var Ni, $i;
+class mn extends ($i = A, Ni = f, $i) {
   getSQLType() {
     return "text";
   }
-  mapFromDriverValue(value) {
-    return JSON.parse(value);
+  mapFromDriverValue(e) {
+    return JSON.parse(e);
   }
-  mapToDriverValue(value) {
-    return JSON.stringify(value);
+  mapToDriverValue(e) {
+    return JSON.stringify(e);
   }
 }
-__publicField(SQLiteTextJson, _bb, "SQLiteTextJson");
-function text(a, b = {}) {
-  const { name, config } = getColumnNameAndConfig(a, b);
-  if (config.mode === "json") {
-    return new SQLiteTextJsonBuilder(name);
-  }
-  return new SQLiteTextBuilder(name, config);
+n(mn, Ni, "SQLiteTextJson");
+function We(i, e = {}) {
+  const { name: t, config: s } = he(i, e);
+  return s.mode === "json" ? new fn(t) : new hn(t, s);
 }
-function getSQLiteColumnBuilders() {
+function Co() {
   return {
-    blob,
-    customType,
-    integer,
-    numeric,
-    real,
-    text
+    blob: No,
+    customType: $o,
+    integer: tn,
+    numeric: Qo,
+    real: To,
+    text: We
   };
 }
-const InlineForeignKeys = Symbol.for("drizzle:SQLiteInlineForeignKeys");
-class SQLiteTable extends (_hb = Table, _gb = entityKind, _fb = Table.Symbol.Columns, _eb = InlineForeignKeys, _db2 = Table.Symbol.ExtraConfigBuilder, _hb) {
+const Ge = Symbol.for("drizzle:SQLiteInlineForeignKeys");
+var Qi, Ti, Ci, vi, Li;
+class P extends (Li = p, vi = f, Ci = p.Symbol.Columns, Ti = Ge, Qi = p.Symbol.ExtraConfigBuilder, Li) {
   constructor() {
     super(...arguments);
     /** @internal */
-    __publicField(this, _fb);
+    n(this, Ci);
     /** @internal */
-    __publicField(this, _eb, []);
+    n(this, Ti, []);
     /** @internal */
-    __publicField(this, _db2);
+    n(this, Qi);
   }
 }
-__publicField(SQLiteTable, _gb, "SQLiteTable");
-/** @internal */
-__publicField(SQLiteTable, "Symbol", Object.assign({}, Table.Symbol, {
-  InlineForeignKeys
+n(P, vi, "SQLiteTable"), /** @internal */
+n(P, "Symbol", Object.assign({}, p.Symbol, {
+  InlineForeignKeys: Ge
 }));
-function sqliteTableBase(name, columns, extraConfig, schema, baseName = name) {
-  const rawTable = new SQLiteTable(name, schema, baseName);
-  const parsedColumns = typeof columns === "function" ? columns(getSQLiteColumnBuilders()) : columns;
-  const builtColumns = Object.fromEntries(
-    Object.entries(parsedColumns).map(([name2, colBuilderBase]) => {
-      const colBuilder = colBuilderBase;
-      colBuilder.setName(name2);
-      const column = colBuilder.build(rawTable);
-      rawTable[InlineForeignKeys].push(...colBuilder.buildForeignKeys(column, rawTable));
-      return [name2, column];
+function vo(i, e, t, s, r = i) {
+  const o = new P(i, s, r), l = typeof e == "function" ? e(Co()) : e, a = Object.fromEntries(
+    Object.entries(l).map(([m, h]) => {
+      const w = h;
+      w.setName(m);
+      const y = w.build(o);
+      return o[Ge].push(...w.buildForeignKeys(y, o)), [m, y];
     })
-  );
-  const table2 = Object.assign(rawTable, builtColumns);
-  table2[Table.Symbol.Columns] = builtColumns;
-  table2[Table.Symbol.ExtraConfigColumns] = builtColumns;
-  return table2;
+  ), c = Object.assign(o, a);
+  return c[p.Symbol.Columns] = a, c[p.Symbol.ExtraConfigColumns] = a, c;
 }
-const sqliteTable = (name, columns, extraConfig) => {
-  return sqliteTableBase(name, columns);
-};
-function extractUsedTable(table2) {
-  if (is(table2, SQLiteTable)) {
-    return [`${table2[Table.Symbol.BaseName]}`];
-  }
-  if (is(table2, Subquery)) {
-    return table2._.usedTables ?? [];
-  }
-  if (is(table2, SQL)) {
-    return table2.usedTables ?? [];
-  }
-  return [];
+const Lo = (i, e, t) => vo(i, e);
+function H(i) {
+  return d(i, P) ? [`${i[p.Symbol.BaseName]}`] : d(i, R) ? i._.usedTables ?? [] : d(i, g) ? i.usedTables ?? [] : [];
 }
-class SQLiteDeleteBase extends (_jb = QueryPromise, _ib = entityKind, _jb) {
-  constructor(table2, session, dialect, withList) {
+var xi, Bi;
+class Ye extends (Bi = Z, xi = f, Bi) {
+  constructor(t, s, r, o) {
     super();
     /** @internal */
-    __publicField(this, "config");
-    __publicField(this, "run", (placeholderValues) => {
-      return this._prepare().run(placeholderValues);
-    });
-    __publicField(this, "all", (placeholderValues) => {
-      return this._prepare().all(placeholderValues);
-    });
-    __publicField(this, "get", (placeholderValues) => {
-      return this._prepare().get(placeholderValues);
-    });
-    __publicField(this, "values", (placeholderValues) => {
-      return this._prepare().values(placeholderValues);
-    });
-    this.table = table2;
-    this.session = session;
-    this.dialect = dialect;
-    this.config = { table: table2, withList };
+    n(this, "config");
+    n(this, "run", (t) => this._prepare().run(t));
+    n(this, "all", (t) => this._prepare().all(t));
+    n(this, "get", (t) => this._prepare().get(t));
+    n(this, "values", (t) => this._prepare().values(t));
+    this.table = t, this.session = s, this.dialect = r, this.config = { table: t, withList: o };
   }
   /**
    * Adds a `where` clause to the query.
@@ -2870,186 +1753,152 @@ class SQLiteDeleteBase extends (_jb = QueryPromise, _ib = entityKind, _jb) {
    * db.delete(cars).where(or(eq(cars.color, 'green'), eq(cars.color, 'blue')));
    * ```
    */
-  where(where) {
-    this.config.where = where;
-    return this;
+  where(t) {
+    return this.config.where = t, this;
   }
-  orderBy(...columns) {
-    if (typeof columns[0] === "function") {
-      const orderBy = columns[0](
+  orderBy(...t) {
+    if (typeof t[0] == "function") {
+      const s = t[0](
         new Proxy(
-          this.config.table[Table.Symbol.Columns],
-          new SelectionProxyHandler({ sqlAliasedBehavior: "alias", sqlBehavior: "sql" })
+          this.config.table[p.Symbol.Columns],
+          new O({ sqlAliasedBehavior: "alias", sqlBehavior: "sql" })
         )
-      );
-      const orderByArray = Array.isArray(orderBy) ? orderBy : [orderBy];
-      this.config.orderBy = orderByArray;
+      ), r = Array.isArray(s) ? s : [s];
+      this.config.orderBy = r;
     } else {
-      const orderByArray = columns;
-      this.config.orderBy = orderByArray;
+      const s = t;
+      this.config.orderBy = s;
     }
     return this;
   }
-  limit(limit) {
-    this.config.limit = limit;
-    return this;
+  limit(t) {
+    return this.config.limit = t, this;
   }
-  returning(fields = this.table[SQLiteTable.Symbol.Columns]) {
-    this.config.returning = orderSelectedFields(fields);
-    return this;
+  returning(t = this.table[P.Symbol.Columns]) {
+    return this.config.returning = ee(t), this;
   }
   /** @internal */
   getSQL() {
     return this.dialect.buildDeleteQuery(this.config);
   }
   toSQL() {
-    const { typings: _typings, ...rest } = this.dialect.sqlToQuery(this.getSQL());
-    return rest;
+    const { typings: t, ...s } = this.dialect.sqlToQuery(this.getSQL());
+    return s;
   }
   /** @internal */
-  _prepare(isOneTimeQuery = true) {
-    return this.session[isOneTimeQuery ? "prepareOneTimeQuery" : "prepareQuery"](
+  _prepare(t = !0) {
+    return this.session[t ? "prepareOneTimeQuery" : "prepareQuery"](
       this.dialect.sqlToQuery(this.getSQL()),
       this.config.returning,
       this.config.returning ? "all" : "run",
-      true,
+      !0,
       void 0,
       {
         type: "delete",
-        tables: extractUsedTable(this.config.table)
+        tables: H(this.config.table)
       }
     );
   }
   prepare() {
-    return this._prepare(false);
+    return this._prepare(!1);
   }
-  async execute(placeholderValues) {
-    return this._prepare().execute(placeholderValues);
+  async execute(t) {
+    return this._prepare().execute(t);
   }
   $dynamic() {
     return this;
   }
 }
-__publicField(SQLiteDeleteBase, _ib, "SQLiteDelete");
-function toSnakeCase(input) {
-  const words = input.replace(/['\u2019]/g, "").match(/[\da-z]+|[A-Z]+(?![a-z])|[A-Z][\da-z]+/g) ?? [];
-  return words.map((word) => word.toLowerCase()).join("_");
+n(Ye, xi, "SQLiteDelete");
+function xo(i) {
+  return (i.replace(/['\u2019]/g, "").match(/[\da-z]+|[A-Z]+(?![a-z])|[A-Z][\da-z]+/g) ?? []).map((t) => t.toLowerCase()).join("_");
 }
-function toCamelCase(input) {
-  const words = input.replace(/['\u2019]/g, "").match(/[\da-z]+|[A-Z]+(?![a-z])|[A-Z][\da-z]+/g) ?? [];
-  return words.reduce((acc, word, i) => {
-    const formattedWord = i === 0 ? word.toLowerCase() : `${word[0].toUpperCase()}${word.slice(1)}`;
-    return acc + formattedWord;
+function Bo(i) {
+  return (i.replace(/['\u2019]/g, "").match(/[\da-z]+|[A-Z]+(?![a-z])|[A-Z][\da-z]+/g) ?? []).reduce((t, s, r) => {
+    const o = r === 0 ? s.toLowerCase() : `${s[0].toUpperCase()}${s.slice(1)}`;
+    return t + o;
   }, "");
 }
-function noopCase(input) {
-  return input;
+function qo(i) {
+  return i;
 }
-_kb = entityKind;
-class CasingCache {
-  constructor(casing) {
+var qi;
+qi = f;
+class pn {
+  constructor(e) {
     /** @internal */
-    __publicField(this, "cache", {});
-    __publicField(this, "cachedTables", {});
-    __publicField(this, "convert");
-    this.convert = casing === "snake_case" ? toSnakeCase : casing === "camelCase" ? toCamelCase : noopCase;
+    n(this, "cache", {});
+    n(this, "cachedTables", {});
+    n(this, "convert");
+    this.convert = e === "snake_case" ? xo : e === "camelCase" ? Bo : qo;
   }
-  getColumnCasing(column) {
-    if (!column.keyAsName) return column.name;
-    const schema = column.table[Table.Symbol.Schema] ?? "public";
-    const tableName = column.table[Table.Symbol.OriginalName];
-    const key = `${schema}.${tableName}.${column.name}`;
-    if (!this.cache[key]) {
-      this.cacheTable(column.table);
-    }
-    return this.cache[key];
+  getColumnCasing(e) {
+    if (!e.keyAsName) return e.name;
+    const t = e.table[p.Symbol.Schema] ?? "public", s = e.table[p.Symbol.OriginalName], r = `${t}.${s}.${e.name}`;
+    return this.cache[r] || this.cacheTable(e.table), this.cache[r];
   }
-  cacheTable(table2) {
-    const schema = table2[Table.Symbol.Schema] ?? "public";
-    const tableName = table2[Table.Symbol.OriginalName];
-    const tableKey = `${schema}.${tableName}`;
-    if (!this.cachedTables[tableKey]) {
-      for (const column of Object.values(table2[Table.Symbol.Columns])) {
-        const columnKey = `${tableKey}.${column.name}`;
-        this.cache[columnKey] = this.convert(column.name);
+  cacheTable(e) {
+    const t = e[p.Symbol.Schema] ?? "public", s = e[p.Symbol.OriginalName], r = `${t}.${s}`;
+    if (!this.cachedTables[r]) {
+      for (const o of Object.values(e[p.Symbol.Columns])) {
+        const l = `${r}.${o.name}`;
+        this.cache[l] = this.convert(o.name);
       }
-      this.cachedTables[tableKey] = true;
+      this.cachedTables[r] = !0;
     }
   }
   clearCache() {
-    this.cache = {};
-    this.cachedTables = {};
+    this.cache = {}, this.cachedTables = {};
   }
 }
-__publicField(CasingCache, _kb, "CasingCache");
-class SQLiteViewBase extends (_mb = View, _lb = entityKind, _mb) {
+n(pn, qi, "CasingCache");
+var Oi, Ai;
+class Pe extends (Ai = se, Oi = f, Ai) {
 }
-__publicField(SQLiteViewBase, _lb, "SQLiteViewBase");
-_nb = entityKind;
-class SQLiteDialect {
-  constructor(config) {
+n(Pe, Oi, "SQLiteViewBase");
+var Ii;
+Ii = f;
+class Ce {
+  constructor(e) {
     /** @internal */
-    __publicField(this, "casing");
-    this.casing = new CasingCache(config == null ? void 0 : config.casing);
+    n(this, "casing");
+    this.casing = new pn(e == null ? void 0 : e.casing);
   }
-  escapeName(name) {
-    return `"${name}"`;
+  escapeName(e) {
+    return `"${e}"`;
   }
-  escapeParam(_num) {
+  escapeParam(e) {
     return "?";
   }
-  escapeString(str) {
-    return `'${str.replace(/'/g, "''")}'`;
+  escapeString(e) {
+    return `'${e.replace(/'/g, "''")}'`;
   }
-  buildWithCTE(queries) {
-    if (!(queries == null ? void 0 : queries.length)) return void 0;
-    const withSqlChunks = [sql`with `];
-    for (const [i, w] of queries.entries()) {
-      withSqlChunks.push(sql`${sql.identifier(w._.alias)} as (${w._.sql})`);
-      if (i < queries.length - 1) {
-        withSqlChunks.push(sql`, `);
-      }
-    }
-    withSqlChunks.push(sql` `);
-    return sql.join(withSqlChunks);
+  buildWithCTE(e) {
+    if (!(e != null && e.length)) return;
+    const t = [u`with `];
+    for (const [s, r] of e.entries())
+      t.push(u`${u.identifier(r._.alias)} as (${r._.sql})`), s < e.length - 1 && t.push(u`, `);
+    return t.push(u` `), u.join(t);
   }
-  buildDeleteQuery({ table: table2, where, returning, withList, limit, orderBy }) {
-    const withSql = this.buildWithCTE(withList);
-    const returningSql = returning ? sql` returning ${this.buildSelection(returning, { isSingleTable: true })}` : void 0;
-    const whereSql = where ? sql` where ${where}` : void 0;
-    const orderBySql = this.buildOrderBy(orderBy);
-    const limitSql = this.buildLimit(limit);
-    return sql`${withSql}delete from ${table2}${whereSql}${returningSql}${orderBySql}${limitSql}`;
+  buildDeleteQuery({ table: e, where: t, returning: s, withList: r, limit: o, orderBy: l }) {
+    const a = this.buildWithCTE(r), c = s ? u` returning ${this.buildSelection(s, { isSingleTable: !0 })}` : void 0, m = t ? u` where ${t}` : void 0, h = this.buildOrderBy(l), w = this.buildLimit(o);
+    return u`${a}delete from ${e}${m}${c}${h}${w}`;
   }
-  buildUpdateSet(table2, set) {
-    const tableColumns = table2[Table.Symbol.Columns];
-    const columnNames = Object.keys(tableColumns).filter(
-      (colName) => {
-        var _a2;
-        return set[colName] !== void 0 || ((_a2 = tableColumns[colName]) == null ? void 0 : _a2.onUpdateFn) !== void 0;
+  buildUpdateSet(e, t) {
+    const s = e[p.Symbol.Columns], r = Object.keys(s).filter(
+      (l) => {
+        var a;
+        return t[l] !== void 0 || ((a = s[l]) == null ? void 0 : a.onUpdateFn) !== void 0;
       }
-    );
-    const setSize = columnNames.length;
-    return sql.join(columnNames.flatMap((colName, i) => {
-      const col = tableColumns[colName];
-      const value = set[colName] ?? sql.param(col.onUpdateFn(), col);
-      const res = sql`${sql.identifier(this.casing.getColumnCasing(col))} = ${value}`;
-      if (i < setSize - 1) {
-        return [res, sql.raw(", ")];
-      }
-      return [res];
+    ), o = r.length;
+    return u.join(r.flatMap((l, a) => {
+      const c = s[l], m = t[l] ?? u.param(c.onUpdateFn(), c), h = u`${u.identifier(this.casing.getColumnCasing(c))} = ${m}`;
+      return a < o - 1 ? [h, u.raw(", ")] : [h];
     }));
   }
-  buildUpdateQuery({ table: table2, set, where, returning, withList, joins, from, limit, orderBy }) {
-    const withSql = this.buildWithCTE(withList);
-    const setSql = this.buildUpdateSet(table2, set);
-    const fromSql = from && sql.join([sql.raw(" from "), this.buildFromTable(from)]);
-    const joinsSql = this.buildJoins(joins);
-    const returningSql = returning ? sql` returning ${this.buildSelection(returning, { isSingleTable: true })}` : void 0;
-    const whereSql = where ? sql` where ${where}` : void 0;
-    const orderBySql = this.buildOrderBy(orderBy);
-    const limitSql = this.buildLimit(limit);
-    return sql`${withSql}update ${table2} set ${setSql}${fromSql}${joinsSql}${whereSql}${returningSql}${orderBySql}${limitSql}`;
+  buildUpdateQuery({ table: e, set: t, where: s, returning: r, withList: o, joins: l, from: a, limit: c, orderBy: m }) {
+    const h = this.buildWithCTE(o), w = this.buildUpdateSet(e, t), y = a && u.join([u.raw(" from "), this.buildFromTable(a)]), S = this.buildJoins(l), T = r ? u` returning ${this.buildSelection(r, { isSingleTable: !0 })}` : void 0, N = s ? u` where ${s}` : void 0, C = this.buildOrderBy(m), v = this.buildLimit(c);
+    return u`${h}update ${e} set ${w}${y}${S}${N}${T}${C}${v}`;
   }
   /**
    * Builds selection SQL with provided fields/expressions
@@ -3062,565 +1911,405 @@ class SQLiteDialect {
    *
    * If `isSingleTable` is true, then columns won't be prefixed with table name
    */
-  buildSelection(fields, { isSingleTable = false } = {}) {
-    const columnsLen = fields.length;
-    const chunks = fields.flatMap(({ field }, i) => {
-      const chunk = [];
-      if (is(field, SQL.Aliased) && field.isSelectionField) {
-        chunk.push(sql.identifier(field.fieldAlias));
-      } else if (is(field, SQL.Aliased) || is(field, SQL)) {
-        const query = is(field, SQL.Aliased) ? field.sql : field;
-        if (isSingleTable) {
-          chunk.push(
-            new SQL(
-              query.queryChunks.map((c) => {
-                if (is(c, Column)) {
-                  return sql.identifier(this.casing.getColumnCasing(c));
-                }
-                return c;
-              })
-            )
-          );
-        } else {
-          chunk.push(query);
-        }
-        if (is(field, SQL.Aliased)) {
-          chunk.push(sql` as ${sql.identifier(field.fieldAlias)}`);
-        }
-      } else if (is(field, Column)) {
-        const tableName = field.table[Table.Symbol.Name];
-        if (field.columnType === "SQLiteNumericBigInt") {
-          if (isSingleTable) {
-            chunk.push(sql`cast(${sql.identifier(this.casing.getColumnCasing(field))} as text)`);
-          } else {
-            chunk.push(
-              sql`cast(${sql.identifier(tableName)}.${sql.identifier(this.casing.getColumnCasing(field))} as text)`
-            );
-          }
-        } else {
-          if (isSingleTable) {
-            chunk.push(sql.identifier(this.casing.getColumnCasing(field)));
-          } else {
-            chunk.push(sql`${sql.identifier(tableName)}.${sql.identifier(this.casing.getColumnCasing(field))}`);
-          }
-        }
+  buildSelection(e, { isSingleTable: t = !1 } = {}) {
+    const s = e.length, r = e.flatMap(({ field: o }, l) => {
+      const a = [];
+      if (d(o, g.Aliased) && o.isSelectionField)
+        a.push(u.identifier(o.fieldAlias));
+      else if (d(o, g.Aliased) || d(o, g)) {
+        const c = d(o, g.Aliased) ? o.sql : o;
+        t ? a.push(
+          new g(
+            c.queryChunks.map((m) => d(m, L) ? u.identifier(this.casing.getColumnCasing(m)) : m)
+          )
+        ) : a.push(c), d(o, g.Aliased) && a.push(u` as ${u.identifier(o.fieldAlias)}`);
+      } else if (d(o, L)) {
+        const c = o.table[p.Symbol.Name];
+        o.columnType === "SQLiteNumericBigInt" ? t ? a.push(u`cast(${u.identifier(this.casing.getColumnCasing(o))} as text)`) : a.push(
+          u`cast(${u.identifier(c)}.${u.identifier(this.casing.getColumnCasing(o))} as text)`
+        ) : t ? a.push(u.identifier(this.casing.getColumnCasing(o))) : a.push(u`${u.identifier(c)}.${u.identifier(this.casing.getColumnCasing(o))}`);
       }
-      if (i < columnsLen - 1) {
-        chunk.push(sql`, `);
-      }
-      return chunk;
+      return l < s - 1 && a.push(u`, `), a;
     });
-    return sql.join(chunks);
+    return u.join(r);
   }
-  buildJoins(joins) {
-    if (!joins || joins.length === 0) {
-      return void 0;
-    }
-    const joinsArray = [];
-    if (joins) {
-      for (const [index, joinMeta] of joins.entries()) {
-        if (index === 0) {
-          joinsArray.push(sql` `);
-        }
-        const table2 = joinMeta.table;
-        const onSql = joinMeta.on ? sql` on ${joinMeta.on}` : void 0;
-        if (is(table2, SQLiteTable)) {
-          const tableName = table2[SQLiteTable.Symbol.Name];
-          const tableSchema = table2[SQLiteTable.Symbol.Schema];
-          const origTableName = table2[SQLiteTable.Symbol.OriginalName];
-          const alias = tableName === origTableName ? void 0 : joinMeta.alias;
-          joinsArray.push(
-            sql`${sql.raw(joinMeta.joinType)} join ${tableSchema ? sql`${sql.identifier(tableSchema)}.` : void 0}${sql.identifier(origTableName)}${alias && sql` ${sql.identifier(alias)}`}${onSql}`
+  buildJoins(e) {
+    if (!e || e.length === 0)
+      return;
+    const t = [];
+    if (e)
+      for (const [s, r] of e.entries()) {
+        s === 0 && t.push(u` `);
+        const o = r.table, l = r.on ? u` on ${r.on}` : void 0;
+        if (d(o, P)) {
+          const a = o[P.Symbol.Name], c = o[P.Symbol.Schema], m = o[P.Symbol.OriginalName], h = a === m ? void 0 : r.alias;
+          t.push(
+            u`${u.raw(r.joinType)} join ${c ? u`${u.identifier(c)}.` : void 0}${u.identifier(m)}${h && u` ${u.identifier(h)}`}${l}`
           );
-        } else {
-          joinsArray.push(
-            sql`${sql.raw(joinMeta.joinType)} join ${table2}${onSql}`
+        } else
+          t.push(
+            u`${u.raw(r.joinType)} join ${o}${l}`
           );
-        }
-        if (index < joins.length - 1) {
-          joinsArray.push(sql` `);
-        }
+        s < e.length - 1 && t.push(u` `);
       }
-    }
-    return sql.join(joinsArray);
+    return u.join(t);
   }
-  buildLimit(limit) {
-    return typeof limit === "object" || typeof limit === "number" && limit >= 0 ? sql` limit ${limit}` : void 0;
+  buildLimit(e) {
+    return typeof e == "object" || typeof e == "number" && e >= 0 ? u` limit ${e}` : void 0;
   }
-  buildOrderBy(orderBy) {
-    const orderByList = [];
-    if (orderBy) {
-      for (const [index, orderByValue] of orderBy.entries()) {
-        orderByList.push(orderByValue);
-        if (index < orderBy.length - 1) {
-          orderByList.push(sql`, `);
-        }
-      }
-    }
-    return orderByList.length > 0 ? sql` order by ${sql.join(orderByList)}` : void 0;
+  buildOrderBy(e) {
+    const t = [];
+    if (e)
+      for (const [s, r] of e.entries())
+        t.push(r), s < e.length - 1 && t.push(u`, `);
+    return t.length > 0 ? u` order by ${u.join(t)}` : void 0;
   }
-  buildFromTable(table2) {
-    if (is(table2, Table) && table2[Table.Symbol.IsAlias]) {
-      return sql`${sql`${sql.identifier(table2[Table.Symbol.Schema] ?? "")}.`.if(table2[Table.Symbol.Schema])}${sql.identifier(table2[Table.Symbol.OriginalName])} ${sql.identifier(table2[Table.Symbol.Name])}`;
-    }
-    return table2;
+  buildFromTable(e) {
+    return d(e, p) && e[p.Symbol.IsAlias] ? u`${u`${u.identifier(e[p.Symbol.Schema] ?? "")}.`.if(e[p.Symbol.Schema])}${u.identifier(e[p.Symbol.OriginalName])} ${u.identifier(e[p.Symbol.Name])}` : e;
   }
   buildSelectQuery({
-    withList,
-    fields,
-    fieldsFlat,
-    where,
-    having,
-    table: table2,
-    joins,
-    orderBy,
-    groupBy,
-    limit,
-    offset,
-    distinct,
-    setOperators
+    withList: e,
+    fields: t,
+    fieldsFlat: s,
+    where: r,
+    having: o,
+    table: l,
+    joins: a,
+    orderBy: c,
+    groupBy: m,
+    limit: h,
+    offset: w,
+    distinct: y,
+    setOperators: S
   }) {
-    const fieldsList = fieldsFlat ?? orderSelectedFields(fields);
-    for (const f of fieldsList) {
-      if (is(f.field, Column) && getTableName(f.field.table) !== (is(table2, Subquery) ? table2._.alias : is(table2, SQLiteViewBase) ? table2[ViewBaseConfig].name : is(table2, SQL) ? void 0 : getTableName(table2)) && !((table22) => joins == null ? void 0 : joins.some(
-        ({ alias }) => alias === (table22[Table.Symbol.IsAlias] ? getTableName(table22) : table22[Table.Symbol.BaseName])
-      ))(f.field.table)) {
-        const tableName = getTableName(f.field.table);
+    const T = s ?? ee(t);
+    for (const z of T)
+      if (d(z.field, L) && ne(z.field.table) !== (d(l, R) ? l._.alias : d(l, Pe) ? l[B].name : d(l, g) ? void 0 : ne(l)) && !((M) => a == null ? void 0 : a.some(
+        ({ alias: pe }) => pe === (M[p.Symbol.IsAlias] ? ne(M) : M[p.Symbol.BaseName])
+      ))(z.field.table)) {
+        const M = ne(z.field.table);
         throw new Error(
-          `Your "${f.path.join("->")}" field references a column "${tableName}"."${f.field.name}", but the table "${tableName}" is not part of the query! Did you forget to join it?`
+          `Your "${z.path.join("->")}" field references a column "${M}"."${z.field.name}", but the table "${M}" is not part of the query! Did you forget to join it?`
         );
       }
-    }
-    const isSingleTable = !joins || joins.length === 0;
-    const withSql = this.buildWithCTE(withList);
-    const distinctSql = distinct ? sql` distinct` : void 0;
-    const selection = this.buildSelection(fieldsList, { isSingleTable });
-    const tableSql = this.buildFromTable(table2);
-    const joinsSql = this.buildJoins(joins);
-    const whereSql = where ? sql` where ${where}` : void 0;
-    const havingSql = having ? sql` having ${having}` : void 0;
-    const groupByList = [];
-    if (groupBy) {
-      for (const [index, groupByValue] of groupBy.entries()) {
-        groupByList.push(groupByValue);
-        if (index < groupBy.length - 1) {
-          groupByList.push(sql`, `);
-        }
-      }
-    }
-    const groupBySql = groupByList.length > 0 ? sql` group by ${sql.join(groupByList)}` : void 0;
-    const orderBySql = this.buildOrderBy(orderBy);
-    const limitSql = this.buildLimit(limit);
-    const offsetSql = offset ? sql` offset ${offset}` : void 0;
-    const finalQuery = sql`${withSql}select${distinctSql} ${selection} from ${tableSql}${joinsSql}${whereSql}${groupBySql}${havingSql}${orderBySql}${limitSql}${offsetSql}`;
-    if (setOperators.length > 0) {
-      return this.buildSetOperations(finalQuery, setOperators);
-    }
-    return finalQuery;
+    const N = !a || a.length === 0, C = this.buildWithCTE(e), v = y ? u` distinct` : void 0, _ = this.buildSelection(T, { isSingleTable: N }), q = this.buildFromTable(l), $ = this.buildJoins(a), V = r ? u` where ${r}` : void 0, E = o ? u` having ${o}` : void 0, b = [];
+    if (m)
+      for (const [z, M] of m.entries())
+        b.push(M), z < m.length - 1 && b.push(u`, `);
+    const Q = b.length > 0 ? u` group by ${u.join(b)}` : void 0, D = this.buildOrderBy(c), me = this.buildLimit(h), Ee = w ? u` offset ${w}` : void 0, ie = u`${C}select${v} ${_} from ${q}${$}${V}${Q}${E}${D}${me}${Ee}`;
+    return S.length > 0 ? this.buildSetOperations(ie, S) : ie;
   }
-  buildSetOperations(leftSelect, setOperators) {
-    const [setOperator, ...rest] = setOperators;
-    if (!setOperator) {
+  buildSetOperations(e, t) {
+    const [s, ...r] = t;
+    if (!s)
       throw new Error("Cannot pass undefined values to any set operator");
-    }
-    if (rest.length === 0) {
-      return this.buildSetOperationQuery({ leftSelect, setOperator });
-    }
-    return this.buildSetOperations(
-      this.buildSetOperationQuery({ leftSelect, setOperator }),
-      rest
+    return r.length === 0 ? this.buildSetOperationQuery({ leftSelect: e, setOperator: s }) : this.buildSetOperations(
+      this.buildSetOperationQuery({ leftSelect: e, setOperator: s }),
+      r
     );
   }
   buildSetOperationQuery({
-    leftSelect,
-    setOperator: { type, isAll, rightSelect, limit, orderBy, offset }
+    leftSelect: e,
+    setOperator: { type: t, isAll: s, rightSelect: r, limit: o, orderBy: l, offset: a }
   }) {
-    const leftChunk = sql`${leftSelect.getSQL()} `;
-    const rightChunk = sql`${rightSelect.getSQL()}`;
-    let orderBySql;
-    if (orderBy && orderBy.length > 0) {
-      const orderByValues = [];
-      for (const singleOrderBy of orderBy) {
-        if (is(singleOrderBy, SQLiteColumn)) {
-          orderByValues.push(sql.identifier(singleOrderBy.name));
-        } else if (is(singleOrderBy, SQL)) {
-          for (let i = 0; i < singleOrderBy.queryChunks.length; i++) {
-            const chunk = singleOrderBy.queryChunks[i];
-            if (is(chunk, SQLiteColumn)) {
-              singleOrderBy.queryChunks[i] = sql.identifier(this.casing.getColumnCasing(chunk));
-            }
+    const c = u`${e.getSQL()} `, m = u`${r.getSQL()}`;
+    let h;
+    if (l && l.length > 0) {
+      const T = [];
+      for (const N of l)
+        if (d(N, A))
+          T.push(u.identifier(N.name));
+        else if (d(N, g)) {
+          for (let C = 0; C < N.queryChunks.length; C++) {
+            const v = N.queryChunks[C];
+            d(v, A) && (N.queryChunks[C] = u.identifier(this.casing.getColumnCasing(v)));
           }
-          orderByValues.push(sql`${singleOrderBy}`);
-        } else {
-          orderByValues.push(sql`${singleOrderBy}`);
-        }
-      }
-      orderBySql = sql` order by ${sql.join(orderByValues, sql`, `)}`;
+          T.push(u`${N}`);
+        } else
+          T.push(u`${N}`);
+      h = u` order by ${u.join(T, u`, `)}`;
     }
-    const limitSql = typeof limit === "object" || typeof limit === "number" && limit >= 0 ? sql` limit ${limit}` : void 0;
-    const operatorChunk = sql.raw(`${type} ${isAll ? "all " : ""}`);
-    const offsetSql = offset ? sql` offset ${offset}` : void 0;
-    return sql`${leftChunk}${operatorChunk}${rightChunk}${orderBySql}${limitSql}${offsetSql}`;
+    const w = typeof o == "object" || typeof o == "number" && o >= 0 ? u` limit ${o}` : void 0, y = u.raw(`${t} ${s ? "all " : ""}`), S = a ? u` offset ${a}` : void 0;
+    return u`${c}${y}${m}${h}${w}${S}`;
   }
-  buildInsertQuery({ table: table2, values: valuesOrSelect, onConflict, returning, withList, select }) {
-    const valuesSqlList = [];
-    const columns = table2[Table.Symbol.Columns];
-    const colEntries = Object.entries(columns).filter(
-      ([_, col]) => !col.shouldDisableInsert()
-    );
-    const insertOrder = colEntries.map(([, column]) => sql.identifier(this.casing.getColumnCasing(column)));
-    if (select) {
-      const select2 = valuesOrSelect;
-      if (is(select2, SQL)) {
-        valuesSqlList.push(select2);
-      } else {
-        valuesSqlList.push(select2.getSQL());
-      }
+  buildInsertQuery({ table: e, values: t, onConflict: s, returning: r, withList: o, select: l }) {
+    const a = [], c = e[p.Symbol.Columns], m = Object.entries(c).filter(
+      ([N, C]) => !C.shouldDisableInsert()
+    ), h = m.map(([, N]) => u.identifier(this.casing.getColumnCasing(N)));
+    if (l) {
+      const N = t;
+      d(N, g) ? a.push(N) : a.push(N.getSQL());
     } else {
-      const values = valuesOrSelect;
-      valuesSqlList.push(sql.raw("values "));
-      for (const [valueIndex, value] of values.entries()) {
-        const valueList = [];
-        for (const [fieldName, col] of colEntries) {
-          const colValue = value[fieldName];
-          if (colValue === void 0 || is(colValue, Param) && colValue.value === void 0) {
-            let defaultValue;
-            if (col.default !== null && col.default !== void 0) {
-              defaultValue = is(col.default, SQL) ? col.default : sql.param(col.default, col);
-            } else if (col.defaultFn !== void 0) {
-              const defaultFnResult = col.defaultFn();
-              defaultValue = is(defaultFnResult, SQL) ? defaultFnResult : sql.param(defaultFnResult, col);
-            } else if (!col.default && col.onUpdateFn !== void 0) {
-              const onUpdateFnResult = col.onUpdateFn();
-              defaultValue = is(onUpdateFnResult, SQL) ? onUpdateFnResult : sql.param(onUpdateFnResult, col);
-            } else {
-              defaultValue = sql`null`;
-            }
-            valueList.push(defaultValue);
-          } else {
-            valueList.push(colValue);
-          }
+      const N = t;
+      a.push(u.raw("values "));
+      for (const [C, v] of N.entries()) {
+        const _ = [];
+        for (const [q, $] of m) {
+          const V = v[q];
+          if (V === void 0 || d(V, J) && V.value === void 0) {
+            let E;
+            if ($.default !== null && $.default !== void 0)
+              E = d($.default, g) ? $.default : u.param($.default, $);
+            else if ($.defaultFn !== void 0) {
+              const b = $.defaultFn();
+              E = d(b, g) ? b : u.param(b, $);
+            } else if (!$.default && $.onUpdateFn !== void 0) {
+              const b = $.onUpdateFn();
+              E = d(b, g) ? b : u.param(b, $);
+            } else
+              E = u`null`;
+            _.push(E);
+          } else
+            _.push(V);
         }
-        valuesSqlList.push(valueList);
-        if (valueIndex < values.length - 1) {
-          valuesSqlList.push(sql`, `);
-        }
+        a.push(_), C < N.length - 1 && a.push(u`, `);
       }
     }
-    const withSql = this.buildWithCTE(withList);
-    const valuesSql = sql.join(valuesSqlList);
-    const returningSql = returning ? sql` returning ${this.buildSelection(returning, { isSingleTable: true })}` : void 0;
-    const onConflictSql = (onConflict == null ? void 0 : onConflict.length) ? sql.join(onConflict) : void 0;
-    return sql`${withSql}insert into ${table2} ${insertOrder} ${valuesSql}${onConflictSql}${returningSql}`;
+    const w = this.buildWithCTE(o), y = u.join(a), S = r ? u` returning ${this.buildSelection(r, { isSingleTable: !0 })}` : void 0, T = s != null && s.length ? u.join(s) : void 0;
+    return u`${w}insert into ${e} ${h} ${y}${T}${S}`;
   }
-  sqlToQuery(sql2, invokeSource) {
-    return sql2.toQuery({
+  sqlToQuery(e, t) {
+    return e.toQuery({
       casing: this.casing,
       escapeName: this.escapeName,
       escapeParam: this.escapeParam,
       escapeString: this.escapeString,
-      invokeSource
+      invokeSource: t
     });
   }
   buildRelationalQuery({
-    fullSchema,
-    schema,
-    tableNamesMap,
-    table: table2,
-    tableConfig,
-    queryConfig: config,
-    tableAlias,
-    nestedQueryRelation,
-    joinOn
+    fullSchema: e,
+    schema: t,
+    tableNamesMap: s,
+    table: r,
+    tableConfig: o,
+    queryConfig: l,
+    tableAlias: a,
+    nestedQueryRelation: c,
+    joinOn: m
   }) {
-    let selection = [];
-    let limit, offset, orderBy = [], where;
-    const joins = [];
-    if (config === true) {
-      const selectionEntries = Object.entries(tableConfig.columns);
-      selection = selectionEntries.map(([key, value]) => ({
-        dbKey: value.name,
-        tsKey: key,
-        field: aliasedTableColumn(value, tableAlias),
+    let h = [], w, y, S = [], T;
+    const N = [];
+    if (l === !0)
+      h = Object.entries(o.columns).map(([_, q]) => ({
+        dbKey: q.name,
+        tsKey: _,
+        field: K(q, a),
         relationTableTsKey: void 0,
-        isJson: false,
+        isJson: !1,
         selection: []
       }));
-    } else {
-      const aliasedColumns = Object.fromEntries(
-        Object.entries(tableConfig.columns).map(([key, value]) => [key, aliasedTableColumn(value, tableAlias)])
+    else {
+      const v = Object.fromEntries(
+        Object.entries(o.columns).map(([b, Q]) => [b, K(Q, a)])
       );
-      if (config.where) {
-        const whereSql = typeof config.where === "function" ? config.where(aliasedColumns, getOperators()) : config.where;
-        where = whereSql && mapColumnsInSQLToAlias(whereSql, tableAlias);
+      if (l.where) {
+        const b = typeof l.where == "function" ? l.where(v, fo()) : l.where;
+        T = b && Qe(b, a);
       }
-      const fieldsSelection = [];
-      let selectedColumns = [];
-      if (config.columns) {
-        let isIncludeMode = false;
-        for (const [field, value] of Object.entries(config.columns)) {
-          if (value === void 0) {
-            continue;
-          }
-          if (field in tableConfig.columns) {
-            if (!isIncludeMode && value === true) {
-              isIncludeMode = true;
-            }
-            selectedColumns.push(field);
-          }
-        }
-        if (selectedColumns.length > 0) {
-          selectedColumns = isIncludeMode ? selectedColumns.filter((c) => {
-            var _a2;
-            return ((_a2 = config.columns) == null ? void 0 : _a2[c]) === true;
-          }) : Object.keys(tableConfig.columns).filter((key) => !selectedColumns.includes(key));
-        }
-      } else {
-        selectedColumns = Object.keys(tableConfig.columns);
+      const _ = [];
+      let q = [];
+      if (l.columns) {
+        let b = !1;
+        for (const [Q, D] of Object.entries(l.columns))
+          D !== void 0 && Q in o.columns && (!b && D === !0 && (b = !0), q.push(Q));
+        q.length > 0 && (q = b ? q.filter((Q) => {
+          var D;
+          return ((D = l.columns) == null ? void 0 : D[Q]) === !0;
+        }) : Object.keys(o.columns).filter((Q) => !q.includes(Q)));
+      } else
+        q = Object.keys(o.columns);
+      for (const b of q) {
+        const Q = o.columns[b];
+        _.push({ tsKey: b, value: Q });
       }
-      for (const field of selectedColumns) {
-        const column = tableConfig.columns[field];
-        fieldsSelection.push({ tsKey: field, value: column });
-      }
-      let selectedRelations = [];
-      if (config.with) {
-        selectedRelations = Object.entries(config.with).filter((entry) => !!entry[1]).map(([tsKey, queryConfig]) => ({ tsKey, queryConfig, relation: tableConfig.relations[tsKey] }));
-      }
-      let extras;
-      if (config.extras) {
-        extras = typeof config.extras === "function" ? config.extras(aliasedColumns, { sql }) : config.extras;
-        for (const [tsKey, value] of Object.entries(extras)) {
-          fieldsSelection.push({
-            tsKey,
-            value: mapColumnsInAliasedSQLToAlias(value, tableAlias)
+      let $ = [];
+      l.with && ($ = Object.entries(l.with).filter((b) => !!b[1]).map(([b, Q]) => ({ tsKey: b, queryConfig: Q, relation: o.relations[b] })));
+      let V;
+      if (l.extras) {
+        V = typeof l.extras == "function" ? l.extras(v, { sql: u }) : l.extras;
+        for (const [b, Q] of Object.entries(V))
+          _.push({
+            tsKey: b,
+            value: xr(Q, a)
           });
-        }
       }
-      for (const { tsKey, value } of fieldsSelection) {
-        selection.push({
-          dbKey: is(value, SQL.Aliased) ? value.fieldAlias : tableConfig.columns[tsKey].name,
-          tsKey,
-          field: is(value, Column) ? aliasedTableColumn(value, tableAlias) : value,
+      for (const { tsKey: b, value: Q } of _)
+        h.push({
+          dbKey: d(Q, g.Aliased) ? Q.fieldAlias : o.columns[b].name,
+          tsKey: b,
+          field: d(Q, L) ? K(Q, a) : Q,
           relationTableTsKey: void 0,
-          isJson: false,
+          isJson: !1,
           selection: []
         });
-      }
-      let orderByOrig = typeof config.orderBy === "function" ? config.orderBy(aliasedColumns, getOrderByOperators()) : config.orderBy ?? [];
-      if (!Array.isArray(orderByOrig)) {
-        orderByOrig = [orderByOrig];
-      }
-      orderBy = orderByOrig.map((orderByValue) => {
-        if (is(orderByValue, Column)) {
-          return aliasedTableColumn(orderByValue, tableAlias);
-        }
-        return mapColumnsInSQLToAlias(orderByValue, tableAlias);
-      });
-      limit = config.limit;
-      offset = config.offset;
+      let E = typeof l.orderBy == "function" ? l.orderBy(v, mo()) : l.orderBy ?? [];
+      Array.isArray(E) || (E = [E]), S = E.map((b) => d(b, L) ? K(b, a) : Qe(b, a)), w = l.limit, y = l.offset;
       for (const {
-        tsKey: selectedRelationTsKey,
-        queryConfig: selectedRelationConfigValue,
-        relation
-      } of selectedRelations) {
-        const normalizedRelation = normalizeRelation(schema, tableNamesMap, relation);
-        const relationTableName = getTableUniqueName(relation.referencedTable);
-        const relationTableTsName = tableNamesMap[relationTableName];
-        const relationTableAlias = `${tableAlias}_${selectedRelationTsKey}`;
-        const joinOn2 = and(
-          ...normalizedRelation.fields.map(
-            (field2, i) => eq(
-              aliasedTableColumn(normalizedRelation.references[i], relationTableAlias),
-              aliasedTableColumn(field2, tableAlias)
+        tsKey: b,
+        queryConfig: Q,
+        relation: D
+      } of $) {
+        const me = bo(t, s, D), Ee = ue(D.referencedTable), ie = s[Ee], z = `${a}_${b}`, M = Ue(
+          ...me.fields.map(
+            (An, In) => de(
+              K(me.references[In], z),
+              K(An, a)
             )
           )
-        );
-        const builtRelation = this.buildRelationalQuery({
-          fullSchema,
-          schema,
-          tableNamesMap,
-          table: fullSchema[relationTableTsName],
-          tableConfig: schema[relationTableTsName],
-          queryConfig: is(relation, One) ? selectedRelationConfigValue === true ? { limit: 1 } : { ...selectedRelationConfigValue, limit: 1 } : selectedRelationConfigValue,
-          tableAlias: relationTableAlias,
-          joinOn: joinOn2,
-          nestedQueryRelation: relation
-        });
-        const field = sql`(${builtRelation.sql})`.as(selectedRelationTsKey);
-        selection.push({
-          dbKey: selectedRelationTsKey,
-          tsKey: selectedRelationTsKey,
-          field,
-          relationTableTsKey: relationTableTsName,
-          isJson: true,
-          selection: builtRelation.selection
+        ), pe = this.buildRelationalQuery({
+          fullSchema: e,
+          schema: t,
+          tableNamesMap: s,
+          table: e[ie],
+          tableConfig: t[ie],
+          queryConfig: d(D, te) ? Q === !0 ? { limit: 1 } : { ...Q, limit: 1 } : Q,
+          tableAlias: z,
+          joinOn: M,
+          nestedQueryRelation: D
+        }), On = u`(${pe.sql})`.as(b);
+        h.push({
+          dbKey: b,
+          tsKey: b,
+          field: On,
+          relationTableTsKey: ie,
+          isJson: !0,
+          selection: pe.selection
         });
       }
     }
-    if (selection.length === 0) {
-      throw new DrizzleError({
-        message: `No fields selected for table "${tableConfig.tsName}" ("${tableAlias}"). You need to have at least one item in "columns", "with" or "extras". If you need to select all columns, omit the "columns" key or set it to undefined.`
+    if (h.length === 0)
+      throw new Ie({
+        message: `No fields selected for table "${o.tsName}" ("${a}"). You need to have at least one item in "columns", "with" or "extras". If you need to select all columns, omit the "columns" key or set it to undefined.`
       });
-    }
-    let result;
-    where = and(joinOn, where);
-    if (nestedQueryRelation) {
-      let field = sql`json_array(${sql.join(
-        selection.map(
-          ({ field: field2 }) => is(field2, SQLiteColumn) ? sql.identifier(this.casing.getColumnCasing(field2)) : is(field2, SQL.Aliased) ? field2.sql : field2
+    let C;
+    if (T = Ue(m, T), c) {
+      let v = u`json_array(${u.join(
+        h.map(
+          ({ field: $ }) => d($, A) ? u.identifier(this.casing.getColumnCasing($)) : d($, g.Aliased) ? $.sql : $
         ),
-        sql`, `
+        u`, `
       )})`;
-      if (is(nestedQueryRelation, Many)) {
-        field = sql`coalesce(json_group_array(${field}), json_array())`;
-      }
-      const nestedSelection = [{
+      d(c, Te) && (v = u`coalesce(json_group_array(${v}), json_array())`);
+      const _ = [{
         dbKey: "data",
         tsKey: "data",
-        field: field.as("data"),
-        isJson: true,
-        relationTableTsKey: tableConfig.tsName,
-        selection
+        field: v.as("data"),
+        isJson: !0,
+        relationTableTsKey: o.tsName,
+        selection: h
       }];
-      const needsSubquery = limit !== void 0 || offset !== void 0 || orderBy.length > 0;
-      if (needsSubquery) {
-        result = this.buildSelectQuery({
-          table: aliasedTable(table2, tableAlias),
-          fields: {},
-          fieldsFlat: [
-            {
-              path: [],
-              field: sql.raw("*")
-            }
-          ],
-          where,
-          limit,
-          offset,
-          orderBy,
-          setOperators: []
-        });
-        where = void 0;
-        limit = void 0;
-        offset = void 0;
-        orderBy = void 0;
-      } else {
-        result = aliasedTable(table2, tableAlias);
-      }
-      result = this.buildSelectQuery({
-        table: is(result, SQLiteTable) ? result : new Subquery(result, {}, tableAlias),
+      w !== void 0 || y !== void 0 || S.length > 0 ? (C = this.buildSelectQuery({
+        table: ze(r, a),
         fields: {},
-        fieldsFlat: nestedSelection.map(({ field: field2 }) => ({
+        fieldsFlat: [
+          {
+            path: [],
+            field: u.raw("*")
+          }
+        ],
+        where: T,
+        limit: w,
+        offset: y,
+        orderBy: S,
+        setOperators: []
+      }), T = void 0, w = void 0, y = void 0, S = void 0) : C = ze(r, a), C = this.buildSelectQuery({
+        table: d(C, P) ? C : new R(C, {}, a),
+        fields: {},
+        fieldsFlat: _.map(({ field: $ }) => ({
           path: [],
-          field: is(field2, Column) ? aliasedTableColumn(field2, tableAlias) : field2
+          field: d($, L) ? K($, a) : $
         })),
-        joins,
-        where,
-        limit,
-        offset,
-        orderBy,
+        joins: N,
+        where: T,
+        limit: w,
+        offset: y,
+        orderBy: S,
         setOperators: []
       });
-    } else {
-      result = this.buildSelectQuery({
-        table: aliasedTable(table2, tableAlias),
+    } else
+      C = this.buildSelectQuery({
+        table: ze(r, a),
         fields: {},
-        fieldsFlat: selection.map(({ field }) => ({
+        fieldsFlat: h.map(({ field: v }) => ({
           path: [],
-          field: is(field, Column) ? aliasedTableColumn(field, tableAlias) : field
+          field: d(v, L) ? K(v, a) : v
         })),
-        joins,
-        where,
-        limit,
-        offset,
-        orderBy,
+        joins: N,
+        where: T,
+        limit: w,
+        offset: y,
+        orderBy: S,
         setOperators: []
       });
-    }
     return {
-      tableTsKey: tableConfig.tsName,
-      sql: result,
-      selection
+      tableTsKey: o.tsName,
+      sql: C,
+      selection: h
     };
   }
 }
-__publicField(SQLiteDialect, _nb, "SQLiteDialect");
-class SQLiteSyncDialect extends (_pb = SQLiteDialect, _ob = entityKind, _pb) {
-  migrate(migrations, session, config) {
-    const migrationsTable = config === void 0 ? "__drizzle_migrations" : typeof config === "string" ? "__drizzle_migrations" : config.migrationsTable ?? "__drizzle_migrations";
-    const migrationTableCreate = sql`
-			CREATE TABLE IF NOT EXISTS ${sql.identifier(migrationsTable)} (
+n(Ce, Ii, "SQLiteDialect");
+var ji, _i;
+class at extends (_i = Ce, ji = f, _i) {
+  migrate(e, t, s) {
+    const r = s === void 0 || typeof s == "string" ? "__drizzle_migrations" : s.migrationsTable ?? "__drizzle_migrations", o = u`
+			CREATE TABLE IF NOT EXISTS ${u.identifier(r)} (
 				id SERIAL PRIMARY KEY,
 				hash text NOT NULL,
 				created_at numeric
 			)
 		`;
-    session.run(migrationTableCreate);
-    const dbMigrations = session.values(
-      sql`SELECT id, hash, created_at FROM ${sql.identifier(migrationsTable)} ORDER BY created_at DESC LIMIT 1`
-    );
-    const lastDbMigration = dbMigrations[0] ?? void 0;
-    session.run(sql`BEGIN`);
+    t.run(o);
+    const a = t.values(
+      u`SELECT id, hash, created_at FROM ${u.identifier(r)} ORDER BY created_at DESC LIMIT 1`
+    )[0] ?? void 0;
+    t.run(u`BEGIN`);
     try {
-      for (const migration of migrations) {
-        if (!lastDbMigration || Number(lastDbMigration[2]) < migration.folderMillis) {
-          for (const stmt of migration.sql) {
-            session.run(sql.raw(stmt));
-          }
-          session.run(
-            sql`INSERT INTO ${sql.identifier(migrationsTable)} ("hash", "created_at") VALUES(${migration.hash}, ${migration.folderMillis})`
+      for (const c of e)
+        if (!a || Number(a[2]) < c.folderMillis) {
+          for (const m of c.sql)
+            t.run(u.raw(m));
+          t.run(
+            u`INSERT INTO ${u.identifier(r)} ("hash", "created_at") VALUES(${c.hash}, ${c.folderMillis})`
           );
         }
-      }
-      session.run(sql`COMMIT`);
-    } catch (e) {
-      session.run(sql`ROLLBACK`);
-      throw e;
+      t.run(u`COMMIT`);
+    } catch (c) {
+      throw t.run(u`ROLLBACK`), c;
     }
   }
 }
-__publicField(SQLiteSyncDialect, _ob, "SQLiteSyncDialect");
-_qb = entityKind;
-class TypedQueryBuilder {
+n(at, ji, "SQLiteSyncDialect");
+var Pi;
+Pi = f;
+class gn {
   /** @internal */
   getSelectedFields() {
     return this._.selectedFields;
   }
 }
-__publicField(TypedQueryBuilder, _qb, "TypedQueryBuilder");
-_rb = entityKind;
-class SQLiteSelectBuilder {
-  constructor(config) {
-    __publicField(this, "fields");
-    __publicField(this, "session");
-    __publicField(this, "dialect");
-    __publicField(this, "withList");
-    __publicField(this, "distinct");
-    this.fields = config.fields;
-    this.session = config.session;
-    this.dialect = config.dialect;
-    this.withList = config.withList;
-    this.distinct = config.distinct;
+n(gn, Pi, "TypedQueryBuilder");
+var Ri;
+Ri = f;
+class U {
+  constructor(e) {
+    n(this, "fields");
+    n(this, "session");
+    n(this, "dialect");
+    n(this, "withList");
+    n(this, "distinct");
+    this.fields = e.fields, this.session = e.session, this.dialect = e.dialect, this.withList = e.withList, this.distinct = e.distinct;
   }
-  from(source) {
-    const isPartialSelect = !!this.fields;
-    let fields;
-    if (this.fields) {
-      fields = this.fields;
-    } else if (is(source, Subquery)) {
-      fields = Object.fromEntries(
-        Object.keys(source._.selectedFields).map((key) => [key, source[key]])
-      );
-    } else if (is(source, SQLiteViewBase)) {
-      fields = source[ViewBaseConfig].selectedFields;
-    } else if (is(source, SQL)) {
-      fields = {};
-    } else {
-      fields = getTableColumns(source);
-    }
-    return new SQLiteSelectBase({
-      table: source,
-      fields,
-      isPartialSelect,
+  from(e) {
+    const t = !!this.fields;
+    let s;
+    return this.fields ? s = this.fields : d(e, R) ? s = Object.fromEntries(
+      Object.keys(e._.selectedFields).map((r) => [r, e[r]])
+    ) : d(e, Pe) ? s = e[B].selectedFields : d(e, g) ? s = {} : s = Kn(e), new lt({
+      table: e,
+      fields: s,
+      isPartialSelect: t,
       session: this.session,
       dialect: this.dialect,
       withList: this.withList,
@@ -3628,20 +2317,21 @@ class SQLiteSelectBuilder {
     });
   }
 }
-__publicField(SQLiteSelectBuilder, _rb, "SQLiteSelectBuilder");
-class SQLiteSelectQueryBuilderBase extends (_tb = TypedQueryBuilder, _sb = entityKind, _tb) {
-  constructor({ table: table2, fields, isPartialSelect, session, dialect, withList, distinct }) {
+n(U, Ri, "SQLiteSelectBuilder");
+var Ei, Di;
+class yn extends (Di = gn, Ei = f, Di) {
+  constructor({ table: t, fields: s, isPartialSelect: r, session: o, dialect: l, withList: a, distinct: c }) {
     super();
-    __publicField(this, "_");
+    n(this, "_");
     /** @internal */
-    __publicField(this, "config");
-    __publicField(this, "joinsNotNullableMap");
-    __publicField(this, "tableName");
-    __publicField(this, "isPartialSelect");
-    __publicField(this, "session");
-    __publicField(this, "dialect");
-    __publicField(this, "cacheConfig");
-    __publicField(this, "usedTables", /* @__PURE__ */ new Set());
+    n(this, "config");
+    n(this, "joinsNotNullableMap");
+    n(this, "tableName");
+    n(this, "isPartialSelect");
+    n(this, "session");
+    n(this, "dialect");
+    n(this, "cacheConfig");
+    n(this, "usedTables", /* @__PURE__ */ new Set());
     /**
      * Executes a `left join` operation by adding another table to the current query.
      *
@@ -3669,7 +2359,7 @@ class SQLiteSelectQueryBuilderBase extends (_tb = TypedQueryBuilder, _sb = entit
      *   .leftJoin(pets, eq(users.id, pets.ownerId))
      * ```
      */
-    __publicField(this, "leftJoin", this.createJoin("left"));
+    n(this, "leftJoin", this.createJoin("left"));
     /**
      * Executes a `right join` operation by adding another table to the current query.
      *
@@ -3697,7 +2387,7 @@ class SQLiteSelectQueryBuilderBase extends (_tb = TypedQueryBuilder, _sb = entit
      *   .rightJoin(pets, eq(users.id, pets.ownerId))
      * ```
      */
-    __publicField(this, "rightJoin", this.createJoin("right"));
+    n(this, "rightJoin", this.createJoin("right"));
     /**
      * Executes an `inner join` operation, creating a new table by combining rows from two tables that have matching values.
      *
@@ -3725,7 +2415,7 @@ class SQLiteSelectQueryBuilderBase extends (_tb = TypedQueryBuilder, _sb = entit
      *   .innerJoin(pets, eq(users.id, pets.ownerId))
      * ```
      */
-    __publicField(this, "innerJoin", this.createJoin("inner"));
+    n(this, "innerJoin", this.createJoin("inner"));
     /**
      * Executes a `full join` operation by combining rows from two tables into a new table.
      *
@@ -3753,7 +2443,7 @@ class SQLiteSelectQueryBuilderBase extends (_tb = TypedQueryBuilder, _sb = entit
      *   .fullJoin(pets, eq(users.id, pets.ownerId))
      * ```
      */
-    __publicField(this, "fullJoin", this.createJoin("full"));
+    n(this, "fullJoin", this.createJoin("full"));
     /**
      * Executes a `cross join` operation by combining rows from two tables into a new table.
      *
@@ -3780,7 +2470,7 @@ class SQLiteSelectQueryBuilderBase extends (_tb = TypedQueryBuilder, _sb = entit
      *   .crossJoin(pets)
      * ```
      */
-    __publicField(this, "crossJoin", this.createJoin("cross"));
+    n(this, "crossJoin", this.createJoin("cross"));
     /**
      * Adds `union` set operator to the query.
      *
@@ -3806,7 +2496,7 @@ class SQLiteSelectQueryBuilderBase extends (_tb = TypedQueryBuilder, _sb = entit
      * );
      * ```
      */
-    __publicField(this, "union", this.createSetOperator("union", false));
+    n(this, "union", this.createSetOperator("union", !1));
     /**
      * Adds `union all` set operator to the query.
      *
@@ -3832,7 +2522,7 @@ class SQLiteSelectQueryBuilderBase extends (_tb = TypedQueryBuilder, _sb = entit
      * );
      * ```
      */
-    __publicField(this, "unionAll", this.createSetOperator("union", true));
+    n(this, "unionAll", this.createSetOperator("union", !0));
     /**
      * Adds `intersect` set operator to the query.
      *
@@ -3858,7 +2548,7 @@ class SQLiteSelectQueryBuilderBase extends (_tb = TypedQueryBuilder, _sb = entit
      * );
      * ```
      */
-    __publicField(this, "intersect", this.createSetOperator("intersect", false));
+    n(this, "intersect", this.createSetOperator("intersect", !1));
     /**
      * Adds `except` set operator to the query.
      *
@@ -3884,107 +2574,81 @@ class SQLiteSelectQueryBuilderBase extends (_tb = TypedQueryBuilder, _sb = entit
      * );
      * ```
      */
-    __publicField(this, "except", this.createSetOperator("except", false));
+    n(this, "except", this.createSetOperator("except", !1));
     this.config = {
-      withList,
-      table: table2,
-      fields: { ...fields },
-      distinct,
+      withList: a,
+      table: t,
+      fields: { ...s },
+      distinct: c,
       setOperators: []
-    };
-    this.isPartialSelect = isPartialSelect;
-    this.session = session;
-    this.dialect = dialect;
-    this._ = {
-      selectedFields: fields,
+    }, this.isPartialSelect = r, this.session = o, this.dialect = l, this._ = {
+      selectedFields: s,
       config: this.config
-    };
-    this.tableName = getTableLikeName(table2);
-    this.joinsNotNullableMap = typeof this.tableName === "string" ? { [this.tableName]: true } : {};
-    for (const item of extractUsedTable(table2)) this.usedTables.add(item);
+    }, this.tableName = Ve(t), this.joinsNotNullableMap = typeof this.tableName == "string" ? { [this.tableName]: !0 } : {};
+    for (const m of H(t)) this.usedTables.add(m);
   }
   /** @internal */
   getUsedTables() {
     return [...this.usedTables];
   }
-  createJoin(joinType) {
-    return (table2, on) => {
-      var _a2;
-      const baseTableName = this.tableName;
-      const tableName = getTableLikeName(table2);
-      for (const item of extractUsedTable(table2)) this.usedTables.add(item);
-      if (typeof tableName === "string" && ((_a2 = this.config.joins) == null ? void 0 : _a2.some((join) => join.alias === tableName))) {
-        throw new Error(`Alias "${tableName}" is already used in this query`);
+  createJoin(t) {
+    return (s, r) => {
+      var a;
+      const o = this.tableName, l = Ve(s);
+      for (const c of H(s)) this.usedTables.add(c);
+      if (typeof l == "string" && ((a = this.config.joins) != null && a.some((c) => c.alias === l)))
+        throw new Error(`Alias "${l}" is already used in this query`);
+      if (!this.isPartialSelect && (Object.keys(this.joinsNotNullableMap).length === 1 && typeof o == "string" && (this.config.fields = {
+        [o]: this.config.fields
+      }), typeof l == "string" && !d(s, g))) {
+        const c = d(s, R) ? s._.selectedFields : d(s, se) ? s[B].selectedFields : s[p.Symbol.Columns];
+        this.config.fields[l] = c;
       }
-      if (!this.isPartialSelect) {
-        if (Object.keys(this.joinsNotNullableMap).length === 1 && typeof baseTableName === "string") {
-          this.config.fields = {
-            [baseTableName]: this.config.fields
-          };
-        }
-        if (typeof tableName === "string" && !is(table2, SQL)) {
-          const selection = is(table2, Subquery) ? table2._.selectedFields : is(table2, View) ? table2[ViewBaseConfig].selectedFields : table2[Table.Symbol.Columns];
-          this.config.fields[tableName] = selection;
-        }
-      }
-      if (typeof on === "function") {
-        on = on(
-          new Proxy(
-            this.config.fields,
-            new SelectionProxyHandler({ sqlAliasedBehavior: "sql", sqlBehavior: "sql" })
-          )
-        );
-      }
-      if (!this.config.joins) {
-        this.config.joins = [];
-      }
-      this.config.joins.push({ on, table: table2, joinType, alias: tableName });
-      if (typeof tableName === "string") {
-        switch (joinType) {
+      if (typeof r == "function" && (r = r(
+        new Proxy(
+          this.config.fields,
+          new O({ sqlAliasedBehavior: "sql", sqlBehavior: "sql" })
+        )
+      )), this.config.joins || (this.config.joins = []), this.config.joins.push({ on: r, table: s, joinType: t, alias: l }), typeof l == "string")
+        switch (t) {
           case "left": {
-            this.joinsNotNullableMap[tableName] = false;
+            this.joinsNotNullableMap[l] = !1;
             break;
           }
           case "right": {
             this.joinsNotNullableMap = Object.fromEntries(
-              Object.entries(this.joinsNotNullableMap).map(([key]) => [key, false])
-            );
-            this.joinsNotNullableMap[tableName] = true;
+              Object.entries(this.joinsNotNullableMap).map(([c]) => [c, !1])
+            ), this.joinsNotNullableMap[l] = !0;
             break;
           }
           case "cross":
           case "inner": {
-            this.joinsNotNullableMap[tableName] = true;
+            this.joinsNotNullableMap[l] = !0;
             break;
           }
           case "full": {
             this.joinsNotNullableMap = Object.fromEntries(
-              Object.entries(this.joinsNotNullableMap).map(([key]) => [key, false])
-            );
-            this.joinsNotNullableMap[tableName] = false;
+              Object.entries(this.joinsNotNullableMap).map(([c]) => [c, !1])
+            ), this.joinsNotNullableMap[l] = !1;
             break;
           }
         }
-      }
       return this;
     };
   }
-  createSetOperator(type, isAll) {
-    return (rightSelection) => {
-      const rightSelect = typeof rightSelection === "function" ? rightSelection(getSQLiteSetOperators()) : rightSelection;
-      if (!haveSameKeys(this.getSelectedFields(), rightSelect.getSelectedFields())) {
+  createSetOperator(t, s) {
+    return (r) => {
+      const o = typeof r == "function" ? r(Oo()) : r;
+      if (!nt(this.getSelectedFields(), o.getSelectedFields()))
         throw new Error(
           "Set operator error (union / intersect / except): selected fields are not the same or are in a different order"
         );
-      }
-      this.config.setOperators.push({ type, isAll, rightSelect });
-      return this;
+      return this.config.setOperators.push({ type: t, isAll: s, rightSelect: o }), this;
     };
   }
   /** @internal */
-  addSetOperators(setOperators) {
-    this.config.setOperators.push(...setOperators);
-    return this;
+  addSetOperators(t) {
+    return this.config.setOperators.push(...t), this;
   }
   /**
    * Adds a `where` clause to the query.
@@ -4015,17 +2679,13 @@ class SQLiteSelectQueryBuilderBase extends (_tb = TypedQueryBuilder, _sb = entit
    * await db.select().from(cars).where(or(eq(cars.color, 'green'), eq(cars.color, 'blue')));
    * ```
    */
-  where(where) {
-    if (typeof where === "function") {
-      where = where(
-        new Proxy(
-          this.config.fields,
-          new SelectionProxyHandler({ sqlAliasedBehavior: "sql", sqlBehavior: "sql" })
-        )
-      );
-    }
-    this.config.where = where;
-    return this;
+  where(t) {
+    return typeof t == "function" && (t = t(
+      new Proxy(
+        this.config.fields,
+        new O({ sqlAliasedBehavior: "sql", sqlBehavior: "sql" })
+      )
+    )), this.config.where = t, this;
   }
   /**
    * Adds a `having` clause to the query.
@@ -4049,53 +2709,39 @@ class SQLiteSelectQueryBuilderBase extends (_tb = TypedQueryBuilder, _sb = entit
    *   .having(({ count }) => gt(count, 1));
    * ```
    */
-  having(having) {
-    if (typeof having === "function") {
-      having = having(
+  having(t) {
+    return typeof t == "function" && (t = t(
+      new Proxy(
+        this.config.fields,
+        new O({ sqlAliasedBehavior: "sql", sqlBehavior: "sql" })
+      )
+    )), this.config.having = t, this;
+  }
+  groupBy(...t) {
+    if (typeof t[0] == "function") {
+      const s = t[0](
         new Proxy(
           this.config.fields,
-          new SelectionProxyHandler({ sqlAliasedBehavior: "sql", sqlBehavior: "sql" })
+          new O({ sqlAliasedBehavior: "alias", sqlBehavior: "sql" })
         )
       );
-    }
-    this.config.having = having;
+      this.config.groupBy = Array.isArray(s) ? s : [s];
+    } else
+      this.config.groupBy = t;
     return this;
   }
-  groupBy(...columns) {
-    if (typeof columns[0] === "function") {
-      const groupBy = columns[0](
+  orderBy(...t) {
+    if (typeof t[0] == "function") {
+      const s = t[0](
         new Proxy(
           this.config.fields,
-          new SelectionProxyHandler({ sqlAliasedBehavior: "alias", sqlBehavior: "sql" })
+          new O({ sqlAliasedBehavior: "alias", sqlBehavior: "sql" })
         )
-      );
-      this.config.groupBy = Array.isArray(groupBy) ? groupBy : [groupBy];
+      ), r = Array.isArray(s) ? s : [s];
+      this.config.setOperators.length > 0 ? this.config.setOperators.at(-1).orderBy = r : this.config.orderBy = r;
     } else {
-      this.config.groupBy = columns;
-    }
-    return this;
-  }
-  orderBy(...columns) {
-    if (typeof columns[0] === "function") {
-      const orderBy = columns[0](
-        new Proxy(
-          this.config.fields,
-          new SelectionProxyHandler({ sqlAliasedBehavior: "alias", sqlBehavior: "sql" })
-        )
-      );
-      const orderByArray = Array.isArray(orderBy) ? orderBy : [orderBy];
-      if (this.config.setOperators.length > 0) {
-        this.config.setOperators.at(-1).orderBy = orderByArray;
-      } else {
-        this.config.orderBy = orderByArray;
-      }
-    } else {
-      const orderByArray = columns;
-      if (this.config.setOperators.length > 0) {
-        this.config.setOperators.at(-1).orderBy = orderByArray;
-      } else {
-        this.config.orderBy = orderByArray;
-      }
+      const s = t;
+      this.config.setOperators.length > 0 ? this.config.setOperators.at(-1).orderBy = s : this.config.orderBy = s;
     }
     return this;
   }
@@ -4115,13 +2761,8 @@ class SQLiteSelectQueryBuilderBase extends (_tb = TypedQueryBuilder, _sb = entit
    * await db.select().from(people).limit(10);
    * ```
    */
-  limit(limit) {
-    if (this.config.setOperators.length > 0) {
-      this.config.setOperators.at(-1).limit = limit;
-    } else {
-      this.config.limit = limit;
-    }
-    return this;
+  limit(t) {
+    return this.config.setOperators.length > 0 ? this.config.setOperators.at(-1).limit = t : this.config.limit = t, this;
   }
   /**
    * Adds an `offset` clause to the query.
@@ -4139,72 +2780,56 @@ class SQLiteSelectQueryBuilderBase extends (_tb = TypedQueryBuilder, _sb = entit
    * await db.select().from(people).offset(10).limit(10);
    * ```
    */
-  offset(offset) {
-    if (this.config.setOperators.length > 0) {
-      this.config.setOperators.at(-1).offset = offset;
-    } else {
-      this.config.offset = offset;
-    }
-    return this;
+  offset(t) {
+    return this.config.setOperators.length > 0 ? this.config.setOperators.at(-1).offset = t : this.config.offset = t, this;
   }
   /** @internal */
   getSQL() {
     return this.dialect.buildSelectQuery(this.config);
   }
   toSQL() {
-    const { typings: _typings, ...rest } = this.dialect.sqlToQuery(this.getSQL());
-    return rest;
+    const { typings: t, ...s } = this.dialect.sqlToQuery(this.getSQL());
+    return s;
   }
-  as(alias) {
-    const usedTables = [];
-    usedTables.push(...extractUsedTable(this.config.table));
-    if (this.config.joins) {
-      for (const it of this.config.joins) usedTables.push(...extractUsedTable(it.table));
-    }
+  as(t) {
+    const s = [];
+    if (s.push(...H(this.config.table)), this.config.joins)
+      for (const r of this.config.joins) s.push(...H(r.table));
     return new Proxy(
-      new Subquery(this.getSQL(), this.config.fields, alias, false, [...new Set(usedTables)]),
-      new SelectionProxyHandler({ alias, sqlAliasedBehavior: "alias", sqlBehavior: "error" })
+      new R(this.getSQL(), this.config.fields, t, !1, [...new Set(s)]),
+      new O({ alias: t, sqlAliasedBehavior: "alias", sqlBehavior: "error" })
     );
   }
   /** @internal */
   getSelectedFields() {
     return new Proxy(
       this.config.fields,
-      new SelectionProxyHandler({ alias: this.tableName, sqlAliasedBehavior: "alias", sqlBehavior: "error" })
+      new O({ alias: this.tableName, sqlAliasedBehavior: "alias", sqlBehavior: "error" })
     );
   }
   $dynamic() {
     return this;
   }
 }
-__publicField(SQLiteSelectQueryBuilderBase, _sb, "SQLiteSelectQueryBuilder");
-class SQLiteSelectBase extends (_vb = SQLiteSelectQueryBuilderBase, _ub = entityKind, _vb) {
+n(yn, Ei, "SQLiteSelectQueryBuilder");
+var Fi, zi;
+class lt extends (zi = yn, Fi = f, zi) {
   constructor() {
     super(...arguments);
-    __publicField(this, "run", (placeholderValues) => {
-      return this._prepare().run(placeholderValues);
-    });
-    __publicField(this, "all", (placeholderValues) => {
-      return this._prepare().all(placeholderValues);
-    });
-    __publicField(this, "get", (placeholderValues) => {
-      return this._prepare().get(placeholderValues);
-    });
-    __publicField(this, "values", (placeholderValues) => {
-      return this._prepare().values(placeholderValues);
-    });
+    n(this, "run", (t) => this._prepare().run(t));
+    n(this, "all", (t) => this._prepare().all(t));
+    n(this, "get", (t) => this._prepare().get(t));
+    n(this, "values", (t) => this._prepare().values(t));
   }
   /** @internal */
-  _prepare(isOneTimeQuery = true) {
-    if (!this.session) {
+  _prepare(t = !0) {
+    if (!this.session)
       throw new Error("Cannot execute a query on a query builder. Please use a database instance instead.");
-    }
-    const fieldsList = orderSelectedFields(this.config.fields);
-    const query = this.session[isOneTimeQuery ? "prepareOneTimeQuery" : "prepareQuery"](
+    const s = ee(this.config.fields), r = this.session[t ? "prepareOneTimeQuery" : "prepareQuery"](
       this.dialect.sqlToQuery(this.getSQL()),
-      fieldsList,
+      s,
       "all",
-      true,
+      !0,
       void 0,
       {
         type: "select",
@@ -4212,175 +2837,142 @@ class SQLiteSelectBase extends (_vb = SQLiteSelectQueryBuilderBase, _ub = entity
       },
       this.cacheConfig
     );
-    query.joinsNotNullableMap = this.joinsNotNullableMap;
-    return query;
+    return r.joinsNotNullableMap = this.joinsNotNullableMap, r;
   }
-  $withCache(config) {
-    this.cacheConfig = config === void 0 ? { config: {}, enable: true, autoInvalidate: true } : config === false ? { enable: false } : { enable: true, autoInvalidate: true, ...config };
-    return this;
+  $withCache(t) {
+    return this.cacheConfig = t === void 0 ? { config: {}, enable: !0, autoInvalidate: !0 } : t === !1 ? { enable: !1 } : { enable: !0, autoInvalidate: !0, ...t }, this;
   }
   prepare() {
-    return this._prepare(false);
+    return this._prepare(!1);
   }
   async execute() {
     return this.all();
   }
 }
-__publicField(SQLiteSelectBase, _ub, "SQLiteSelect");
-applyMixins(SQLiteSelectBase, [QueryPromise]);
-function createSetOperator(type, isAll) {
-  return (leftSelect, rightSelect, ...restSelects) => {
-    const setOperators = [rightSelect, ...restSelects].map((select) => ({
-      type,
-      isAll,
-      rightSelect: select
+n(lt, Fi, "SQLiteSelect");
+Vn(lt, [Z]);
+function Re(i, e) {
+  return (t, s, ...r) => {
+    const o = [s, ...r].map((l) => ({
+      type: i,
+      isAll: e,
+      rightSelect: l
     }));
-    for (const setOperator of setOperators) {
-      if (!haveSameKeys(leftSelect.getSelectedFields(), setOperator.rightSelect.getSelectedFields())) {
+    for (const l of o)
+      if (!nt(t.getSelectedFields(), l.rightSelect.getSelectedFields()))
         throw new Error(
           "Set operator error (union / intersect / except): selected fields are not the same or are in a different order"
         );
-      }
-    }
-    return leftSelect.addSetOperators(setOperators);
+    return t.addSetOperators(o);
   };
 }
-const getSQLiteSetOperators = () => ({
-  union,
-  unionAll,
-  intersect,
-  except
-});
-const union = createSetOperator("union", false);
-const unionAll = createSetOperator("union", true);
-const intersect = createSetOperator("intersect", false);
-const except = createSetOperator("except", false);
-_wb = entityKind;
-class QueryBuilder {
-  constructor(dialect) {
-    __publicField(this, "dialect");
-    __publicField(this, "dialectConfig");
-    __publicField(this, "$with", (alias, selection) => {
-      const queryBuilder = this;
-      const as = (qb) => {
-        if (typeof qb === "function") {
-          qb = qb(queryBuilder);
-        }
-        return new Proxy(
-          new WithSubquery(
-            qb.getSQL(),
-            selection ?? ("getSelectedFields" in qb ? qb.getSelectedFields() ?? {} : {}),
-            alias,
-            true
-          ),
-          new SelectionProxyHandler({ alias, sqlAliasedBehavior: "alias", sqlBehavior: "error" })
-        );
-      };
-      return { as };
+const Oo = () => ({
+  union: Ao,
+  unionAll: Io,
+  intersect: jo,
+  except: _o
+}), Ao = Re("union", !1), Io = Re("union", !0), jo = Re("intersect", !1), _o = Re("except", !1);
+var Mi;
+Mi = f;
+class ut {
+  constructor(e) {
+    n(this, "dialect");
+    n(this, "dialectConfig");
+    n(this, "$with", (e, t) => {
+      const s = this;
+      return { as: (o) => (typeof o == "function" && (o = o(s)), new Proxy(
+        new rt(
+          o.getSQL(),
+          t ?? ("getSelectedFields" in o ? o.getSelectedFields() ?? {} : {}),
+          e,
+          !0
+        ),
+        new O({ alias: e, sqlAliasedBehavior: "alias", sqlBehavior: "error" })
+      )) };
     });
-    this.dialect = is(dialect, SQLiteDialect) ? dialect : void 0;
-    this.dialectConfig = is(dialect, SQLiteDialect) ? void 0 : dialect;
+    this.dialect = d(e, Ce) ? e : void 0, this.dialectConfig = d(e, Ce) ? void 0 : e;
   }
-  with(...queries) {
-    const self = this;
-    function select(fields) {
-      return new SQLiteSelectBuilder({
-        fields: fields ?? void 0,
+  with(...e) {
+    const t = this;
+    function s(o) {
+      return new U({
+        fields: o ?? void 0,
         session: void 0,
-        dialect: self.getDialect(),
-        withList: queries
+        dialect: t.getDialect(),
+        withList: e
       });
     }
-    function selectDistinct(fields) {
-      return new SQLiteSelectBuilder({
-        fields: fields ?? void 0,
+    function r(o) {
+      return new U({
+        fields: o ?? void 0,
         session: void 0,
-        dialect: self.getDialect(),
-        withList: queries,
-        distinct: true
+        dialect: t.getDialect(),
+        withList: e,
+        distinct: !0
       });
     }
-    return { select, selectDistinct };
+    return { select: s, selectDistinct: r };
   }
-  select(fields) {
-    return new SQLiteSelectBuilder({ fields: fields ?? void 0, session: void 0, dialect: this.getDialect() });
+  select(e) {
+    return new U({ fields: e ?? void 0, session: void 0, dialect: this.getDialect() });
   }
-  selectDistinct(fields) {
-    return new SQLiteSelectBuilder({
-      fields: fields ?? void 0,
+  selectDistinct(e) {
+    return new U({
+      fields: e ?? void 0,
       session: void 0,
       dialect: this.getDialect(),
-      distinct: true
+      distinct: !0
     });
   }
   // Lazy load dialect to avoid circular dependency
   getDialect() {
-    if (!this.dialect) {
-      this.dialect = new SQLiteSyncDialect(this.dialectConfig);
-    }
-    return this.dialect;
+    return this.dialect || (this.dialect = new at(this.dialectConfig)), this.dialect;
   }
 }
-__publicField(QueryBuilder, _wb, "SQLiteQueryBuilder");
-_xb = entityKind;
-class SQLiteInsertBuilder {
-  constructor(table2, session, dialect, withList) {
-    this.table = table2;
-    this.session = session;
-    this.dialect = dialect;
-    this.withList = withList;
+n(ut, Mi, "SQLiteQueryBuilder");
+var Vi;
+Vi = f;
+class Ze {
+  constructor(e, t, s, r) {
+    this.table = e, this.session = t, this.dialect = s, this.withList = r;
   }
-  values(values) {
-    values = Array.isArray(values) ? values : [values];
-    if (values.length === 0) {
+  values(e) {
+    if (e = Array.isArray(e) ? e : [e], e.length === 0)
       throw new Error("values() must be called with at least one value");
-    }
-    const mappedValues = values.map((entry) => {
-      const result = {};
-      const cols = this.table[Table.Symbol.Columns];
-      for (const colKey of Object.keys(entry)) {
-        const colValue = entry[colKey];
-        result[colKey] = is(colValue, SQL) ? colValue : new Param(colValue, cols[colKey]);
+    const t = e.map((s) => {
+      const r = {}, o = this.table[p.Symbol.Columns];
+      for (const l of Object.keys(s)) {
+        const a = s[l];
+        r[l] = d(a, g) ? a : new J(a, o[l]);
       }
-      return result;
+      return r;
     });
-    return new SQLiteInsertBase(this.table, mappedValues, this.session, this.dialect, this.withList);
+    return new Xe(this.table, t, this.session, this.dialect, this.withList);
   }
-  select(selectQuery) {
-    const select = typeof selectQuery === "function" ? selectQuery(new QueryBuilder()) : selectQuery;
-    if (!is(select, SQL) && !haveSameKeys(this.table[Columns], select._.selectedFields)) {
+  select(e) {
+    const t = typeof e == "function" ? e(new ut()) : e;
+    if (!d(t, g) && !nt(this.table[Me], t._.selectedFields))
       throw new Error(
         "Insert select error: selected fields are not the same or are in a different order compared to the table definition"
       );
-    }
-    return new SQLiteInsertBase(this.table, select, this.session, this.dialect, this.withList, true);
+    return new Xe(this.table, t, this.session, this.dialect, this.withList, !0);
   }
 }
-__publicField(SQLiteInsertBuilder, _xb, "SQLiteInsertBuilder");
-class SQLiteInsertBase extends (_zb = QueryPromise, _yb = entityKind, _zb) {
-  constructor(table2, values, session, dialect, withList, select) {
+n(Ze, Vi, "SQLiteInsertBuilder");
+var Ki, Ui;
+class Xe extends (Ui = Z, Ki = f, Ui) {
+  constructor(t, s, r, o, l, a) {
     super();
     /** @internal */
-    __publicField(this, "config");
-    __publicField(this, "run", (placeholderValues) => {
-      return this._prepare().run(placeholderValues);
-    });
-    __publicField(this, "all", (placeholderValues) => {
-      return this._prepare().all(placeholderValues);
-    });
-    __publicField(this, "get", (placeholderValues) => {
-      return this._prepare().get(placeholderValues);
-    });
-    __publicField(this, "values", (placeholderValues) => {
-      return this._prepare().values(placeholderValues);
-    });
-    this.session = session;
-    this.dialect = dialect;
-    this.config = { table: table2, values, withList, select };
+    n(this, "config");
+    n(this, "run", (t) => this._prepare().run(t));
+    n(this, "all", (t) => this._prepare().all(t));
+    n(this, "get", (t) => this._prepare().get(t));
+    n(this, "values", (t) => this._prepare().values(t));
+    this.session = r, this.dialect = o, this.config = { table: t, values: s, withList: l, select: a };
   }
-  returning(fields = this.config.table[SQLiteTable.Symbol.Columns]) {
-    this.config.returning = orderSelectedFields(fields);
-    return this;
+  returning(t = this.config.table[P.Symbol.Columns]) {
+    return this.config.returning = ee(t), this;
   }
   /**
    * Adds an `on conflict do nothing` clause to the query.
@@ -4404,14 +2996,12 @@ class SQLiteInsertBase extends (_zb = QueryPromise, _yb = entityKind, _zb) {
    *   .onConflictDoNothing({ target: cars.id });
    * ```
    */
-  onConflictDoNothing(config = {}) {
-    if (!this.config.onConflict) this.config.onConflict = [];
-    if (config.target === void 0) {
-      this.config.onConflict.push(sql` on conflict do nothing`);
-    } else {
-      const targetSql = Array.isArray(config.target) ? sql`${config.target}` : sql`${[config.target]}`;
-      const whereSql = config.where ? sql` where ${config.where}` : sql``;
-      this.config.onConflict.push(sql` on conflict ${targetSql} do nothing${whereSql}`);
+  onConflictDoNothing(t = {}) {
+    if (this.config.onConflict || (this.config.onConflict = []), t.target === void 0)
+      this.config.onConflict.push(u` on conflict do nothing`);
+    else {
+      const s = Array.isArray(t.target) ? u`${t.target}` : u`${[t.target]}`, r = t.where ? u` where ${t.where}` : u``;
+      this.config.onConflict.push(u` on conflict ${s} do nothing${r}`);
     }
     return this;
   }
@@ -4444,47 +3034,41 @@ class SQLiteInsertBase extends (_zb = QueryPromise, _yb = entityKind, _zb) {
    *   });
    * ```
    */
-  onConflictDoUpdate(config) {
-    if (config.where && (config.targetWhere || config.setWhere)) {
+  onConflictDoUpdate(t) {
+    if (t.where && (t.targetWhere || t.setWhere))
       throw new Error(
         'You cannot use both "where" and "targetWhere"/"setWhere" at the same time - "where" is deprecated, use "targetWhere" or "setWhere" instead.'
       );
-    }
-    if (!this.config.onConflict) this.config.onConflict = [];
-    const whereSql = config.where ? sql` where ${config.where}` : void 0;
-    const targetWhereSql = config.targetWhere ? sql` where ${config.targetWhere}` : void 0;
-    const setWhereSql = config.setWhere ? sql` where ${config.setWhere}` : void 0;
-    const targetSql = Array.isArray(config.target) ? sql`${config.target}` : sql`${[config.target]}`;
-    const setSql = this.dialect.buildUpdateSet(this.config.table, mapUpdateSet(this.config.table, config.set));
-    this.config.onConflict.push(
-      sql` on conflict ${targetSql}${targetWhereSql} do update set ${setSql}${whereSql}${setWhereSql}`
-    );
-    return this;
+    this.config.onConflict || (this.config.onConflict = []);
+    const s = t.where ? u` where ${t.where}` : void 0, r = t.targetWhere ? u` where ${t.targetWhere}` : void 0, o = t.setWhere ? u` where ${t.setWhere}` : void 0, l = Array.isArray(t.target) ? u`${t.target}` : u`${[t.target]}`, a = this.dialect.buildUpdateSet(this.config.table, Ir(this.config.table, t.set));
+    return this.config.onConflict.push(
+      u` on conflict ${l}${r} do update set ${a}${s}${o}`
+    ), this;
   }
   /** @internal */
   getSQL() {
     return this.dialect.buildInsertQuery(this.config);
   }
   toSQL() {
-    const { typings: _typings, ...rest } = this.dialect.sqlToQuery(this.getSQL());
-    return rest;
+    const { typings: t, ...s } = this.dialect.sqlToQuery(this.getSQL());
+    return s;
   }
   /** @internal */
-  _prepare(isOneTimeQuery = true) {
-    return this.session[isOneTimeQuery ? "prepareOneTimeQuery" : "prepareQuery"](
+  _prepare(t = !0) {
+    return this.session[t ? "prepareOneTimeQuery" : "prepareQuery"](
       this.dialect.sqlToQuery(this.getSQL()),
       this.config.returning,
       this.config.returning ? "all" : "run",
-      true,
+      !0,
       void 0,
       {
         type: "insert",
-        tables: extractUsedTable(this.config.table)
+        tables: H(this.config.table)
       }
     );
   }
   prepare() {
-    return this._prepare(false);
+    return this._prepare(!1);
   }
   async execute() {
     return this.config.returning ? this.all() : this.run();
@@ -4493,76 +3077,62 @@ class SQLiteInsertBase extends (_zb = QueryPromise, _yb = entityKind, _zb) {
     return this;
   }
 }
-__publicField(SQLiteInsertBase, _yb, "SQLiteInsert");
-_Ab = entityKind;
-class SQLiteUpdateBuilder {
-  constructor(table2, session, dialect, withList) {
-    this.table = table2;
-    this.session = session;
-    this.dialect = dialect;
-    this.withList = withList;
+n(Xe, Ki, "SQLiteInsert");
+var Ji;
+Ji = f;
+class He {
+  constructor(e, t, s, r) {
+    this.table = e, this.session = t, this.dialect = s, this.withList = r;
   }
-  set(values) {
-    return new SQLiteUpdateBase(
+  set(e) {
+    return new bn(
       this.table,
-      mapUpdateSet(this.table, values),
+      Ir(this.table, e),
       this.session,
       this.dialect,
       this.withList
     );
   }
 }
-__publicField(SQLiteUpdateBuilder, _Ab, "SQLiteUpdateBuilder");
-class SQLiteUpdateBase extends (_Cb = QueryPromise, _Bb = entityKind, _Cb) {
-  constructor(table2, set, session, dialect, withList) {
+n(He, Ji, "SQLiteUpdateBuilder");
+var Wi, Gi;
+class bn extends (Gi = Z, Wi = f, Gi) {
+  constructor(t, s, r, o, l) {
     super();
     /** @internal */
-    __publicField(this, "config");
-    __publicField(this, "leftJoin", this.createJoin("left"));
-    __publicField(this, "rightJoin", this.createJoin("right"));
-    __publicField(this, "innerJoin", this.createJoin("inner"));
-    __publicField(this, "fullJoin", this.createJoin("full"));
-    __publicField(this, "run", (placeholderValues) => {
-      return this._prepare().run(placeholderValues);
-    });
-    __publicField(this, "all", (placeholderValues) => {
-      return this._prepare().all(placeholderValues);
-    });
-    __publicField(this, "get", (placeholderValues) => {
-      return this._prepare().get(placeholderValues);
-    });
-    __publicField(this, "values", (placeholderValues) => {
-      return this._prepare().values(placeholderValues);
-    });
-    this.session = session;
-    this.dialect = dialect;
-    this.config = { set, table: table2, withList, joins: [] };
+    n(this, "config");
+    n(this, "leftJoin", this.createJoin("left"));
+    n(this, "rightJoin", this.createJoin("right"));
+    n(this, "innerJoin", this.createJoin("inner"));
+    n(this, "fullJoin", this.createJoin("full"));
+    n(this, "run", (t) => this._prepare().run(t));
+    n(this, "all", (t) => this._prepare().all(t));
+    n(this, "get", (t) => this._prepare().get(t));
+    n(this, "values", (t) => this._prepare().values(t));
+    this.session = r, this.dialect = o, this.config = { set: s, table: t, withList: l, joins: [] };
   }
-  from(source) {
-    this.config.from = source;
-    return this;
+  from(t) {
+    return this.config.from = t, this;
   }
-  createJoin(joinType) {
-    return (table2, on) => {
-      const tableName = getTableLikeName(table2);
-      if (typeof tableName === "string" && this.config.joins.some((join) => join.alias === tableName)) {
-        throw new Error(`Alias "${tableName}" is already used in this query`);
-      }
-      if (typeof on === "function") {
-        const from = this.config.from ? is(table2, SQLiteTable) ? table2[Table.Symbol.Columns] : is(table2, Subquery) ? table2._.selectedFields : is(table2, SQLiteViewBase) ? table2[ViewBaseConfig].selectedFields : void 0 : void 0;
-        on = on(
+  createJoin(t) {
+    return (s, r) => {
+      const o = Ve(s);
+      if (typeof o == "string" && this.config.joins.some((l) => l.alias === o))
+        throw new Error(`Alias "${o}" is already used in this query`);
+      if (typeof r == "function") {
+        const l = this.config.from ? d(s, P) ? s[p.Symbol.Columns] : d(s, R) ? s._.selectedFields : d(s, Pe) ? s[B].selectedFields : void 0 : void 0;
+        r = r(
           new Proxy(
-            this.config.table[Table.Symbol.Columns],
-            new SelectionProxyHandler({ sqlAliasedBehavior: "sql", sqlBehavior: "sql" })
+            this.config.table[p.Symbol.Columns],
+            new O({ sqlAliasedBehavior: "sql", sqlBehavior: "sql" })
           ),
-          from && new Proxy(
-            from,
-            new SelectionProxyHandler({ sqlAliasedBehavior: "sql", sqlBehavior: "sql" })
+          l && new Proxy(
+            l,
+            new O({ sqlAliasedBehavior: "sql", sqlBehavior: "sql" })
           )
         );
       }
-      this.config.joins.push({ on, table: table2, joinType, alias: tableName });
-      return this;
+      return this.config.joins.push({ on: r, table: s, joinType: t, alias: o }), this;
     };
   }
   /**
@@ -4598,58 +3168,54 @@ class SQLiteUpdateBase extends (_Cb = QueryPromise, _Bb = entityKind, _Cb) {
    *   .where(or(eq(cars.color, 'green'), eq(cars.color, 'blue')));
    * ```
    */
-  where(where) {
-    this.config.where = where;
-    return this;
+  where(t) {
+    return this.config.where = t, this;
   }
-  orderBy(...columns) {
-    if (typeof columns[0] === "function") {
-      const orderBy = columns[0](
+  orderBy(...t) {
+    if (typeof t[0] == "function") {
+      const s = t[0](
         new Proxy(
-          this.config.table[Table.Symbol.Columns],
-          new SelectionProxyHandler({ sqlAliasedBehavior: "alias", sqlBehavior: "sql" })
+          this.config.table[p.Symbol.Columns],
+          new O({ sqlAliasedBehavior: "alias", sqlBehavior: "sql" })
         )
-      );
-      const orderByArray = Array.isArray(orderBy) ? orderBy : [orderBy];
-      this.config.orderBy = orderByArray;
+      ), r = Array.isArray(s) ? s : [s];
+      this.config.orderBy = r;
     } else {
-      const orderByArray = columns;
-      this.config.orderBy = orderByArray;
+      const s = t;
+      this.config.orderBy = s;
     }
     return this;
   }
-  limit(limit) {
-    this.config.limit = limit;
-    return this;
+  limit(t) {
+    return this.config.limit = t, this;
   }
-  returning(fields = this.config.table[SQLiteTable.Symbol.Columns]) {
-    this.config.returning = orderSelectedFields(fields);
-    return this;
+  returning(t = this.config.table[P.Symbol.Columns]) {
+    return this.config.returning = ee(t), this;
   }
   /** @internal */
   getSQL() {
     return this.dialect.buildUpdateQuery(this.config);
   }
   toSQL() {
-    const { typings: _typings, ...rest } = this.dialect.sqlToQuery(this.getSQL());
-    return rest;
+    const { typings: t, ...s } = this.dialect.sqlToQuery(this.getSQL());
+    return s;
   }
   /** @internal */
-  _prepare(isOneTimeQuery = true) {
-    return this.session[isOneTimeQuery ? "prepareOneTimeQuery" : "prepareQuery"](
+  _prepare(t = !0) {
+    return this.session[t ? "prepareOneTimeQuery" : "prepareQuery"](
       this.dialect.sqlToQuery(this.getSQL()),
       this.config.returning,
       this.config.returning ? "all" : "run",
-      true,
+      !0,
       void 0,
       {
         type: "insert",
-        tables: extractUsedTable(this.config.table)
+        tables: H(this.config.table)
       }
     );
   }
   prepare() {
-    return this._prepare(false);
+    return this._prepare(!1);
   }
   async execute() {
     return this.config.returning ? this.all() : this.run();
@@ -4658,64 +3224,53 @@ class SQLiteUpdateBase extends (_Cb = QueryPromise, _Bb = entityKind, _Cb) {
     return this;
   }
 }
-__publicField(SQLiteUpdateBase, _Bb, "SQLiteUpdate");
-const _SQLiteCountBuilder = class _SQLiteCountBuilder extends (_Fb = SQL, _Eb = entityKind, _Db = Symbol.toStringTag, _Fb) {
-  constructor(params) {
-    super(_SQLiteCountBuilder.buildEmbeddedCount(params.source, params.filters).queryChunks);
-    __publicField(this, "sql");
-    __publicField(this, _Db, "SQLiteCountBuilderAsync");
-    __publicField(this, "session");
-    this.params = params;
-    this.session = params.session;
-    this.sql = _SQLiteCountBuilder.buildCount(
-      params.source,
-      params.filters
+n(bn, Wi, "SQLiteUpdate");
+var Yi, Zi, Xi;
+const le = class le extends (Xi = g, Zi = f, Yi = Symbol.toStringTag, Xi) {
+  constructor(t) {
+    super(le.buildEmbeddedCount(t.source, t.filters).queryChunks);
+    n(this, "sql");
+    n(this, Yi, "SQLiteCountBuilderAsync");
+    n(this, "session");
+    this.params = t, this.session = t.session, this.sql = le.buildCount(
+      t.source,
+      t.filters
     );
   }
-  static buildEmbeddedCount(source, filters) {
-    return sql`(select count(*) from ${source}${sql.raw(" where ").if(filters)}${filters})`;
+  static buildEmbeddedCount(t, s) {
+    return u`(select count(*) from ${t}${u.raw(" where ").if(s)}${s})`;
   }
-  static buildCount(source, filters) {
-    return sql`select count(*) from ${source}${sql.raw(" where ").if(filters)}${filters}`;
+  static buildCount(t, s) {
+    return u`select count(*) from ${t}${u.raw(" where ").if(s)}${s}`;
   }
-  then(onfulfilled, onrejected) {
+  then(t, s) {
     return Promise.resolve(this.session.count(this.sql)).then(
-      onfulfilled,
-      onrejected
+      t,
+      s
     );
   }
-  catch(onRejected) {
-    return this.then(void 0, onRejected);
+  catch(t) {
+    return this.then(void 0, t);
   }
-  finally(onFinally) {
+  finally(t) {
     return this.then(
-      (value) => {
-        onFinally == null ? void 0 : onFinally();
-        return value;
-      },
-      (reason) => {
-        onFinally == null ? void 0 : onFinally();
-        throw reason;
+      (s) => (t == null || t(), s),
+      (s) => {
+        throw t == null || t(), s;
       }
     );
   }
 };
-__publicField(_SQLiteCountBuilder, _Eb, "SQLiteCountBuilderAsync");
-let SQLiteCountBuilder = _SQLiteCountBuilder;
-_Gb = entityKind;
-class RelationalQueryBuilder {
-  constructor(mode, fullSchema, schema, tableNamesMap, table2, tableConfig, dialect, session) {
-    this.mode = mode;
-    this.fullSchema = fullSchema;
-    this.schema = schema;
-    this.tableNamesMap = tableNamesMap;
-    this.table = table2;
-    this.tableConfig = tableConfig;
-    this.dialect = dialect;
-    this.session = session;
+n(le, Zi, "SQLiteCountBuilderAsync");
+let ke = le;
+var Hi;
+Hi = f;
+class wn {
+  constructor(e, t, s, r, o, l, a, c) {
+    this.mode = e, this.fullSchema = t, this.schema = s, this.tableNamesMap = r, this.table = o, this.tableConfig = l, this.dialect = a, this.session = c;
   }
-  findMany(config) {
-    return this.mode === "sync" ? new SQLiteSyncRelationalQuery(
+  findMany(e) {
+    return this.mode === "sync" ? new et(
       this.fullSchema,
       this.schema,
       this.tableNamesMap,
@@ -4723,9 +3278,9 @@ class RelationalQueryBuilder {
       this.tableConfig,
       this.dialect,
       this.session,
-      config ? config : {},
+      e || {},
       "many"
-    ) : new SQLiteRelationalQuery(
+    ) : new ve(
       this.fullSchema,
       this.schema,
       this.tableNamesMap,
@@ -4733,12 +3288,12 @@ class RelationalQueryBuilder {
       this.tableConfig,
       this.dialect,
       this.session,
-      config ? config : {},
+      e || {},
       "many"
     );
   }
-  findFirst(config) {
-    return this.mode === "sync" ? new SQLiteSyncRelationalQuery(
+  findFirst(e) {
+    return this.mode === "sync" ? new et(
       this.fullSchema,
       this.schema,
       this.tableNamesMap,
@@ -4746,9 +3301,9 @@ class RelationalQueryBuilder {
       this.tableConfig,
       this.dialect,
       this.session,
-      config ? { ...config, limit: 1 } : { limit: 1 },
+      e ? { ...e, limit: 1 } : { limit: 1 },
       "first"
-    ) : new SQLiteRelationalQuery(
+    ) : new ve(
       this.fullSchema,
       this.schema,
       this.tableNamesMap,
@@ -4756,26 +3311,19 @@ class RelationalQueryBuilder {
       this.tableConfig,
       this.dialect,
       this.session,
-      config ? { ...config, limit: 1 } : { limit: 1 },
+      e ? { ...e, limit: 1 } : { limit: 1 },
       "first"
     );
   }
 }
-__publicField(RelationalQueryBuilder, _Gb, "SQLiteAsyncRelationalQueryBuilder");
-class SQLiteRelationalQuery extends (_Ib = QueryPromise, _Hb = entityKind, _Ib) {
-  constructor(fullSchema, schema, tableNamesMap, table2, tableConfig, dialect, session, config, mode) {
+n(wn, Hi, "SQLiteAsyncRelationalQueryBuilder");
+var ki, er;
+class ve extends (er = Z, ki = f, er) {
+  constructor(t, s, r, o, l, a, c, m, h) {
     super();
     /** @internal */
-    __publicField(this, "mode");
-    this.fullSchema = fullSchema;
-    this.schema = schema;
-    this.tableNamesMap = tableNamesMap;
-    this.table = table2;
-    this.tableConfig = tableConfig;
-    this.dialect = dialect;
-    this.session = session;
-    this.config = config;
-    this.mode = mode;
+    n(this, "mode");
+    this.fullSchema = t, this.schema = s, this.tableNamesMap = r, this.table = o, this.tableConfig = l, this.dialect = a, this.session = c, this.config = m, this.mode = h;
   }
   /** @internal */
   getSQL() {
@@ -4790,29 +3338,26 @@ class SQLiteRelationalQuery extends (_Ib = QueryPromise, _Hb = entityKind, _Ib) 
     }).sql;
   }
   /** @internal */
-  _prepare(isOneTimeQuery = false) {
-    const { query, builtQuery } = this._toSQL();
-    return this.session[isOneTimeQuery ? "prepareOneTimeQuery" : "prepareQuery"](
-      builtQuery,
+  _prepare(t = !1) {
+    const { query: s, builtQuery: r } = this._toSQL();
+    return this.session[t ? "prepareOneTimeQuery" : "prepareQuery"](
+      r,
       void 0,
       this.mode === "first" ? "get" : "all",
-      true,
-      (rawRows, mapColumnValue) => {
-        const rows = rawRows.map(
-          (row) => mapRelationalRow(this.schema, this.tableConfig, row, query.selection, mapColumnValue)
+      !0,
+      (o, l) => {
+        const a = o.map(
+          (c) => Je(this.schema, this.tableConfig, c, s.selection, l)
         );
-        if (this.mode === "first") {
-          return rows[0];
-        }
-        return rows;
+        return this.mode === "first" ? a[0] : a;
       }
     );
   }
   prepare() {
-    return this._prepare(false);
+    return this._prepare(!1);
   }
   _toSQL() {
-    const query = this.dialect.buildRelationalQuery({
+    const t = this.dialect.buildRelationalQuery({
       fullSchema: this.fullSchema,
       schema: this.schema,
       tableNamesMap: this.tableNamesMap,
@@ -4820,61 +3365,56 @@ class SQLiteRelationalQuery extends (_Ib = QueryPromise, _Hb = entityKind, _Ib) 
       tableConfig: this.tableConfig,
       queryConfig: this.config,
       tableAlias: this.tableConfig.tsName
-    });
-    const builtQuery = this.dialect.sqlToQuery(query.sql);
-    return { query, builtQuery };
+    }), s = this.dialect.sqlToQuery(t.sql);
+    return { query: t, builtQuery: s };
   }
   toSQL() {
     return this._toSQL().builtQuery;
   }
   /** @internal */
   executeRaw() {
-    if (this.mode === "first") {
-      return this._prepare(false).get();
-    }
-    return this._prepare(false).all();
+    return this.mode === "first" ? this._prepare(!1).get() : this._prepare(!1).all();
   }
   async execute() {
     return this.executeRaw();
   }
 }
-__publicField(SQLiteRelationalQuery, _Hb, "SQLiteAsyncRelationalQuery");
-class SQLiteSyncRelationalQuery extends (_Kb = SQLiteRelationalQuery, _Jb = entityKind, _Kb) {
+n(ve, ki, "SQLiteAsyncRelationalQuery");
+var tr, sr;
+class et extends (sr = ve, tr = f, sr) {
   sync() {
     return this.executeRaw();
   }
 }
-__publicField(SQLiteSyncRelationalQuery, _Jb, "SQLiteSyncRelationalQuery");
-class SQLiteRaw extends (_Mb = QueryPromise, _Lb = entityKind, _Mb) {
-  constructor(execute, getSQL, action, dialect, mapBatchResult) {
+n(et, tr, "SQLiteSyncRelationalQuery");
+var ir, rr;
+class ae extends (rr = Z, ir = f, rr) {
+  constructor(t, s, r, o, l) {
     super();
     /** @internal */
-    __publicField(this, "config");
-    this.execute = execute;
-    this.getSQL = getSQL;
-    this.dialect = dialect;
-    this.mapBatchResult = mapBatchResult;
-    this.config = { action };
+    n(this, "config");
+    this.execute = t, this.getSQL = s, this.dialect = o, this.mapBatchResult = l, this.config = { action: r };
   }
   getQuery() {
     return { ...this.dialect.sqlToQuery(this.getSQL()), method: this.config.action };
   }
-  mapResult(result, isFromBatch) {
-    return isFromBatch ? this.mapBatchResult(result) : result;
+  mapResult(t, s) {
+    return s ? this.mapBatchResult(t) : t;
   }
   _prepare() {
     return this;
   }
   /** @internal */
   isResponseInArrayMode() {
-    return false;
+    return !1;
   }
 }
-__publicField(SQLiteRaw, _Lb, "SQLiteRaw");
-_Nb = entityKind;
-class BaseSQLiteDatabase {
-  constructor(resultKind, dialect, session, schema) {
-    __publicField(this, "query");
+n(ae, ir, "SQLiteRaw");
+var nr;
+nr = f;
+class ct {
+  constructor(e, t, s, r) {
+    n(this, "query");
     /**
      * Creates a subquery that defines a temporary named result set as a CTE.
      *
@@ -4907,58 +3447,46 @@ class BaseSQLiteDatabase {
      * const result = await db.with(sq).select({ name: sq.name }).from(sq);
      * ```
      */
-    __publicField(this, "$with", (alias, selection) => {
-      const self = this;
-      const as = (qb) => {
-        if (typeof qb === "function") {
-          qb = qb(new QueryBuilder(self.dialect));
-        }
-        return new Proxy(
-          new WithSubquery(
-            qb.getSQL(),
-            selection ?? ("getSelectedFields" in qb ? qb.getSelectedFields() ?? {} : {}),
-            alias,
-            true
-          ),
-          new SelectionProxyHandler({ alias, sqlAliasedBehavior: "alias", sqlBehavior: "error" })
-        );
-      };
-      return { as };
+    n(this, "$with", (e, t) => {
+      const s = this;
+      return { as: (o) => (typeof o == "function" && (o = o(new ut(s.dialect))), new Proxy(
+        new rt(
+          o.getSQL(),
+          t ?? ("getSelectedFields" in o ? o.getSelectedFields() ?? {} : {}),
+          e,
+          !0
+        ),
+        new O({ alias: e, sqlAliasedBehavior: "alias", sqlBehavior: "error" })
+      )) };
     });
-    __publicField(this, "$cache");
-    this.resultKind = resultKind;
-    this.dialect = dialect;
-    this.session = session;
-    this._ = schema ? {
-      schema: schema.schema,
-      fullSchema: schema.fullSchema,
-      tableNamesMap: schema.tableNamesMap
+    n(this, "$cache");
+    this.resultKind = e, this.dialect = t, this.session = s, this._ = r ? {
+      schema: r.schema,
+      fullSchema: r.fullSchema,
+      tableNamesMap: r.tableNamesMap
     } : {
       schema: void 0,
       fullSchema: {},
       tableNamesMap: {}
-    };
-    this.query = {};
-    const query = this.query;
-    if (this._.schema) {
-      for (const [tableName, columns] of Object.entries(this._.schema)) {
-        query[tableName] = new RelationalQueryBuilder(
-          resultKind,
-          schema.fullSchema,
+    }, this.query = {};
+    const o = this.query;
+    if (this._.schema)
+      for (const [l, a] of Object.entries(this._.schema))
+        o[l] = new wn(
+          e,
+          r.fullSchema,
           this._.schema,
           this._.tableNamesMap,
-          schema.fullSchema[tableName],
-          columns,
-          dialect,
-          session
+          r.fullSchema[l],
+          a,
+          t,
+          s
         );
-      }
-    }
-    this.$cache = { invalidate: async (_params) => {
+    this.$cache = { invalidate: async (l) => {
     } };
   }
-  $count(source, filters) {
-    return new SQLiteCountBuilder({ source, filters, session: this.session });
+  $count(e, t) {
+    return new ke({ source: e, filters: t, session: this.session });
   }
   /**
    * Incorporates a previously defined CTE (using `$with`) into the main query.
@@ -4979,45 +3507,45 @@ class BaseSQLiteDatabase {
    * const result = await db.with(sq).select().from(sq);
    * ```
    */
-  with(...queries) {
-    const self = this;
-    function select(fields) {
-      return new SQLiteSelectBuilder({
-        fields: fields ?? void 0,
-        session: self.session,
-        dialect: self.dialect,
-        withList: queries
+  with(...e) {
+    const t = this;
+    function s(c) {
+      return new U({
+        fields: c ?? void 0,
+        session: t.session,
+        dialect: t.dialect,
+        withList: e
       });
     }
-    function selectDistinct(fields) {
-      return new SQLiteSelectBuilder({
-        fields: fields ?? void 0,
-        session: self.session,
-        dialect: self.dialect,
-        withList: queries,
-        distinct: true
+    function r(c) {
+      return new U({
+        fields: c ?? void 0,
+        session: t.session,
+        dialect: t.dialect,
+        withList: e,
+        distinct: !0
       });
     }
-    function update(table2) {
-      return new SQLiteUpdateBuilder(table2, self.session, self.dialect, queries);
+    function o(c) {
+      return new He(c, t.session, t.dialect, e);
     }
-    function insert(into) {
-      return new SQLiteInsertBuilder(into, self.session, self.dialect, queries);
+    function l(c) {
+      return new Ze(c, t.session, t.dialect, e);
     }
-    function delete_(from) {
-      return new SQLiteDeleteBase(from, self.session, self.dialect, queries);
+    function a(c) {
+      return new Ye(c, t.session, t.dialect, e);
     }
-    return { select, selectDistinct, update, insert, delete: delete_ };
+    return { select: s, selectDistinct: r, update: o, insert: l, delete: a };
   }
-  select(fields) {
-    return new SQLiteSelectBuilder({ fields: fields ?? void 0, session: this.session, dialect: this.dialect });
+  select(e) {
+    return new U({ fields: e ?? void 0, session: this.session, dialect: this.dialect });
   }
-  selectDistinct(fields) {
-    return new SQLiteSelectBuilder({
-      fields: fields ?? void 0,
+  selectDistinct(e) {
+    return new U({
+      fields: e ?? void 0,
       session: this.session,
       dialect: this.dialect,
-      distinct: true
+      distinct: !0
     });
   }
   /**
@@ -5047,8 +3575,8 @@ class BaseSQLiteDatabase {
    *   .returning();
    * ```
    */
-  update(table2) {
-    return new SQLiteUpdateBuilder(table2, this.session, this.dialect);
+  update(e) {
+    return new He(e, this.session, this.dialect);
   }
   /**
    * Creates an insert query.
@@ -5074,8 +3602,8 @@ class BaseSQLiteDatabase {
    *   .returning();
    * ```
    */
-  insert(into) {
-    return new SQLiteInsertBuilder(into, this.session, this.dialect);
+  insert(e) {
+    return new Ze(e, this.session, this.dialect);
   }
   /**
    * Creates a delete query.
@@ -5101,96 +3629,80 @@ class BaseSQLiteDatabase {
    *   .returning();
    * ```
    */
-  delete(from) {
-    return new SQLiteDeleteBase(from, this.session, this.dialect);
+  delete(e) {
+    return new Ye(e, this.session, this.dialect);
   }
-  run(query) {
-    const sequel = typeof query === "string" ? sql.raw(query) : query.getSQL();
-    if (this.resultKind === "async") {
-      return new SQLiteRaw(
-        async () => this.session.run(sequel),
-        () => sequel,
-        "run",
-        this.dialect,
-        this.session.extractRawRunValueFromBatchResult.bind(this.session)
-      );
-    }
-    return this.session.run(sequel);
+  run(e) {
+    const t = typeof e == "string" ? u.raw(e) : e.getSQL();
+    return this.resultKind === "async" ? new ae(
+      async () => this.session.run(t),
+      () => t,
+      "run",
+      this.dialect,
+      this.session.extractRawRunValueFromBatchResult.bind(this.session)
+    ) : this.session.run(t);
   }
-  all(query) {
-    const sequel = typeof query === "string" ? sql.raw(query) : query.getSQL();
-    if (this.resultKind === "async") {
-      return new SQLiteRaw(
-        async () => this.session.all(sequel),
-        () => sequel,
-        "all",
-        this.dialect,
-        this.session.extractRawAllValueFromBatchResult.bind(this.session)
-      );
-    }
-    return this.session.all(sequel);
+  all(e) {
+    const t = typeof e == "string" ? u.raw(e) : e.getSQL();
+    return this.resultKind === "async" ? new ae(
+      async () => this.session.all(t),
+      () => t,
+      "all",
+      this.dialect,
+      this.session.extractRawAllValueFromBatchResult.bind(this.session)
+    ) : this.session.all(t);
   }
-  get(query) {
-    const sequel = typeof query === "string" ? sql.raw(query) : query.getSQL();
-    if (this.resultKind === "async") {
-      return new SQLiteRaw(
-        async () => this.session.get(sequel),
-        () => sequel,
-        "get",
-        this.dialect,
-        this.session.extractRawGetValueFromBatchResult.bind(this.session)
-      );
-    }
-    return this.session.get(sequel);
+  get(e) {
+    const t = typeof e == "string" ? u.raw(e) : e.getSQL();
+    return this.resultKind === "async" ? new ae(
+      async () => this.session.get(t),
+      () => t,
+      "get",
+      this.dialect,
+      this.session.extractRawGetValueFromBatchResult.bind(this.session)
+    ) : this.session.get(t);
   }
-  values(query) {
-    const sequel = typeof query === "string" ? sql.raw(query) : query.getSQL();
-    if (this.resultKind === "async") {
-      return new SQLiteRaw(
-        async () => this.session.values(sequel),
-        () => sequel,
-        "values",
-        this.dialect,
-        this.session.extractRawValuesValueFromBatchResult.bind(this.session)
-      );
-    }
-    return this.session.values(sequel);
+  values(e) {
+    const t = typeof e == "string" ? u.raw(e) : e.getSQL();
+    return this.resultKind === "async" ? new ae(
+      async () => this.session.values(t),
+      () => t,
+      "values",
+      this.dialect,
+      this.session.extractRawValuesValueFromBatchResult.bind(this.session)
+    ) : this.session.values(t);
   }
-  transaction(transaction2, config) {
-    return this.session.transaction(transaction2, config);
+  transaction(e, t) {
+    return this.session.transaction(e, t);
   }
 }
-__publicField(BaseSQLiteDatabase, _Nb, "BaseSQLiteDatabase");
-_Ob = entityKind;
-class Cache {
+n(ct, nr, "BaseSQLiteDatabase");
+var or;
+or = f;
+class Sn {
 }
-__publicField(Cache, _Ob, "Cache");
-class NoopCache extends (_Qb = Cache, _Pb = entityKind, _Qb) {
+n(Sn, or, "Cache");
+var ar, lr;
+class ht extends (lr = Sn, ar = f, lr) {
   strategy() {
     return "all";
   }
-  async get(_key) {
-    return void 0;
+  async get(e) {
   }
-  async put(_hashedQuery, _response, _tables, _config) {
+  async put(e, t, s, r) {
   }
-  async onMutate(_params) {
+  async onMutate(e) {
   }
 }
-__publicField(NoopCache, _Pb, "NoopCache");
-async function hashQuery(sql2, params) {
-  const dataToHash = `${sql2}-${JSON.stringify(params)}`;
-  const encoder = new TextEncoder();
-  const data = encoder.encode(dataToHash);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = [...new Uint8Array(hashBuffer)];
-  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-  return hashHex;
+n(ht, ar, "NoopCache");
+async function wt(i, e) {
+  const t = `${i}-${JSON.stringify(e)}`, r = new TextEncoder().encode(t), o = await crypto.subtle.digest("SHA-256", r);
+  return [...new Uint8Array(o)].map((c) => c.toString(16).padStart(2, "0")).join("");
 }
-class ExecuteResultSync extends (_Sb = QueryPromise, _Rb = entityKind, _Sb) {
-  constructor(resultCb) {
-    super();
-    this.resultCb = resultCb;
+var ur, cr;
+class Nn extends (cr = Z, ur = f, cr) {
+  constructor(e) {
+    super(), this.resultCb = e;
   }
   async execute() {
     return this.resultCb();
@@ -5199,429 +3711,376 @@ class ExecuteResultSync extends (_Sb = QueryPromise, _Rb = entityKind, _Sb) {
     return this.resultCb();
   }
 }
-__publicField(ExecuteResultSync, _Rb, "ExecuteResultSync");
-_Tb = entityKind;
-class SQLitePreparedQuery {
-  constructor(mode, executeMethod, query, cache, queryMetadata, cacheConfig) {
+n(Nn, ur, "ExecuteResultSync");
+var hr;
+hr = f;
+class $n {
+  constructor(e, t, s, r, o, l) {
     /** @internal */
-    __publicField(this, "joinsNotNullableMap");
-    var _a2;
-    this.mode = mode;
-    this.executeMethod = executeMethod;
-    this.query = query;
-    this.cache = cache;
-    this.queryMetadata = queryMetadata;
-    this.cacheConfig = cacheConfig;
-    if (cache && cache.strategy() === "all" && cacheConfig === void 0) {
-      this.cacheConfig = { enable: true, autoInvalidate: true };
-    }
-    if (!((_a2 = this.cacheConfig) == null ? void 0 : _a2.enable)) {
-      this.cacheConfig = void 0;
-    }
+    n(this, "joinsNotNullableMap");
+    var a;
+    this.mode = e, this.executeMethod = t, this.query = s, this.cache = r, this.queryMetadata = o, this.cacheConfig = l, r && r.strategy() === "all" && l === void 0 && (this.cacheConfig = { enable: !0, autoInvalidate: !0 }), (a = this.cacheConfig) != null && a.enable || (this.cacheConfig = void 0);
   }
   /** @internal */
-  async queryWithCache(queryString, params, query) {
-    if (this.cache === void 0 || is(this.cache, NoopCache) || this.queryMetadata === void 0) {
+  async queryWithCache(e, t, s) {
+    if (this.cache === void 0 || d(this.cache, ht) || this.queryMetadata === void 0)
       try {
-        return await query();
-      } catch (e) {
-        throw new DrizzleQueryError(queryString, params, e);
+        return await s();
+      } catch (r) {
+        throw new G(e, t, r);
       }
-    }
-    if (this.cacheConfig && !this.cacheConfig.enable) {
+    if (this.cacheConfig && !this.cacheConfig.enable)
       try {
-        return await query();
-      } catch (e) {
-        throw new DrizzleQueryError(queryString, params, e);
+        return await s();
+      } catch (r) {
+        throw new G(e, t, r);
       }
-    }
-    if ((this.queryMetadata.type === "insert" || this.queryMetadata.type === "update" || this.queryMetadata.type === "delete") && this.queryMetadata.tables.length > 0) {
+    if ((this.queryMetadata.type === "insert" || this.queryMetadata.type === "update" || this.queryMetadata.type === "delete") && this.queryMetadata.tables.length > 0)
       try {
-        const [res] = await Promise.all([
-          query(),
+        const [r] = await Promise.all([
+          s(),
           this.cache.onMutate({ tables: this.queryMetadata.tables })
         ]);
-        return res;
-      } catch (e) {
-        throw new DrizzleQueryError(queryString, params, e);
+        return r;
+      } catch (r) {
+        throw new G(e, t, r);
       }
-    }
-    if (!this.cacheConfig) {
+    if (!this.cacheConfig)
       try {
-        return await query();
-      } catch (e) {
-        throw new DrizzleQueryError(queryString, params, e);
+        return await s();
+      } catch (r) {
+        throw new G(e, t, r);
       }
-    }
     if (this.queryMetadata.type === "select") {
-      const fromCache = await this.cache.get(
-        this.cacheConfig.tag ?? await hashQuery(queryString, params),
+      const r = await this.cache.get(
+        this.cacheConfig.tag ?? await wt(e, t),
         this.queryMetadata.tables,
         this.cacheConfig.tag !== void 0,
         this.cacheConfig.autoInvalidate
       );
-      if (fromCache === void 0) {
-        let result;
+      if (r === void 0) {
+        let o;
         try {
-          result = await query();
-        } catch (e) {
-          throw new DrizzleQueryError(queryString, params, e);
+          o = await s();
+        } catch (l) {
+          throw new G(e, t, l);
         }
-        await this.cache.put(
-          this.cacheConfig.tag ?? await hashQuery(queryString, params),
-          result,
+        return await this.cache.put(
+          this.cacheConfig.tag ?? await wt(e, t),
+          o,
           // make sure we send tables that were used in a query only if user wants to invalidate it on each write
           this.cacheConfig.autoInvalidate ? this.queryMetadata.tables : [],
           this.cacheConfig.tag !== void 0,
           this.cacheConfig.config
-        );
-        return result;
+        ), o;
       }
-      return fromCache;
+      return r;
     }
     try {
-      return await query();
-    } catch (e) {
-      throw new DrizzleQueryError(queryString, params, e);
+      return await s();
+    } catch (r) {
+      throw new G(e, t, r);
     }
   }
   getQuery() {
     return this.query;
   }
-  mapRunResult(result, _isFromBatch) {
-    return result;
+  mapRunResult(e, t) {
+    return e;
   }
-  mapAllResult(_result, _isFromBatch) {
+  mapAllResult(e, t) {
     throw new Error("Not implemented");
   }
-  mapGetResult(_result, _isFromBatch) {
+  mapGetResult(e, t) {
     throw new Error("Not implemented");
   }
-  execute(placeholderValues) {
-    if (this.mode === "async") {
-      return this[this.executeMethod](placeholderValues);
-    }
-    return new ExecuteResultSync(() => this[this.executeMethod](placeholderValues));
+  execute(e) {
+    return this.mode === "async" ? this[this.executeMethod](e) : new Nn(() => this[this.executeMethod](e));
   }
-  mapResult(response, isFromBatch) {
+  mapResult(e, t) {
     switch (this.executeMethod) {
-      case "run": {
-        return this.mapRunResult(response, isFromBatch);
-      }
-      case "all": {
-        return this.mapAllResult(response, isFromBatch);
-      }
-      case "get": {
-        return this.mapGetResult(response, isFromBatch);
-      }
+      case "run":
+        return this.mapRunResult(e, t);
+      case "all":
+        return this.mapAllResult(e, t);
+      case "get":
+        return this.mapGetResult(e, t);
     }
   }
 }
-__publicField(SQLitePreparedQuery, _Tb, "PreparedQuery");
-_Ub = entityKind;
-class SQLiteSession {
-  constructor(dialect) {
-    this.dialect = dialect;
+n($n, hr, "PreparedQuery");
+var dr;
+dr = f;
+class Qn {
+  constructor(e) {
+    this.dialect = e;
   }
-  prepareOneTimeQuery(query, fields, executeMethod, isResponseInArrayMode, customResultMapper, queryMetadata, cacheConfig) {
+  prepareOneTimeQuery(e, t, s, r, o, l, a) {
     return this.prepareQuery(
-      query,
-      fields,
-      executeMethod,
-      isResponseInArrayMode,
-      customResultMapper,
-      queryMetadata,
-      cacheConfig
+      e,
+      t,
+      s,
+      r,
+      o,
+      l,
+      a
     );
   }
-  run(query) {
-    const staticQuery = this.dialect.sqlToQuery(query);
+  run(e) {
+    const t = this.dialect.sqlToQuery(e);
     try {
-      return this.prepareOneTimeQuery(staticQuery, void 0, "run", false).run();
-    } catch (err) {
-      throw new DrizzleError({ cause: err, message: `Failed to run the query '${staticQuery.sql}'` });
+      return this.prepareOneTimeQuery(t, void 0, "run", !1).run();
+    } catch (s) {
+      throw new Ie({ cause: s, message: `Failed to run the query '${t.sql}'` });
     }
   }
   /** @internal */
-  extractRawRunValueFromBatchResult(result) {
-    return result;
+  extractRawRunValueFromBatchResult(e) {
+    return e;
   }
-  all(query) {
-    return this.prepareOneTimeQuery(this.dialect.sqlToQuery(query), void 0, "run", false).all();
+  all(e) {
+    return this.prepareOneTimeQuery(this.dialect.sqlToQuery(e), void 0, "run", !1).all();
   }
   /** @internal */
-  extractRawAllValueFromBatchResult(_result) {
+  extractRawAllValueFromBatchResult(e) {
     throw new Error("Not implemented");
   }
-  get(query) {
-    return this.prepareOneTimeQuery(this.dialect.sqlToQuery(query), void 0, "run", false).get();
+  get(e) {
+    return this.prepareOneTimeQuery(this.dialect.sqlToQuery(e), void 0, "run", !1).get();
   }
   /** @internal */
-  extractRawGetValueFromBatchResult(_result) {
+  extractRawGetValueFromBatchResult(e) {
     throw new Error("Not implemented");
   }
-  values(query) {
-    return this.prepareOneTimeQuery(this.dialect.sqlToQuery(query), void 0, "run", false).values();
+  values(e) {
+    return this.prepareOneTimeQuery(this.dialect.sqlToQuery(e), void 0, "run", !1).values();
   }
-  async count(sql2) {
-    const result = await this.values(sql2);
-    return result[0][0];
+  async count(e) {
+    return (await this.values(e))[0][0];
   }
   /** @internal */
-  extractRawValuesValueFromBatchResult(_result) {
+  extractRawValuesValueFromBatchResult(e) {
     throw new Error("Not implemented");
   }
 }
-__publicField(SQLiteSession, _Ub, "SQLiteSession");
-class SQLiteTransaction extends (_Wb = BaseSQLiteDatabase, _Vb = entityKind, _Wb) {
-  constructor(resultType, dialect, session, schema, nestedIndex = 0) {
-    super(resultType, dialect, session, schema);
-    this.schema = schema;
-    this.nestedIndex = nestedIndex;
+n(Qn, dr, "SQLiteSession");
+var fr, mr;
+class Tn extends (mr = ct, fr = f, mr) {
+  constructor(e, t, s, r, o = 0) {
+    super(e, t, s, r), this.schema = r, this.nestedIndex = o;
   }
   rollback() {
-    throw new TransactionRollbackError();
+    throw new Br();
   }
 }
-__publicField(SQLiteTransaction, _Vb, "SQLiteTransaction");
-class BetterSQLiteSession extends (_Yb = SQLiteSession, _Xb = entityKind, _Yb) {
-  constructor(client, dialect, schema, options = {}) {
-    super(dialect);
-    __publicField(this, "logger");
-    __publicField(this, "cache");
-    this.client = client;
-    this.schema = schema;
-    this.logger = options.logger ?? new NoopLogger();
-    this.cache = options.cache ?? new NoopCache();
+n(Tn, fr, "SQLiteTransaction");
+var pr, gr;
+class Cn extends (gr = Qn, pr = f, gr) {
+  constructor(t, s, r, o = {}) {
+    super(s);
+    n(this, "logger");
+    n(this, "cache");
+    this.client = t, this.schema = r, this.logger = o.logger ?? new Ar(), this.cache = o.cache ?? new ht();
   }
-  prepareQuery(query, fields, executeMethod, isResponseInArrayMode, customResultMapper, queryMetadata, cacheConfig) {
-    const stmt = this.client.prepare(query.sql);
-    return new PreparedQuery(
-      stmt,
-      query,
+  prepareQuery(t, s, r, o, l, a, c) {
+    const m = this.client.prepare(t.sql);
+    return new vn(
+      m,
+      t,
       this.logger,
       this.cache,
-      queryMetadata,
-      cacheConfig,
-      fields,
-      executeMethod,
-      isResponseInArrayMode,
-      customResultMapper
+      a,
+      c,
+      s,
+      r,
+      o,
+      l
     );
   }
-  transaction(transaction2, config = {}) {
-    const tx = new BetterSQLiteTransaction("sync", this.dialect, this, this.schema);
-    const nativeTx = this.client.transaction(transaction2);
-    return nativeTx[config.behavior ?? "deferred"](tx);
+  transaction(t, s = {}) {
+    const r = new tt("sync", this.dialect, this, this.schema);
+    return this.client.transaction(t)[s.behavior ?? "deferred"](r);
   }
 }
-__publicField(BetterSQLiteSession, _Xb, "BetterSQLiteSession");
-const _BetterSQLiteTransaction = class _BetterSQLiteTransaction extends (__b = SQLiteTransaction, _Zb = entityKind, __b) {
-  transaction(transaction2) {
-    const savepointName = `sp${this.nestedIndex}`;
-    const tx = new _BetterSQLiteTransaction("sync", this.dialect, this.session, this.schema, this.nestedIndex + 1);
-    this.session.run(sql.raw(`savepoint ${savepointName}`));
+n(Cn, pr, "BetterSQLiteSession");
+var yr, br;
+const qe = class qe extends (br = Tn, yr = f, br) {
+  transaction(e) {
+    const t = `sp${this.nestedIndex}`, s = new qe("sync", this.dialect, this.session, this.schema, this.nestedIndex + 1);
+    this.session.run(u.raw(`savepoint ${t}`));
     try {
-      const result = transaction2(tx);
-      this.session.run(sql.raw(`release savepoint ${savepointName}`));
-      return result;
-    } catch (err) {
-      this.session.run(sql.raw(`rollback to savepoint ${savepointName}`));
-      throw err;
+      const r = e(s);
+      return this.session.run(u.raw(`release savepoint ${t}`)), r;
+    } catch (r) {
+      throw this.session.run(u.raw(`rollback to savepoint ${t}`)), r;
     }
   }
 };
-__publicField(_BetterSQLiteTransaction, _Zb, "BetterSQLiteTransaction");
-let BetterSQLiteTransaction = _BetterSQLiteTransaction;
-class PreparedQuery extends (_ac = SQLitePreparedQuery, _$b = entityKind, _ac) {
-  constructor(stmt, query, logger, cache, queryMetadata, cacheConfig, fields, executeMethod, _isResponseInArrayMode, customResultMapper) {
-    super("sync", executeMethod, query, cache, queryMetadata, cacheConfig);
-    this.stmt = stmt;
-    this.logger = logger;
-    this.fields = fields;
-    this._isResponseInArrayMode = _isResponseInArrayMode;
-    this.customResultMapper = customResultMapper;
+n(qe, yr, "BetterSQLiteTransaction");
+let tt = qe;
+var wr, Sr;
+class vn extends (Sr = $n, wr = f, Sr) {
+  constructor(e, t, s, r, o, l, a, c, m, h) {
+    super("sync", c, t, r, o, l), this.stmt = e, this.logger = s, this.fields = a, this._isResponseInArrayMode = m, this.customResultMapper = h;
   }
-  run(placeholderValues) {
-    const params = fillPlaceholders(this.query.params, placeholderValues ?? {});
-    this.logger.logQuery(this.query.sql, params);
-    return this.stmt.run(...params);
+  run(e) {
+    const t = ge(this.query.params, e ?? {});
+    return this.logger.logQuery(this.query.sql, t), this.stmt.run(...t);
   }
-  all(placeholderValues) {
-    const { fields, joinsNotNullableMap, query, logger, stmt, customResultMapper } = this;
-    if (!fields && !customResultMapper) {
-      const params = fillPlaceholders(query.params, placeholderValues ?? {});
-      logger.logQuery(query.sql, params);
-      return stmt.all(...params);
+  all(e) {
+    const { fields: t, joinsNotNullableMap: s, query: r, logger: o, stmt: l, customResultMapper: a } = this;
+    if (!t && !a) {
+      const m = ge(r.params, e ?? {});
+      return o.logQuery(r.sql, m), l.all(...m);
     }
-    const rows = this.values(placeholderValues);
-    if (customResultMapper) {
-      return customResultMapper(rows);
-    }
-    return rows.map((row) => mapResultRow(fields, row, joinsNotNullableMap));
+    const c = this.values(e);
+    return a ? a(c) : c.map((m) => gt(t, m, s));
   }
-  get(placeholderValues) {
-    const params = fillPlaceholders(this.query.params, placeholderValues ?? {});
-    this.logger.logQuery(this.query.sql, params);
-    const { fields, stmt, joinsNotNullableMap, customResultMapper } = this;
-    if (!fields && !customResultMapper) {
-      return stmt.get(...params);
-    }
-    const row = stmt.raw().get(...params);
-    if (!row) {
-      return void 0;
-    }
-    if (customResultMapper) {
-      return customResultMapper([row]);
-    }
-    return mapResultRow(fields, row, joinsNotNullableMap);
+  get(e) {
+    const t = ge(this.query.params, e ?? {});
+    this.logger.logQuery(this.query.sql, t);
+    const { fields: s, stmt: r, joinsNotNullableMap: o, customResultMapper: l } = this;
+    if (!s && !l)
+      return r.get(...t);
+    const a = r.raw().get(...t);
+    if (a)
+      return l ? l([a]) : gt(s, a, o);
   }
-  values(placeholderValues) {
-    const params = fillPlaceholders(this.query.params, placeholderValues ?? {});
-    this.logger.logQuery(this.query.sql, params);
-    return this.stmt.raw().all(...params);
+  values(e) {
+    const t = ge(this.query.params, e ?? {});
+    return this.logger.logQuery(this.query.sql, t), this.stmt.raw().all(...t);
   }
   /** @internal */
   isResponseInArrayMode() {
     return this._isResponseInArrayMode;
   }
 }
-__publicField(PreparedQuery, _$b, "BetterSQLitePreparedQuery");
-class BetterSQLite3Database extends (_cc = BaseSQLiteDatabase, _bc = entityKind, _cc) {
+n(vn, wr, "BetterSQLitePreparedQuery");
+var Nr, $r;
+class Ln extends ($r = ct, Nr = f, $r) {
 }
-__publicField(BetterSQLite3Database, _bc, "BetterSQLite3Database");
-function construct(client, config = {}) {
-  const dialect = new SQLiteSyncDialect({ casing: config.casing });
-  let logger;
-  if (config.logger === true) {
-    logger = new DefaultLogger();
-  } else if (config.logger !== false) {
-    logger = config.logger;
-  }
-  let schema;
-  if (config.schema) {
-    const tablesConfig = extractTablesRelationalConfig(
-      config.schema,
-      createTableRelationsHelpers
+n(Ln, Nr, "BetterSQLite3Database");
+function re(i, e = {}) {
+  const t = new at({ casing: e.casing });
+  let s;
+  e.logger === !0 ? s = new Or() : e.logger !== !1 && (s = e.logger);
+  let r;
+  if (e.schema) {
+    const a = po(
+      e.schema,
+      wo
     );
-    schema = {
-      fullSchema: config.schema,
-      schema: tablesConfig.tables,
-      tableNamesMap: tablesConfig.tableNamesMap
+    r = {
+      fullSchema: e.schema,
+      schema: a.tables,
+      tableNamesMap: a.tableNamesMap
     };
   }
-  const session = new BetterSQLiteSession(client, dialect, schema, { logger });
-  const db = new BetterSQLite3Database("sync", dialect, session, schema);
-  db.$client = client;
-  return db;
+  const o = new Cn(i, t, r, { logger: s }), l = new Ln("sync", t, o, r);
+  return l.$client = i, l;
 }
-function drizzle(...params) {
-  if (params[0] === void 0 || typeof params[0] === "string") {
-    const instance = params[0] === void 0 ? new Database() : new Database(params[0]);
-    return construct(instance, params[1]);
+function st(...i) {
+  if (i[0] === void 0 || typeof i[0] == "string") {
+    const e = i[0] === void 0 ? new oe() : new oe(i[0]);
+    return re(e, i[1]);
   }
-  if (isConfig(params[0])) {
-    const { connection, client, ...drizzleConfig } = params[0];
-    if (client) return construct(client, drizzleConfig);
-    if (typeof connection === "object") {
-      const { source, ...options } = connection;
-      const instance2 = new Database(source, options);
-      return construct(instance2, drizzleConfig);
+  if (Un(i[0])) {
+    const { connection: e, client: t, ...s } = i[0];
+    if (t) return re(t, s);
+    if (typeof e == "object") {
+      const { source: o, ...l } = e, a = new oe(o, l);
+      return re(a, s);
     }
-    const instance = new Database(connection);
-    return construct(instance, drizzleConfig);
+    const r = new oe(e);
+    return re(r, s);
   }
-  return construct(params[0], params[1]);
+  return re(i[0], i[1]);
 }
-((drizzle2) => {
-  function mock(config) {
-    return construct({}, config);
+((i) => {
+  function e(t) {
+    return re({}, t);
   }
-  drizzle2.mock = mock;
-})(drizzle || (drizzle = {}));
-const pluginSettings = sqliteTable("plugin_settings", {
-  pluginId: text("plugin_id").primaryKey(),
-  enabled: integer("enabled").notNull().default(0)
+  i.mock = e;
+})(st || (st = {}));
+const I = Lo("plugin_settings", {
+  pluginId: We("plugin_id").primaryKey(),
+  enabled: tn("enabled").notNull().default(0),
+  settings: We("settings")
 });
-let _db = null;
-function dbFile() {
-  const userDir = app.getPath("userData");
-  return path$1.join(userDir, "data.db");
+let ye = null;
+function Po() {
+  const i = process.env.BRAIN4ME_DB_DIR ?? we.resolve(process.cwd(), "data"), e = process.env.BRAIN4ME_DB_FILE ?? "brain4me.sqlite";
+  return dt.existsSync(i) || dt.mkdirSync(i, { recursive: !0 }), we.join(i, e);
 }
-function getDb() {
-  if (_db) return _db;
-  const sqlite = new Database(dbFile());
-  sqlite.exec(
-    "CREATE TABLE IF NOT EXISTS plugin_settings (plugin_id TEXT PRIMARY KEY, enabled INTEGER NOT NULL DEFAULT 1)"
-  );
-  _db = drizzle(sqlite);
-  return _db;
+function fe() {
+  if (ye) return ye;
+  const i = new oe(Po());
+  return i.exec(
+    "CREATE TABLE IF NOT EXISTS plugin_settings (plugin_id TEXT PRIMARY KEY, enabled INTEGER NOT NULL DEFAULT 1, settings TEXT)"
+  ), i.prepare("PRAGMA table_info(plugin_settings)").all().some((t) => t.name === "settings") || i.exec("ALTER TABLE plugin_settings ADD COLUMN settings TEXT"), ye = st(i), ye;
 }
-const __filename$1 = fileURLToPath(import.meta.url);
-const __dirname = path$1.dirname(__filename$1);
-app.disableHardwareAcceleration();
-let win = null;
-async function createWindow() {
-  win = new BrowserWindow({
+const xn = Pn(import.meta.url), Bn = we.dirname(xn);
+globalThis.__filename = xn;
+globalThis.__dirname = Bn;
+let W = null;
+const it = [
+  { id: "hello", name: "Hello Plugin", description: "Plugin de démonstration" },
+  { id: "notes", name: "Notes", description: "Bloc-notes local (exemple)" },
+  { id: "calendar", name: "Calendrier", description: "Aperçu calendrier statique" }
+];
+async function Ro() {
+  await fe().insert(I).values(it.map((e) => ({ pluginId: e.id, enabled: 1, settings: "{}" }))).onConflictDoNothing({ target: I.pluginId });
+}
+async function qn() {
+  W = new Qr({
     width: 1200,
     height: 800,
     webPreferences: {
-      preload: path$1.join(__dirname, "preload.mjs"),
-      nodeIntegration: false,
-      contextIsolation: true,
-      sandbox: true
+      preload: we.join(Bn, "preload.mjs"),
+      nodeIntegration: !1,
+      contextIsolation: !0,
+      sandbox: !0
     },
-    show: false
+    show: !1
   });
-  const devServer = process.env.VITE_DEV_SERVER_URL;
-  const prodIndex = new URL("data:text/html;base64,PCFkb2N0eXBlIGh0bWw+CjxodG1sPgo8aGVhZD4KICAgIDxtZXRhIGNoYXJzZXQ9IlVURi04IiAvPgogICAgPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1TZWN1cml0eS1Qb2xpY3kiCiAgICAgICAgICBjb250ZW50PSJkZWZhdWx0LXNyYyAnc2VsZic7IGltZy1zcmMgJ3NlbGYnIGRhdGE6OyBzdHlsZS1zcmMgJ3NlbGYnICd1bnNhZmUtaW5saW5lJzsgc2NyaXB0LXNyYyAnc2VsZic7IiAvPgogICAgPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCwgaW5pdGlhbC1zY2FsZT0xLjAiIC8+CiAgICA8dGl0bGU+QnJhaW40TWU8L3RpdGxlPgo8L2hlYWQ+Cjxib2R5Pgo8ZGl2IGlkPSJyb290Ij48L2Rpdj4KPHNjcmlwdCB0eXBlPSJtb2R1bGUiIHNyYz0iL3NyYy9tYWluLnRzeCI+PC9zY3JpcHQ+CjwvYm9keT4KPC9odG1sPgo=", import.meta.url).toString();
-  await win.loadURL(devServer ?? prodIndex);
-  win.once("ready-to-show", () => win == null ? void 0 : win.show());
+  const i = process.env.VITE_DEV_SERVER_URL, e = new URL("data:text/html;base64,PCFkb2N0eXBlIGh0bWw+CjxodG1sPgo8aGVhZD4KICAgIDxtZXRhIGNoYXJzZXQ9IlVURi04IiAvPgogICAgPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1TZWN1cml0eS1Qb2xpY3kiCiAgICAgICAgICBjb250ZW50PSJkZWZhdWx0LXNyYyAnc2VsZic7IGltZy1zcmMgJ3NlbGYnIGRhdGE6OyBzdHlsZS1zcmMgJ3NlbGYnICd1bnNhZmUtaW5saW5lJzsgc2NyaXB0LXNyYyAnc2VsZic7IiAvPgogICAgPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCwgaW5pdGlhbC1zY2FsZT0xLjAiIC8+CiAgICA8dGl0bGU+QnJhaW40TWU8L3RpdGxlPgo8L2hlYWQ+Cjxib2R5Pgo8ZGl2IGlkPSJyb290Ij48L2Rpdj4KPHNjcmlwdCB0eXBlPSJtb2R1bGUiIHNyYz0iL3NyYy9tYWluLnRzeCI+PC9zY3JpcHQ+CjwvYm9keT4KPC9odG1sPgo=", import.meta.url).toString(), t = i ?? e, s = () => {
+    W && !W.isDestroyed() && !W.isVisible() && W.show();
+  };
+  W.once("ready-to-show", s), W.webContents.on("did-finish-load", s), await W.loadURL(t);
 }
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") app.quit();
+Se.on("window-all-closed", () => {
+  process.platform !== "darwin" && Se.quit();
 });
-app.on("activate", () => {
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
+Se.on("activate", () => {
+  Qr.getAllWindows().length === 0 && qn();
 });
-app.whenReady().then(createWindow).catch((err) => {
-  console.error("[main] failed to create window", err);
+Se.whenReady().then(async () => {
+  await Ro(), await qn();
+}).catch((i) => {
+  console.error("[main] failed to create window", i);
 });
-process.on("unhandledRejection", (err) => {
-  console.error("[main] unhandledRejection", err);
+Oe.handle("plugin:list", async () => {
+  const i = fe(), e = it.map((r) => r.id), t = await i.select().from(I).where(Rr(I.pluginId, e)), s = new Map(t.map((r) => [r.pluginId, r.enabled === 1]));
+  return it.map((r) => ({ ...r, enabled: s.get(r.id) ?? !0 }));
 });
-function broadcastEnabledChanged(payload) {
-  for (const win2 of BrowserWindow.getAllWindows()) {
-    win2.webContents.send("plugin-enabled-changed", payload);
-  }
-}
-ipcMain.handle("plugin:getEnabled", async (_e2, id) => {
-  const db = getDb();
-  const rows = await db.select().from(pluginSettings).where(eq(pluginSettings.pluginId, id));
-  if (rows.length === 0) return true;
-  return rows[0].enabled === 1;
+Oe.handle("plugin:setEnabled", async (i, e, t) => {
+  const s = fe(), r = t ? 1 : 0, o = await s.select().from(I).where(de(I.pluginId, e)), l = o.length && o[0].settings ? o[0].settings : "{}";
+  return await s.insert(I).values({ pluginId: e, enabled: r, settings: l }).onConflictDoUpdate({ target: I.pluginId, set: { enabled: r } }), !0;
 });
-ipcMain.handle("plugin:setEnabled", async (_e2, id, value) => {
-  const db = getDb();
-  const enabled = value ? 1 : 0;
-  await db.insert(pluginSettings).values({ pluginId: id, enabled }).onConflictDoUpdate({ target: pluginSettings.pluginId, set: { enabled } });
-  broadcastEnabledChanged({ id, value });
-  return true;
+Oe.handle("settings:get", async (i, e) => {
+  const s = await fe().select().from(I).where(de(I.pluginId, e));
+  if (!s.length) return { enabled: !0 };
+  const r = s[0];
+  let o = {};
+  if (r.settings)
+    try {
+      o = JSON.parse(r.settings);
+    } catch (l) {
+      console.warn("[main] failed to parse settings JSON", l);
+    }
+  return { ...o, enabled: r.enabled === 1 };
 });
-ipcMain.handle("plugin:getEnabledMap", async (_e2, ids) => {
-  const db = getDb();
-  if (!ids || ids.length === 0) return {};
-  const rows = await db.select().from(pluginSettings).where(inArray(pluginSettings.pluginId, ids));
-  const map = {};
-  for (const id of ids) map[id] = true;
-  for (const r of rows) map[r.pluginId] = r.enabled === 1;
-  return map;
-});
-const settingsStore = /* @__PURE__ */ new Map();
-ipcMain.handle("settings:get", (_e2, pluginId) => {
-  return settingsStore.get(pluginId) ?? {};
-});
-ipcMain.handle("settings:set", (_e2, pluginId, values) => {
-  settingsStore.set(pluginId, values);
-  return true;
+Oe.handle("settings:set", async (i, e, t) => {
+  const s = fe(), r = await s.select().from(I).where(de(I.pluginId, e)), o = r.length ? r[0] : null, { enabled: l, ...a } = t ?? {}, c = typeof l == "boolean" ? l ? 1 : 0 : (o == null ? void 0 : o.enabled) ?? 1, m = JSON.stringify(a ?? {});
+  return await s.insert(I).values({ pluginId: e, enabled: c, settings: m }).onConflictDoUpdate({ target: I.pluginId, set: { enabled: c, settings: m } }), !0;
 });

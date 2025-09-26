@@ -9,6 +9,13 @@ export default defineConfig({
     electron({
       main: {
         entry: "electron/main.ts",
+        vite: {
+          build: {
+            rollupOptions: {
+              external: ["better-sqlite3"],
+            },
+          },
+        },
         onstart({ startup }) {
           startup();
         },
@@ -16,6 +23,10 @@ export default defineConfig({
       preload: { input: { preload: "electron/preload.ts" } },
     }),
   ],
+  server: {
+    port: 0, // pick any free port so multiple dev instances can coexist
+    strictPort: false,
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

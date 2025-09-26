@@ -3,18 +3,22 @@ import { useEffect, useState } from "react";
 import { get } from "@/core/plugin-registry";
 
 export default function PluginHost() {
-    const { pluginId } = useParams();
+    const { pluginId } = useParams<{ pluginId?: string }>();
     const manifest = pluginId ? get(pluginId) : undefined;
     const [Component, setComponent] = useState<React.ComponentType | null>(null);
 
     useEffect(() => {
         let cancelled = false;
         if (manifest) {
-            manifest.entry().then(mod => !cancelled && setComponent(() => mod.default));
+            manifest.entry().then((mod) => {
+                if (!cancelled) setComponent(() => mod.default);
+            });
         } else {
             setComponent(null);
         }
-        return () => { cancelled = true; };
+        return () => {
+            cancelled = true;
+        };
     }, [manifest]);
 
     if (!manifest) {

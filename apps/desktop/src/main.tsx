@@ -6,7 +6,8 @@ import "./index.css";
 const el = document.getElementById("root");
 if (!el) throw new Error("#root not found");
 
-createRoot(el).render(
+const root = createRoot(el);
+root.render(
     <React.StrictMode>
         <App />
     </React.StrictMode>

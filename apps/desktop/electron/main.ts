@@ -1,15 +1,29 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { app, ipcMain, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import { eq, inArray } from "drizzle-orm";
 import { getDb, pluginSettings } from "./db";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.disableHardwareAcceleration();
+(globalThis as any).__filename = __filename;
+(globalThis as any).__dirname = __dirname;
 
 let win: BrowserWindow | null = null;
+const defaultPlugins = [
+  { id: "hello", name: "Hello Plugin", description: "Plugin de démonstration" },
+  { id: "notes", name: "Notes", description: "Bloc-notes local (exemple)" },
+  { id: "calendar", name: "Calendrier", description: "Aperçu calendrier statique" },
+];
+
+async function ensurePluginRows() {
+  const db = getDb();
+  await db
+    .insert(pluginSettings)
+    .values(defaultPlugins.map((p) => ({ pluginId: p.id, enabled: 1, settings: "{}" })))
+    .onConflictDoNothing({ target: pluginSettings.pluginId });
+}
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -26,63 +40,83 @@ async function createWindow() {
 
   const devServer = process.env.VITE_DEV_SERVER_URL;
   const prodIndex = new URL("../index.html", import.meta.url).toString();
-  await win.loadURL(devServer ?? prodIndex);
-  win.once("ready-to-show", () => win?.show());
+  const loadTarget = devServer ?? prodIndex;
+
+  const ensureVisible = () => {
+    if (win && !win.isDestroyed() && !win.isVisible()) {
+      win.show();
+    }
+  };
+
+  win.once("ready-to-show", ensureVisible);
+  win.webContents.on("did-finish-load", ensureVisible);
+
+  await win.loadURL(loadTarget);
 }
 
-app.on("window-all-closed", () => { if (process.platform !== "darwin") app.quit(); });
-app.on("activate", () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
-
-app.whenReady().then(createWindow).catch((err) => {
-  console.error("[main] failed to create window", err);
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") app.quit();
+});
+app.on("activate", () => {
+  if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
 
-process.on("unhandledRejection", (err) => {
-  console.error("[main] unhandledRejection", err);
-});
+app
+  .whenReady()
+  .then(async () => {
+    await ensurePluginRows();
+    await createWindow();
+  })
+  .catch((err) => {
+    console.error("[main] failed to create window", err);
+  });
 
-function broadcastEnabledChanged(payload: { id: string; value: boolean }) {
-  for (const win of BrowserWindow.getAllWindows()) {
-    win.webContents.send("plugin-enabled-changed", payload);
-  }
-}
-
-ipcMain.handle("plugin:getEnabled", async (_e, id: string) => {
+ipcMain.handle("plugin:list", async () => {
   const db = getDb();
-  const rows = await db.select().from(pluginSettings).where(eq(pluginSettings.pluginId, id));
-  if (rows.length === 0) return true; // défaut: activé
-  return rows[0].enabled === 1;
+  const ids = defaultPlugins.map((p) => p.id);
+  const rows = await db.select().from(pluginSettings).where(inArray(pluginSettings.pluginId, ids));
+  const enabledMap = new Map<string, boolean>(rows.map((row) => [row.pluginId, row.enabled === 1]));
+  return defaultPlugins.map((p) => ({ ...p, enabled: enabledMap.get(p.id) ?? true }));
 });
 
 ipcMain.handle("plugin:setEnabled", async (_e, id: string, value: boolean) => {
   const db = getDb();
   const enabled = value ? 1 : 0;
+  const existing = await db.select().from(pluginSettings).where(eq(pluginSettings.pluginId, id));
+  const payload = existing.length && existing[0].settings ? existing[0].settings : "{}";
   await db
     .insert(pluginSettings)
-    .values({ pluginId: id, enabled })
+    .values({ pluginId: id, enabled, settings: payload })
     .onConflictDoUpdate({ target: pluginSettings.pluginId, set: { enabled } });
-  broadcastEnabledChanged({ id, value });
   return true;
 });
 
-ipcMain.handle("plugin:getEnabledMap", async (_e, ids: string[]) => {
+ipcMain.handle("settings:get", async (_e, pluginId: string) => {
   const db = getDb();
-  if (!ids || ids.length === 0) return {} as Record<string, boolean>;
-  const rows = await db.select().from(pluginSettings).where(inArray(pluginSettings.pluginId, ids));
-  const map: Record<string, boolean> = {};
-  for (const id of ids) map[id] = true; // par défaut, true
-  for (const r of rows) map[r.pluginId] = r.enabled === 1;
-  return map;
+  const rows = await db.select().from(pluginSettings).where(eq(pluginSettings.pluginId, pluginId));
+  if (!rows.length) return { enabled: true };
+  const row = rows[0];
+  let data: any = {};
+  if (row.settings) {
+    try {
+      data = JSON.parse(row.settings);
+    } catch (err) {
+      console.warn("[main] failed to parse settings JSON", err);
+    }
+  }
+  return { ...data, enabled: row.enabled === 1 };
 });
 
-// simple settings store in memory for MVP
-const settingsStore = new Map<string, any>();
-
-ipcMain.handle("settings:get", (_e, pluginId: string) => {
-  return settingsStore.get(pluginId) ?? {};
-});
-
-ipcMain.handle("settings:set", (_e, pluginId: string, values: any) => {
-  settingsStore.set(pluginId, values);
+ipcMain.handle("settings:set", async (_e, pluginId: string, values: any) => {
+  const db = getDb();
+  const rows = await db.select().from(pluginSettings).where(eq(pluginSettings.pluginId, pluginId));
+  const current = rows.length ? rows[0] : null;
+  const { enabled: enabledInput, ...rest } = values ?? {};
+  const enabled = typeof enabledInput === "boolean" ? (enabledInput ? 1 : 0) : current?.enabled ?? 1;
+  const payload = JSON.stringify(rest ?? {});
+  await db
+    .insert(pluginSettings)
+    .values({ pluginId: pluginId, enabled, settings: payload })
+    .onConflictDoUpdate({ target: pluginSettings.pluginId, set: { enabled, settings: payload } });
   return true;
 });

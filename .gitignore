@@ -5,3 +5,16 @@ node_modules/
 **/node_modules/
 
 .DS_Store
+
+# Build outputs
+dist/
+**/dist/
+dist-electron/
+**/dist-electron/
+
+# Local data
+data/
+
+# Package manager cache files
+.pnpm-store/
+.npmrc
