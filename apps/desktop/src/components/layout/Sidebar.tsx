@@ -7,12 +7,6 @@ export default function Sidebar() {
 
     return (
         <aside className="h-full border-r border-border bg-muted/10 p-2">
-            <div className="mb-3">
-                <Link to="/settings" className="text-xs text-muted-foreground hover:underline">
-                    ⚙︎ Settings
-                </Link>
-            </div>
-
             <h3 className="flex justify-between py-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 Plugins
                 <div className="text-xxs">

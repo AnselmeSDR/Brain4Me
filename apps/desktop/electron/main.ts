@@ -148,3 +148,13 @@ ipcMain.handle("settings:app:set", async (_e, key: string, value: any) => {
     .onConflictDoUpdate({ target: settings.key, set: { value: payload } });
   return true;
 });
+
+ipcMain.handle("system:metrics", async () => {
+  const metrics = app.getAppMetrics ? app.getAppMetrics() : [];
+  const cpuPercent = metrics.reduce((sum, metric) => sum + (metric.cpu?.percentCPUUsage ?? 0), 0);
+  const memoryKB = metrics.reduce((sum, metric) => sum + (metric.memory?.workingSetSize ?? 0), 0);
+  return {
+    cpuPercent: Number(cpuPercent.toFixed(1)),
+    memoryMB: Math.round(memoryKB / 1024),
+  };
+});

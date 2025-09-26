@@ -1,3 +1,5 @@
+import { getIpc } from "./ipc";
+
 /* Theme store: system | light | dark | tahoe
    - Persists to SQL through IPC channels: "settings:app:get" / "settings:app:set"
    - Falls back to localStorage if IPC not available
@@ -11,24 +13,6 @@ let currentTheme: Theme = "system";
 const listeners = new Set<Listener>();
 let isInitialized = false;
 let systemMedia: MediaQueryList | null = null;
-
-function getIpc(): { invoke: (channel: string, ...args: any[]) => Promise<any> } | null {
-  const anyWin = window as any;
-
-  if (anyWin.api?.invoke) {
-    return {
-      invoke: (channel: string, ...args: any[]) => anyWin.api.invoke(channel, ...args),
-    };
-  }
-
-  if (anyWin.electron?.ipcRenderer?.invoke) {
-    return {
-      invoke: (channel: string, ...args: any[]) => anyWin.electron.ipcRenderer.invoke(channel, ...args),
-    };
-  }
-
-  return null;
-}
 
 function applyTheme(theme: Theme) {
   const root = document.documentElement;

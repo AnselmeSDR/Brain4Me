@@ -10,6 +10,14 @@ contextBridge.exposeInMainWorld("pluginSettings", {
   set: (pluginId: string, values: any) => ipcRenderer.invoke("settings:set", pluginId, values) as Promise<boolean>,
 });
 
+contextBridge.exposeInMainWorld("bridge", {
+  invoke: (channel: string, ...args: any[]) => ipcRenderer.invoke(channel, ...args),
+});
+
+contextBridge.exposeInMainWorld("system", {
+  metrics: () => ipcRenderer.invoke("system:metrics") as Promise<{ cpuPercent: number; memoryMB: number }>,
+});
+
 declare global {
   interface Window {
     plugins: {
@@ -19,6 +27,12 @@ declare global {
     pluginSettings: {
       get(pluginId: string): Promise<any>;
       set(pluginId: string, values: any): Promise<boolean>;
+    };
+    bridge: {
+      invoke<T = any>(channel: string, ...args: any[]): Promise<T>;
+    };
+    system: {
+      metrics(): Promise<{ cpuPercent: number; memoryMB: number }>;
     };
   }
 }
