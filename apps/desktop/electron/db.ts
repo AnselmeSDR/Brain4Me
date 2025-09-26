@@ -2,7 +2,7 @@ import fs from "node:fs";
 import Database from "better-sqlite3";
 import path from "node:path";
 import { drizzle } from "drizzle-orm/better-sqlite3";
-import { pluginSettings } from "./schema";
+import { pluginSettings, settings } from "./schema";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -22,6 +22,7 @@ export function getDb() {
   sqlite.exec(
     "CREATE TABLE IF NOT EXISTS plugin_settings (plugin_id TEXT PRIMARY KEY, enabled INTEGER NOT NULL DEFAULT 1, settings TEXT)"
   );
+  sqlite.exec("CREATE TABLE IF NOT EXISTS app_settings (key TEXT PRIMARY KEY, value TEXT)");
   const columns = sqlite.prepare("PRAGMA table_info(plugin_settings)").all() as Array<{ name: string }>;
   if (!columns.some((col) => col.name === "settings")) {
     sqlite.exec("ALTER TABLE plugin_settings ADD COLUMN settings TEXT");
@@ -30,4 +31,4 @@ export function getDb() {
   return _db;
 }
 
-export { pluginSettings };
+export { pluginSettings, settings };

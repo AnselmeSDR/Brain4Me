@@ -62,7 +62,59 @@
   * {
     @apply border-border;
   }
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
   body {
-    @apply bg-background text-foreground;
+    @apply m-0 bg-background text-foreground rounded-xl overflow-hidden;
+  }
+}
+
+@layer base {
+  /* Tahoe / Liquid Glass inspired theme */
+  [data-theme="tahoe"] {
+    /* Neutral surface slightly cooler, higher contrast text */
+    --background: 220 20% 97%;
+    --foreground: 220 15% 10%;
+
+    --card: 0 0% 100% / 0.65; /* semi for glass cards */
+    --card-foreground: 220 15% 12%;
+
+    --popover: 0 0% 100% / 0.6;
+    --popover-foreground: 220 15% 12%;
+
+    --primary: 220 16% 18%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 220 20% 94%;
+    --secondary-foreground: 220 15% 18%;
+
+    --muted: 220 20% 94%;
+    --muted-foreground: 220 8% 42%;
+
+    --accent: 220 20% 94%;
+    --accent-foreground: 220 15% 14%;
+
+    --destructive: 0 84% 58%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 20% 90%;
+    --input: 220 20% 90%;
+    --ring: 220 15% 18%;
+
+    /* optional charts tuned a bit cooler */
+    --chart-1: 210 80% 56%;
+    --chart-2: 180 55% 44%;
+    --chart-3: 255 60% 62%;
+    --chart-4: 48 90% 62%;
+    --chart-5: 12 85% 62%;
+  }
+
+  /* Utility surfaces for glassy UI bits when Tahoe is active */
+  [data-theme="tahoe"] .glass-surface {
+    @apply bg-background/40 backdrop-blur;
+    border-color: hsl(var(--border));
   }
 }

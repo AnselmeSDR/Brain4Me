@@ -2,7 +2,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { app, BrowserWindow, ipcMain } from "electron";
 import { eq, inArray } from "drizzle-orm";
-import { getDb, pluginSettings } from "./db";
+import { getDb, pluginSettings, settings } from "./db";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,6 +29,12 @@ async function createWindow() {
   win = new BrowserWindow({
     width: 1200,
     height: 800,
+    titleBarStyle: "hiddenInset",
+    trafficLightPosition: { x: 14, y: 16 },
+    vibrancy: "under-window",
+    visualEffectState: "followWindow",
+    roundedCorners: true,
+    backgroundColor: "#00000000",
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
       nodeIntegration: false,
@@ -118,5 +124,27 @@ ipcMain.handle("settings:set", async (_e, pluginId: string, values: any) => {
     .insert(pluginSettings)
     .values({ pluginId: pluginId, enabled, settings: payload })
     .onConflictDoUpdate({ target: pluginSettings.pluginId, set: { enabled, settings: payload } });
+  return true;
+});
+
+// Global application settings stored as simple key/value pairs
+ipcMain.handle("settings:app:get", async (_e, key: string) => {
+  const db = getDb();
+  const rows = await db.select().from(settings).where(eq(settings.key, key));
+  if (!rows.length) return null;
+  try {
+    return JSON.parse(rows[0].value ?? "null");
+  } catch {
+    return rows[0].value;
+  }
+});
+
+ipcMain.handle("settings:app:set", async (_e, key: string, value: any) => {
+  const db = getDb();
+  const payload = typeof value === "string" ? value : JSON.stringify(value);
+  await db
+    .insert(settings)
+    .values({ key, value: payload })
+    .onConflictDoUpdate({ target: settings.key, set: { value: payload } });
   return true;
 });

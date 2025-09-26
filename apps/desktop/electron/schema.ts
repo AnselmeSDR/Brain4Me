@@ -5,3 +5,8 @@ export const pluginSettings = sqliteTable("plugin_settings", {
   enabled: integer("enabled").notNull().default(0),
   settings: text("settings"),
 });
+
+export const settings = sqliteTable("app_settings", {
+  key: text("key").primaryKey(),
+  value: text("value"),
+});
