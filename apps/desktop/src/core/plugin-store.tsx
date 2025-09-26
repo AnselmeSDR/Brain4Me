@@ -11,7 +11,7 @@ interface PluginStoreValue {
   setPluginEnabled: (id: string, value: boolean) => Promise<void>;
 }
 
-const PluginStoreContext = createContext<PluginStoreValue | null>(null);
+export const PluginStoreContext = createContext<PluginStoreValue | null>(null);
 
 export function PluginStoreProvider({ children }: { children: React.ReactNode }) {
   const [plugins, setPlugins] = useState<PluginStoreItem[]>([]);

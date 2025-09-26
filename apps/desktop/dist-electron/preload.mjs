@@ -1,1 +1,0 @@
-"use strict";const e=require("electron");e.contextBridge.exposeInMainWorld("plugins",{list:()=>e.ipcRenderer.invoke("plugin:list"),setEnabled:(n,i)=>e.ipcRenderer.invoke("plugin:setEnabled",n,i)});e.contextBridge.exposeInMainWorld("pluginSettings",{get:n=>e.ipcRenderer.invoke("settings:get",n),set:(n,i)=>e.ipcRenderer.invoke("settings:set",n,i)});
