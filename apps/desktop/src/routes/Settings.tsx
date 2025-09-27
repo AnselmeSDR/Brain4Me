@@ -1,16 +1,12 @@
 import {Switch} from "@/components/ui/switch";
 import {usePluginStore} from "@/core/plugin-store";
-import {getTheme, initThemeStore, setTheme, subscribe, type Theme} from "@/core/theme-store";
-import {useEffect, useSyncExternalStore} from "react";
+import {type Theme} from "@/core/theme-store";
+import {useTheme} from "next-themes";
 
 export default function SettingsPage() {
     const {plugins, loading, error, setPluginEnabled} = usePluginStore();
-
-    // subscribe to theme store
-    useEffect(() => {
-        void initThemeStore();
-    }, []);
-    const theme = useSyncExternalStore(subscribe, getTheme, getTheme);
+    const {theme: activeTheme, setTheme: applyTheme} = useTheme();
+    const themeValue = (activeTheme ?? "system") as Theme;
 
     return (
         <div className="p-6 space-y-4">
@@ -22,9 +18,9 @@ export default function SettingsPage() {
                         <span className="w-32 text-foreground">Theme</span>
                         <select
                             className="min-w-44 rounded-xl border border-border/60 bg-background/90 px-3 py-2 text-foreground shadow-sm transition focus:outline-none focus:ring-2 focus:ring-primary/40"
-                            value={theme}
-                            onChange={async ({currentTarget}) => {
-                                await setTheme(currentTarget.value as Theme);
+                            value={themeValue}
+                            onChange={({currentTarget}) => {
+                                applyTheme(currentTarget.value as Theme);
                             }}
                         >
                             <option value="system">System</option>

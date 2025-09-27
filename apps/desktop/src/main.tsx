@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import { initThemeStore } from "@/core/theme-store";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const el = document.getElementById("root");
 if (!el) throw new Error("#root not found");
@@ -16,7 +17,9 @@ void (async () => {
     }
     root.render(
         <React.StrictMode>
-            <App />
+            <ThemeProvider>
+                <App />
+            </ThemeProvider>
         </React.StrictMode>
     );
 })();

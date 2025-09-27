@@ -1,99 +1,89 @@
 import { getIpc } from "./ipc";
 
-/* Theme store: system | light | dark | tahoe
-   - Persists to SQL through IPC channels: "settings:app:get" / "settings:app:set"
-   - Falls back to localStorage if IPC not available
-   - Applies data-theme on <html> and toggles .dark for Tailwind dark tokens
-*/
 export type Theme = "system" | "light" | "dark" | "tahoe";
 
-// Minimal pub/sub store (no external deps)
-type Listener = (theme: Theme) => void;
-let currentTheme: Theme = "system";
-const listeners = new Set<Listener>();
-let isInitialized = false;
-let systemMedia: MediaQueryList | null = null;
+const LEGACY_STORAGE_KEY = "app.theme";
+const NEXT_THEME_STORAGE_KEY = "theme";
 
-function applyTheme(theme: Theme) {
-  const root = document.documentElement;
-  const prefersDark = matchMedia("(prefers-color-scheme: dark)").matches;
+let initialised = false;
+let cachedTheme: Theme = "system";
 
-  root.classList.toggle("dark", theme === "dark" || (theme === "system" && prefersDark));
-
-  if (theme === "tahoe") {
-    root.setAttribute("data-theme", "tahoe");
-  } else {
-    root.removeAttribute("data-theme");
-  }
-}
-
-async function loadInitial(): Promise<Theme> {
-  try {
-    const ipc = getIpc();
-    if (ipc) {
-      const value = await ipc.invoke("settings:app:get", "theme");
-      if (value === "system" || value === "light" || value === "dark" || value === "tahoe") {
-        return value;
-      }
+function resolveTheme(theme: Theme): "light" | "dark" {
+    if (theme === "system") {
+        return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     }
-  } catch {}
 
-  const stored = localStorage.getItem("app.theme");
-  if (stored === "system" || stored === "light" || stored === "dark" || stored === "tahoe") {
-    return stored;
-  }
-
-  return "system";
-}
-
-async function persist(theme: Theme) {
-  try {
-    const ipc = getIpc();
-    if (ipc) {
-      await ipc.invoke("settings:app:set", "theme", theme);
-      return;
+    if (theme === "tahoe") {
+        return "light";
     }
-  } catch {}
 
-  localStorage.setItem("app.theme", theme);
+    return theme;
 }
 
-export async function initThemeStore() {
-  if (isInitialized) {
-    applyTheme(currentTheme);
-    return;
-  }
+function applyThemeTokens(theme: Theme) {
+    const root = document.documentElement;
+    const resolved = resolveTheme(theme);
 
-  isInitialized = true;
-  currentTheme = await loadInitial();
-  applyTheme(currentTheme);
+    root.classList.toggle("dark", resolved === "dark");
 
-  systemMedia = matchMedia("(prefers-color-scheme: dark)");
-  systemMedia.addEventListener("change", () => {
-    if (currentTheme === "system") {
-      applyTheme(currentTheme);
+    if (theme === "tahoe") {
+        root.setAttribute("data-theme", "tahoe");
+    } else {
+        root.removeAttribute("data-theme");
     }
-  });
 }
 
-export function getTheme(): Theme {
-  return currentTheme;
+async function fetchPersistedTheme(): Promise<Theme | null> {
+    try {
+        const ipc = getIpc();
+        if (ipc) {
+            const stored = await ipc.invoke("settings:app:get", "theme");
+            if (stored === "system" || stored === "light" || stored === "dark" || stored === "tahoe") {
+                return stored;
+            }
+        }
+    } catch (error) {
+        console.warn("[theme] failed to read persisted theme", error);
+    }
+
+    const local = localStorage.getItem(LEGACY_STORAGE_KEY) ?? localStorage.getItem(NEXT_THEME_STORAGE_KEY);
+    if (local === "system" || local === "light" || local === "dark" || local === "tahoe") {
+        return local;
+    }
+
+    return null;
 }
 
-export function subscribe(listener: Listener): () => void {
-  listeners.add(listener);
-  return () => {
-    listeners.delete(listener);
-  };
+export async function initThemeStore(): Promise<Theme> {
+    if (initialised) {
+        applyThemeTokens(cachedTheme);
+        return cachedTheme;
+    }
+
+    initialised = true;
+    cachedTheme = (await fetchPersistedTheme()) ?? "system";
+    applyThemeTokens(cachedTheme);
+
+    persistThemeLocally(cachedTheme);
+
+    return cachedTheme;
 }
 
-export async function setTheme(next: Theme) {
-  if (next === currentTheme) {
-    return;
-  }
+function persistThemeLocally(theme: Theme) {
+    localStorage.setItem(LEGACY_STORAGE_KEY, theme);
+    localStorage.setItem(NEXT_THEME_STORAGE_KEY, theme);
+}
 
-  currentTheme = next;
-  applyTheme(currentTheme);
-  listeners.forEach((listener) => listener(currentTheme));
-  await persist(currentTheme);
+export async function persistTheme(theme: Theme) {
+    cachedTheme = theme;
+    persistThemeLocally(theme);
+
+    try {
+        const ipc = getIpc();
+        if (ipc) {
+            await ipc.invoke("settings:app:set", "theme", theme);
+        }
+    } catch (error) {
+        console.warn("[theme] failed to persist theme", error);
+    }
 }
