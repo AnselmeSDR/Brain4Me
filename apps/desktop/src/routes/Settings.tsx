@@ -161,8 +161,7 @@ export default function SettingsPage() {
                             onClick={() => {
                                 void setFontScale(1);
                             }}
-                            aria-label="Réinitialiser le zoom"
-                        >
+                            aria-label="Réinitialiser le zoom">
                             <ArrowPathIcon className="h-4 w-4" />
                         </Button>
                     </CardContent>

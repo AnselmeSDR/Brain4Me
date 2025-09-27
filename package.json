@@ -3,12 +3,13 @@
   "private": true,
   "packageManager": "pnpm@10.17.1+sha512.17c560fca4867ae9473a3899ad84a88334914f379be46d455cbf92e5cf4b39d34985d452d2583baf19967fa76cb5c17bc9e245529d0b98745721aa7200ecaf7a",
   "scripts": {
-    "first": "pnpm install && pnpm rebuild electron esbuild",
+    "native:rebuild": "pnpm approve-builds better-sqlite3 && pnpm -F @app/desktop add -D electron-rebuild && pnpm -F @app/desktop exec electron-rebuild -f -w better-sqlite3 && pnpm rebuild electron esbuild",
+    "first": "pnpm install && pnpm run native:rebuild",
     "dev": "pnpm --filter @app/desktop dev",
     "build": "pnpm -r build",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
-    "clean": "rimraf node_modules apps/**/node_modules apps/**/dist* pnpm-lock.yaml && pnpm install && pnpm rebuild electron esbuild"
+    "clean": "rimraf node_modules apps/**/node_modules apps/**/dist* pnpm-lock.yaml && pnpm install && pnpm run native:rebuild"
   },
   "devDependencies": {
     "@types/react": "^19.1.13",

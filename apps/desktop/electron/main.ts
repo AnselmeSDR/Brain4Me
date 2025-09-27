@@ -1,6 +1,7 @@
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, nativeImage, type NativeImage } from "electron";
 import { eq, inArray } from "drizzle-orm";
 import { getDb, pluginSettings, settings } from "./db";
 import { getJoke, invalidateJokeCache } from "./jokes";
@@ -10,6 +11,50 @@ const __dirname = path.dirname(__filename);
 
 (globalThis as any).__filename = __filename;
 (globalThis as any).__dirname = __dirname;
+
+let cachedAppIcon: NativeImage | null | undefined;
+
+function resolveAssetPath(filename: string) {
+  const devPath = path.resolve(__dirname, "../electron/assets", filename);
+  if (!app.isPackaged && fs.existsSync(devPath)) {
+    return devPath;
+  }
+
+  const packagedPath = path.join(process.resourcesPath, "assets", filename);
+  if (fs.existsSync(packagedPath)) {
+    return packagedPath;
+  }
+
+  if (fs.existsSync(devPath)) {
+    return devPath;
+  }
+
+  return null;
+}
+
+function loadAppIcon() {
+  if (cachedAppIcon !== undefined) return cachedAppIcon;
+  const assetPath = resolveAssetPath("app-icon.png");
+  if (!assetPath) {
+    console.warn("[main] app icon file not found");
+    cachedAppIcon = null;
+    return cachedAppIcon;
+  }
+
+  try {
+    const icon = nativeImage.createFromPath(assetPath);
+    if (icon.isEmpty()) {
+      console.warn("[main] app icon is empty", assetPath);
+      cachedAppIcon = null;
+    } else {
+      cachedAppIcon = icon;
+    }
+  } catch (error) {
+    console.warn("[main] failed to load app icon", assetPath, error);
+    cachedAppIcon = null;
+  }
+  return cachedAppIcon;
+}
 
 let win: BrowserWindow | null = null;
 const defaultPlugins = [
@@ -27,6 +72,8 @@ async function ensurePluginRows() {
 }
 
 async function createWindow() {
+  const windowIcon = loadAppIcon();
+
   win = new BrowserWindow({
     width: 1200,
     height: 800,
@@ -36,6 +83,7 @@ async function createWindow() {
     visualEffectState: "followWindow",
     roundedCorners: true,
     backgroundColor: "#00000000",
+    icon: windowIcon ?? undefined,
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
       nodeIntegration: false,
@@ -71,6 +119,12 @@ app.on("activate", () => {
 app.whenReady()
   .then(async () => {
     await ensurePluginRows();
+    if (process.platform === "darwin") {
+      const appIcon = loadAppIcon();
+      if (appIcon) {
+        app.dock.setIcon(appIcon);
+      }
+    }
     await createWindow();
   })
   .catch((err) => {
