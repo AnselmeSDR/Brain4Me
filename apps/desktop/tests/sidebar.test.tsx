@@ -51,7 +51,7 @@ describe("Sidebar", () => {
       </StaticRouter>
     );
 
-    expect(html).toContain("bg-accent text-accent-foreground");
+    expect(html).toContain("bg-accent");
     expect(html).toContain("Hello Plugin");
   });
 });

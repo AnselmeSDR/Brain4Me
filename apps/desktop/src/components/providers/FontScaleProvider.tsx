@@ -1,4 +1,4 @@
-import {createContext, useCallback, useContext, useEffect, useRef, useState} from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 type SetScaleOptions = {
     persist?: boolean;
@@ -16,7 +16,7 @@ const FontScaleContext = createContext<FontScaleContextValue | undefined>(undefi
 
 const MIN_SCALE = 0.75;
 const MAX_SCALE = 1.5;
-const STEP = 0.05;
+const STEP = 0.025;
 
 const STORAGE_KEY = "ui.fontScale";
 
@@ -61,12 +61,12 @@ async function loadInitialScale(): Promise<number> {
     return 1;
 }
 
-export function FontScaleProvider({children}: {children: React.ReactNode}) {
+export function FontScaleProvider({ children }: { children: React.ReactNode }) {
     const [scale, setScaleState] = useState(1);
     const scaleRef = useRef(scale);
 
     const internalSetScale = useCallback(async (value: number, options: SetScaleOptions = {}) => {
-        const {persist = true} = options;
+        const { persist = true } = options;
         const next = clamp(value);
         setScaleState(next);
         scaleRef.current = next;
@@ -95,6 +95,7 @@ export function FontScaleProvider({children}: {children: React.ReactNode}) {
             if (!event.ctrlKey) return;
             event.preventDefault();
             const direction = event.deltaY < 0 ? 1 : -1;
+
             const next = clamp(scaleRef.current + direction * STEP);
             if (next !== scaleRef.current) {
                 void internalSetScale(next);
@@ -109,7 +110,7 @@ export function FontScaleProvider({children}: {children: React.ReactNode}) {
             }
         };
 
-        window.addEventListener("wheel", handleWheel, {passive: false});
+        window.addEventListener("wheel", handleWheel, { passive: false });
         window.addEventListener("keydown", handleKey);
         return () => {
             window.removeEventListener("wheel", handleWheel);

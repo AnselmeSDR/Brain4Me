@@ -1,10 +1,10 @@
-import {Link, useLocation} from "react-router-dom";
-import {usePluginStore} from "@/core/plugin-store";
-import {Button} from "@/components/ui/button";
-import {PluginIcon} from "@/components/icons/PluginIcon";
+import { Link, useLocation } from "react-router-dom";
+import { usePluginStore } from "@/core/plugin-store";
+import { Button } from "@/components/ui/button";
+import { PluginIcon } from "@/components/icons/PluginIcon";
 
 export default function Sidebar() {
-    const {plugins, loading} = usePluginStore({status: "enabled"});
+    const { plugins, loading } = usePluginStore({ status: "enabled" });
     const location = useLocation();
 
     return (
@@ -14,7 +14,6 @@ export default function Sidebar() {
                 <div className="hidden text-[10px] group-hover/sidebar:block">
                     {plugins.length}
                 </div>
-                <PluginIcon className="h-[24px] w-[24px] group-hover/sidebar:hidden" />
             </div>
 
             <ul className="flex flex-1 flex-col items-center gap-[8px] text-[14px] group-hover/sidebar:items-stretch">
@@ -28,11 +27,11 @@ export default function Sidebar() {
                                 <Button
                                     asChild
                                     variant="ghost"
-                                    className={`!flex !h-auto w-full items-center justify-center gap-0 rounded-[24px] px-[8px] py-[8px] font-medium transition-all group-hover/sidebar:justify-start group-hover/sidebar:gap-[12px] border-border/70 text-foreground text-[14px] ${
-                                        active
+                                    className={`!flex !h-auto w-full items-center justify-center gap-0 rounded-[24px] px-[8px] py-[8px] font-medium transition-all group-hover/sidebar:justify-start group-hover/sidebar:gap-[12px] border-border/70 text-foreground text-[14px] 
+                                        ${active
                                             ? "bg-accent"
                                             : "hover:bg-accent/80"
-                                    }`}>
+                                        }`}>
                                     <Link to={`/plugin/${p.id}`} className="flex w-full items-center justify-center gap-0 group-hover/sidebar:justify-start group-hover/sidebar:gap-[12px]">
                                         <PluginIcon icon={p.icon} className="h-[20px] w-[20px]" />
                                         <span className="hidden truncate group-hover/sidebar:inline">{p.name}</span>
