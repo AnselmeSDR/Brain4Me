@@ -16,6 +16,7 @@ contextBridge.exposeInMainWorld("bridge", {
 
 contextBridge.exposeInMainWorld("system", {
   metrics: () => ipcRenderer.invoke("system:metrics") as Promise<{ cpuPercent: number; memoryMB: number }>,
+  joke: (force = false) => ipcRenderer.invoke("system:joke", force) as Promise<string | null>,
 });
 
 declare global {
@@ -33,6 +34,7 @@ declare global {
     };
     system: {
       metrics(): Promise<{ cpuPercent: number; memoryMB: number }>;
+      joke(force?: boolean): Promise<string | null>;
     };
   }
 }

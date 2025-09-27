@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import { app, BrowserWindow, ipcMain } from "electron";
 import { eq, inArray } from "drizzle-orm";
 import { getDb, pluginSettings, settings } from "./db";
+import { getJoke, invalidateJokeCache } from "./jokes";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -145,6 +146,9 @@ ipcMain.handle("settings:app:set", async (_e, key: string, value: any) => {
     .insert(settings)
     .values({ key, value: payload })
     .onConflictDoUpdate({ target: settings.key, set: { value: payload } });
+  if (key === "topbar.joke") {
+    invalidateJokeCache();
+  }
   return true;
 });
 
@@ -156,4 +160,8 @@ ipcMain.handle("system:metrics", async () => {
     cpuPercent: Number(cpuPercent.toFixed(1)),
     memoryMB: Math.round(memoryKB / 1024),
   };
+});
+
+ipcMain.handle("system:joke", async (_event, force?: boolean) => {
+  return getJoke(Boolean(force));
 });
