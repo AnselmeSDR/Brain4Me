@@ -4,6 +4,7 @@ const manifest: Manifest = {
   id: "notes",
   name: "Notes",
   description: "Bloc-notes local (exemple)",
+  icon: "DocumentTextIcon",
   entry: () => import("./index"),
 };
 

@@ -1,20 +1,25 @@
-import {useEffect, useState} from "react";
-import {Switch} from "@/components/ui/switch";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {Skeleton} from "@/components/ui/skeleton";
-import {toast} from "@/components/ui/use-toast";
-import {usePluginStore} from "@/core/plugin-store";
-import {type Theme} from "@/core/theme-store";
-import {useTheme} from "next-themes";
+import { useEffect, useState } from "react";
+import { Switch } from "@/components/ui/switch";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "@/components/ui/use-toast";
+import { usePluginStore } from "@/core/plugin-store";
+import { type Theme } from "@/core/theme-store";
+import { useTheme } from "next-themes";
+import { PluginIcon } from "@/components/icons/PluginIcon";
+import { Slider } from "@/components/ui/slider";
+import { useFontScale } from "@/components/providers/FontScaleProvider";
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
 
 const JOKE_LANGUAGES = [
-    {value: "fr", label: "Français"},
-    {value: "en", label: "English"},
-    {value: "de", label: "Deutsch"},
-    {value: "es", label: "Español"},
-    {value: "pt", label: "Português"},
+    { value: "fr", label: "Français" },
+    { value: "en", label: "English" },
+    { value: "de", label: "Deutsch" },
+    { value: "es", label: "Español" },
+    { value: "pt", label: "Português" },
 ] as const;
 
 type JokeLanguage = typeof JOKE_LANGUAGES[number]["value"];
@@ -23,9 +28,10 @@ const isJokeLanguage = (value: string): value is JokeLanguage =>
     JOKE_LANGUAGES.some((lang) => lang.value === value);
 
 export default function SettingsPage() {
-    const {plugins, loading, error, setPluginEnabled} = usePluginStore();
-    const {theme: activeTheme, setTheme: applyTheme} = useTheme();
+    const { plugins, loading, error, setPluginEnabled } = usePluginStore();
+    const { theme: activeTheme, setTheme: applyTheme } = useTheme();
     const themeValue = (activeTheme ?? "system") as Theme;
+    const { scale: fontScale, setScale: setFontScale, min: minFontScale, max: maxFontScale, step: fontScaleStep } = useFontScale();
 
     const [jokeEnabled, setJokeEnabled] = useState<boolean>(true);
     const [jokeLanguage, setJokeLanguage] = useState<JokeLanguage>("fr");
@@ -59,7 +65,7 @@ export default function SettingsPage() {
         };
     }, []);
 
-    const persistJokeSettings = async (next: {enabled: boolean; language: JokeLanguage}) => {
+    const persistJokeSettings = async (next: { enabled: boolean; language: JokeLanguage }) => {
         if (typeof window === "undefined" || !window.bridge?.invoke) {
             return;
         }
@@ -78,20 +84,20 @@ export default function SettingsPage() {
     };
 
     const handleJokeToggle = async (nextValue: boolean) => {
-        const previous = {enabled: jokeEnabled, language: jokeLanguage};
+        const previous = { enabled: jokeEnabled, language: jokeLanguage };
         setJokeEnabled(nextValue);
         try {
-            await persistJokeSettings({enabled: nextValue, language: previous.language});
+            await persistJokeSettings({ enabled: nextValue, language: previous.language });
         } catch {
             setJokeEnabled(previous.enabled);
         }
     };
 
     const handleJokeLanguageChange = async (value: JokeLanguage) => {
-        const previous = {enabled: jokeEnabled, language: jokeLanguage};
+        const previous = { enabled: jokeEnabled, language: jokeLanguage };
         setJokeLanguage(value);
         try {
-            await persistJokeSettings({enabled: previous.enabled, language: value});
+            await persistJokeSettings({ enabled: previous.enabled, language: value });
         } catch {
             setJokeLanguage(previous.language);
         }
@@ -100,18 +106,15 @@ export default function SettingsPage() {
     return (
         <div className="p-6 space-y-4">
             <h1 className="text-lg font-semibold">Settings</h1>
-            <section className="mb-8 space-y-3">
+            <section className="mb-8 space-y-2">
                 <h2 className="text-sm font-medium text-muted-foreground">Appearance</h2>
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between gap-4 space-y-0">
-                        <div>
-                            <CardTitle className="text-sm">Thème</CardTitle>
-                            <CardDescription>Choisis comment Brain4Me se présente.</CardDescription>
-                        </div>
+                        <CardTitle className="text-sm">Thème</CardTitle>
                         <Select value={themeValue}
-                                onValueChange={(value) => {
-                                    applyTheme(value as Theme);
-                                }}>
+                            onValueChange={(value) => {
+                                applyTheme(value as Theme);
+                            }}>
                             <SelectTrigger className="min-w-40">
                                 <SelectValue placeholder="Sélectionne un thème" />
                             </SelectTrigger>
@@ -123,6 +126,46 @@ export default function SettingsPage() {
                             </SelectContent>
                         </Select>
                     </CardHeader>
+                </Card>
+                <Card>
+                    <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+                        <div>
+                            <CardTitle className="text-sm">Taille du texte</CardTitle>
+                            <CardDescription>Règle la taille d'affichage globale. Ctrl + molette fonctionne aussi.</CardDescription>
+                        </div>
+                        <span className="text-xs font-medium text-muted-foreground">{Math.round(fontScale * 100)}%</span>
+                    </CardHeader>
+                    <CardContent className="flex items-center justify-between gap-3 pt-0">
+                        <Slider
+                            className="flex-1"
+                            value={[fontScale]}
+                            min={minFontScale}
+                            max={maxFontScale}
+                            step={fontScaleStep}
+                            onValueChange={(values) => {
+                                const next = values[0];
+                                if (typeof next === "number") {
+                                    void setFontScale(next, { persist: false });
+                                }
+                            }}
+                            onValueCommit={(values) => {
+                                const next = values[0];
+                                if (typeof next === "number") {
+                                    void setFontScale(next);
+                                }
+                            }}
+                        />
+                        <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={() => {
+                                void setFontScale(1);
+                            }}
+                            aria-label="Réinitialiser le zoom"
+                        >
+                            <ArrowPathIcon className="h-4 w-4" />
+                        </Button>
+                    </CardContent>
                 </Card>
                 <Card>
                     <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
@@ -180,38 +223,43 @@ export default function SettingsPage() {
                 )}
                 <div className="space-y-2">
                     {loading
-                        ? Array.from({length: 3}).map((_, index) => (
-                              <Card key={`plugin-skeleton-${index}`} className="px-4 py-3">
-                                  <Skeleton className="h-5 w-40" />
-                              </Card>
-                          ))
+                        ? Array.from({ length: 3 }).map((_, index) => (
+                            <Card key={`plugin-skeleton-${index}`} className="px-4 py-3">
+                                <Skeleton className="h-5 w-40" />
+                            </Card>
+                        ))
                         : plugins.map((p) => (
-                              <Card key={p.id} className="px-4 py-3">
-                                  <CardContent className="flex items-center justify-between gap-4 p-0">
-                                      <div>
-                                          <div className="font-medium text-foreground">{p.name}</div>
-                                          {p.description && (
-                                              <CardDescription className="mt-1 text-xs text-muted-foreground">
-                                                  {p.description}
-                                              </CardDescription>
-                                          )}
-                                      </div>
-                                      <div className="flex items-center gap-3 text-sm">
-                                          <span className="text-muted-foreground">
-                                              {p.enabled ? "Activé" : "Désactivé"}
-                                          </span>
-                                          <Switch
-                                              id={`plugin-${p.id}`}
-                                              checked={p.enabled}
-                                              onCheckedChange={async (nextValue) => {
-                                                  await setPluginEnabled(p.id, nextValue);
-                                              }}
-                                              aria-label={`Activer ${p.name}`}
-                                          />
-                                      </div>
-                                  </CardContent>
-                              </Card>
-                          ))}
+                            <Card key={p.id} className="px-4 py-3">
+                                <CardContent className="flex items-center justify-between gap-4 p-0">
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-border/60 bg-background/60">
+                                            <PluginIcon icon={p.icon} className="h-5 w-5" />
+                                        </div>
+                                        <div>
+                                            <div className="font-medium text-foreground">{p.name}</div>
+                                            {p.description && (
+                                                <CardDescription className="mt-1 text-xs text-muted-foreground">
+                                                    {p.description}
+                                                </CardDescription>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3 text-sm">
+                                        <span className="text-muted-foreground">
+                                            {p.enabled ? "Activé" : "Désactivé"}
+                                        </span>
+                                        <Switch
+                                            id={`plugin-${p.id}`}
+                                            checked={p.enabled}
+                                            onCheckedChange={async (nextValue) => {
+                                                await setPluginEnabled(p.id, nextValue);
+                                            }}
+                                            aria-label={`Activer ${p.name}`}
+                                        />
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))}
                 </div>
             </section>
         </div>

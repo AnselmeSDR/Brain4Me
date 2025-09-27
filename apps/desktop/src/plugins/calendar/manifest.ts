@@ -4,6 +4,7 @@ const manifest: Manifest = {
   id: "calendar",
   name: "Calendrier",
   description: "Aperçu calendrier statique",
+  icon: "CalendarDaysIcon",
   entry: () => import("./index"),
 };
 
