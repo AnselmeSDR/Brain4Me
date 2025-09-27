@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Cog6ToothIcon } from "@heroicons/react/24/outline";
-import { getIpc } from "@/core/ipc";
+import {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
+import {Cog6ToothIcon} from "@heroicons/react/24/outline";
+import {getIpc} from "@/core/ipc";
 
 type Metrics = {
     cpuPercent: number;
@@ -57,14 +57,19 @@ export default function Footer() {
     const metrics = useSystemMetrics();
 
     return (
-        <footer className="h-8 shrink-0 border-t border-border/60 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex items-center gap-4 px-4 text-xs" style={{ WebkitAppRegion: "no-drag" }}>
-            <Link to="/settings" className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground">
-                <Cog6ToothIcon aria-hidden className="h-4 w-4" />
-                <span>Settings</span>
-            </Link>
-            <div className="ml-auto flex items-center gap-4 text-muted-foreground">
-                <span>RAM {metrics ? `${metrics.memoryMB} MB` : "--"}</span>
-                <span>CPU {metrics ? `${metrics.cpuPercent}%` : "--"}</span>
+        <footer className="bg-card/70 rounded-tr-3xl"
+                style={{WebkitAppRegion: "no-drag"}}>
+            <div
+                className="h-10 shrink-0 flex items-center gap-4 rounded-t-3xl border-t border-border/70 bg-background/70 px-5 text-xs shadow-[0_-6px_20px_rgba(15,23,42,0.08)] backdrop-blur-xl supports-[backdrop-filter]:bg-background/50">
+                <Link to="/settings"
+                      className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground">
+                    <Cog6ToothIcon aria-hidden className="h-4 w-4" />
+                    <span>Settings</span>
+                </Link>
+                <div className="ml-auto flex items-center gap-4 text-muted-foreground">
+                    <span>RAM {metrics ? `${metrics.memoryMB} MB` : "--"}</span>
+                    <span>CPU {metrics ? `${metrics.cpuPercent}%` : "--"}</span>
+                </div>
             </div>
         </footer>
     );
