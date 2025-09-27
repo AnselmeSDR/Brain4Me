@@ -3,6 +3,7 @@ import Layout from "@/components/layout/Layout";
 import PluginHost from "@/routes/PluginHost";
 import SettingsPage from "@/routes/Settings";
 import { PluginStoreProvider } from "@/core/plugin-store";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function App() {
     return (
@@ -20,6 +21,7 @@ export default function App() {
                         <Route path="/settings" element={<SettingsPage />} />
                     </Route>
                 </Routes>
+                <Toaster />
             </PluginStoreProvider>
         </BrowserRouter>
     );
